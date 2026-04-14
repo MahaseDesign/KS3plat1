@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBA KS3 Platform – Demo Run‑through</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        h1, h2 {
+            margin-top: 0;
+            color: #1e2a3e;
+        }
+        .role-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .role-btn {
+            background: #e9ecef;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .role-btn.active {
+            background: #0f3b5e;
+            color: white;
+        }
+        button {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button.secondary {
+            background: #6c757d;
+        }
+        button.warning {
+            background: #d9534f;
+        }
+        .lesson-card {
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .locked {
+            background: #f8f9fa;
+            opacity: 0.7;
+        }
+        .task {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 16px;
+            margin: 12px 0;
+        }
+        input, select {
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid #ced4da;
+            width: 100%;
+            max-width: 300px;
+        }
+        .evidence-box {
+            background: #e9ecef;
+            padding: 12px;
+            border-radius: 16px;
+            font-family: monospace;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        .flex {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        hr {
+            margin: 24px 0;
+        }
+        .success {
+            color: #2b8c4e;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div class="app">
+    <div class="card">
+        <h1>🏫 CBA KS3 Learning Platform</h1>
+        <p><strong>Demo mode</strong> – all data stored in your browser (localStorage).</p>
+        <div class="role-buttons">
+            <button class="role-btn" data-role="student">👩‍🎓 Student view</button>
+            <button class="role-btn" data-role="teacher">👩‍🏫 Teacher view</button>
+            <button class="role-btn" data-role="cover">🧑‍🏫 Cover teacher view</button>
+        </div>
+        <div id="roleIndicator" style="margin-top: 8px; font-style: italic;"></div>
+    </div>
+
+    <div id="studentPanel" class="card" style="display: none;">
+        <h2>Student login</h2>
+        <div class="flex">
+            <input type="email" id="studentEmail" placeholder="cba--jbloggs@corbybusinessacademy.org" style="flex:1">
+            <button id="studentLoginBtn">Login / Start lesson</button>
+        </div>
+        <div id="studentContent"></div>
+    </div>
+
+    <div id="teacherPanel" class="card" style="display: none;">
+        <h2>👩‍🏫 Teacher control</h2>
+        <p>Release lessons for your class. Download whole‑class evidence.</p>
+        <div id="teacherLessonList"></div>
+        <div id="teacherEvidence"></div>
+    </div>
+
+    <div id="coverPanel" class="card" style="display: none;">
+        <h2>🧑‍🏫 Cover teacher</h2>
+        <p>Only lessons <strong>released by the class teacher</strong> appear here.</p>
+        <div id="coverLessonList"></div>
+        <div id="coverEvidence"></div>
+    </div>
+</div>
+
+<script>
+    // ---------- MOCK DATA ----------
+    // One sample lesson (Year 7 Maths, Lesson 1)
+    const lessons = [
+        {
+            id: "y7_maths_l1",
+            title: "Year 7 Maths – Lesson 1: Negative numbers",
+            subject: "Maths",
+            year: 7,
+            tasks: [
+                { id: "t1", type: "mcq", question: "What is -5 + 3?", options: ["-8", "-2", "2", "8"], correct: "-2" },
+                { id: "t2", type: "short", question: "Calculate: -7 - (-4) = ?", correct: "-3" },
+                { id: "t3", type: "mcq", question: "Which is the smallest? -10, 0, -5, 3", options: ["-10", "0", "-5", "3"], correct: "-10" }
+            ]
+        }
+    ];
+
+    // State stored in localStorage
+    let releasedLessons = JSON.parse(localStorage.getItem("cba_released")) || {};   // { lessonId: true/false }
+    let studentAnswers = JSON.parse(localStorage.getItem("cba_answers")) || {};     // { lessonId: { studentEmail: { taskId: { answer, score, timestamp } } } }
+    let currentRole = "student";
+    let currentStudent = null;
+
+    // Helper: save state
+    function saveState() {
+        localStorage.setItem("cba_released", JSON.stringify(releasedLessons));
+        localStorage.setItem("cba_answers", JSON.stringify(studentAnswers));
+    }
+
+    // ----- Student proof generation (individual) -----
+    async function downloadStudentProof(lessonId, studentEmail) {
+        const lesson = lessons.find(l => l.id === lessonId);
+        if (!lesson) return;
+        const answersForLesson = (studentAnswers[lessonId] || {})[studentEmail] || {};
+        let tasksHtml = "";
+        let totalScore = 0, maxScore = lesson.tasks.length;
+        for (let task of lesson.tasks) {
+            const userAns = answersForLesson[task.id];
+            const isCorrect = (userAns && userAns.answer == task.correct);
+            if (isCorrect) totalScore++;
+            tasksHtml += `<p><strong>${task.question}</strong><br>Your answer: ${userAns?.answer || "Not answered"}<br>Correct answer: ${task.correct}<br>Score: ${isCorrect ? "1" : "0"}/${1}</p>`;
+        }
+        const htmlContent = `
+            <h2>Proof of Learning – ${lesson.title}</h2>
+            <p><strong>Student:</strong> ${studentEmail}</p>
+            <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+            <p><strong>Total score:</strong> ${totalScore}/${maxScore}</p>
+            <hr>
+            ${tasksHtml}
+            <p>Platform: CBA KS3 Demo</p>
+        `;
+        // Use jsPDF to make a simple PDF (works in demo)
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFont("helvetica");
+        doc.text(`Proof of Learning – ${lesson.title}`, 10, 10);
+        doc.text(`Student: ${studentEmail}`, 10, 20);
+        doc.text(`Date: ${new Date().toLocaleString()}`, 10, 30);
+        doc.text(`Score: ${totalScore}/${maxScore}`, 10, 40);
+        let y = 55;
+        for (let task of lesson.tasks) {
+            const userAns = answersForLesson[task.id];
+            const isCorrect = (userAns && userAns.answer == task.correct);
+            doc.text(`Q: ${task.question.substring(0, 60)}`, 10, y);
+            doc.text(`Your answer: ${userAns?.answer || "—"}`, 10, y+6);
+            doc.text(`Correct: ${task.correct} | Score: ${isCorrect ? "1" : "0"}`, 10, y+12);
+            y += 22;
+            if (y > 270) { doc.addPage(); y = 20; }
+        }
+        doc.save(`proof_${lesson.id}_${studentEmail.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+    }
+
+    // ----- Teacher class evidence (CSV) -----
+    function downloadClassEvidence(lessonId) {
+        const lesson = lessons.find(l => l.id === lessonId);
+        if (!lesson) return;
+        const lessonAnswers = studentAnswers[lessonId] || {};
+        let rows = [["Student email", "Completion %", ...lesson.tasks.map(t => t.question), "Total score", "Last active"]];
+        for (let [student, tasks] of Object.entries(lessonAnswers)) {
+            let completed = 0;
+            let scores = [];
+            for (let task of lesson.tasks) {
+                const ans = tasks[task.id];
+                const correct = (ans && ans.answer == task.correct);
+                if (ans && ans.answer) completed++;
+                scores.push(correct ? 1 : 0);
+            }
+            let completionPct = Math.round((completed / lesson.tasks.length) * 100);
+            let totalScore = scores.reduce((a,b)=>a+b,0);
+            let lastActive = Object.values(tasks).sort((a,b)=> (b.timestamp||0) - (a.timestamp||0))[0]?.timestamp || "";
+            rows.push([student, `${completionPct}%`, ...scores, `${totalScore}/${lesson.tasks.length}`, lastActive]);
+        }
+        let csv = rows.map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
+        const blob = new Blob([csv], {type: "text/csv"});
+        const a = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = `class_evidence_${lesson.id}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ----- Render teacher view -----
+    function renderTeacher() {
+        const container = document.getElementById("teacherLessonList");
+        if (!container) return;
+        container.innerHTML = "<h3>📚 All lessons</h3>";
+        lessons.forEach(lesson => {
+            const isReleased = !!releasedLessons[lesson.id];
+            const div = document.createElement("div");
+            div.className = "lesson-card";
+            div.innerHTML = `
+                <strong>${lesson.title}</strong> (${lesson.subject}, Year ${lesson.year})
+                <div class="flex" style="margin-top: 12px;">
+                    <button id="releaseBtn_${lesson.id}" class="${isReleased ? 'secondary' : ''}">${isReleased ? "🔓 Release (already released)" : "🔒 Release now"}</button>
+                    <button id="evidenceBtn_${lesson.id}" class="secondary">📥 Download class evidence (CSV)</button>
+                </div>
+                <div id="stats_${lesson.id}" style="font-size:14px; margin-top:8px;"></div>
+            `;
+            container.appendChild(div);
+            const releaseBtn = div.querySelector(`#releaseBtn_${lesson.id}`);
+            releaseBtn.onclick = () => {
+                releasedLessons[lesson.id] = true;
+                saveState();
+                renderTeacher();
+                renderCover();
+                if (currentRole === "student" && currentStudent) renderStudentLesson();
+            };
+            const evidenceBtn = div.querySelector(`#evidenceBtn_${lesson.id}`);
+            evidenceBtn.onclick = () => downloadClassEvidence(lesson.id);
+            // show stats
+            const answersMap = (studentAnswers[lesson.id] || {});
+            const studentCount = Object.keys(answersMap).length;
+            const statsDiv = div.querySelector(`#stats_${lesson.id}`);
+            statsDiv.innerText = `${studentCount} student(s) have submitted answers.`;
+        });
+    }
+
+    // ----- Render cover teacher (only released lessons) -----
+    function renderCover() {
+        const container = document.getElementById("coverLessonList");
+        if (!container) return;
+        const released = lessons.filter(l => releasedLessons[l.id]);
+        if (released.length === 0) {
+            container.innerHTML = "<p>⚠️ No lessons have been released by the class teacher yet.</p>";
+            return;
+        }
+        container.innerHTML = "<h3>📖 Released lessons</h3>";
+        released.forEach(lesson => {
+            const div = document.createElement("div");
+            div.className = "lesson-card";
+            div.innerHTML = `
+                <strong>${lesson.title}</strong> (Released)
+                <div class="flex" style="margin-top: 12px;">
+                    <button id="coverEvidence_${lesson.id}">📥 Download whole‑class evidence (CSV)</button>
+                </div>
+            `;
+            container.appendChild(div);
+            div.querySelector(`#coverEvidence_${lesson.id}`).onclick = () => downloadClassEvidence(lesson.id);
+        });
+    }
+
+    // ----- Render student lesson (only if released) -----
+    async function renderStudentLesson() {
+        const container = document.getElementById("studentContent");
+        if (!currentStudent) {
+            container.innerHTML = "<p>Please login with your CBA email.</p>";
+            return;
+        }
+        const lesson = lessons[0];  // demo only one lesson
+        const isReleased = releasedLessons[lesson.id];
+        if (!isReleased) {
+            container.innerHTML = `<div class="lesson-card locked"><h3>🔒 ${lesson.title}</h3><p>Your teacher has not released this lesson yet. Check back later.</p></div>`;
+            return;
+        }
+        // load existing answers
+        const existing = (studentAnswers[lesson.id] || {})[currentStudent] || {};
+        let tasksHtml = `<h3>✅ ${lesson.title}</h3><p>Complete each task. Your progress is saved automatically.</p>`;
+        for (let task of lesson.tasks) {
+            const saved = existing[task.id];
+            let inputHtml = "";
+            if (task.type === "mcq") {
+                let opts = task.options.map(opt => `<label><input type="radio" name="task_${task.id}" value="${opt}" ${saved?.answer === opt ? 'checked' : ''}> ${opt}</label>`).join(" ");
+                inputHtml = `<div>${opts}</div>`;
+            } else {
+                inputHtml = `<input type="text" id="input_${task.id}" value="${saved?.answer || ''}" placeholder="Type your answer">`;
+            }
+            tasksHtml += `
+                <div class="task">
+                    <p><strong>${task.question}</strong></p>
+                    ${inputHtml}
+                    <div id="feedback_${task.id}" style="font-size:12px; margin-top:5px;"></div>
+                </div>
+            `;
+        }
+        tasksHtml += `<div class="flex"><button id="submitAllBtn">💾 Save all answers & check scores</button>
+                      <button id="downloadProofBtn" class="secondary">📄 Download my proof of learning (PDF)</button></div>
+                      <div id="studentScoreDisplay"></div>`;
+        container.innerHTML = tasksHtml;
+
+        // attach save & score logic
+        document.getElementById("submitAllBtn")?.addEventListener("click", () => {
+            let newAnswers = {};
+            let totalScore = 0;
+            for (let task of lesson.tasks) {
+                let userAnswer = "";
+                if (task.type === "mcq") {
+                    const selected = document.querySelector(`input[name="task_${task.id}"]:checked`);
+                    userAnswer = selected ? selected.value : "";
+                } else {
+                    const inp = document.getElementById(`input_${task.id}`);
+                    userAnswer = inp ? inp.value.trim() : "";
+                }
+                const isCorrect = (userAnswer == task.correct);
+                if (isCorrect) totalScore++;
+                newAnswers[task.id] = {
+                    answer: userAnswer,
+                    score: isCorrect ? 1 : 0,
+                    timestamp: new Date().toISOString()
+                };
+                const fbDiv = document.getElementById(`feedback_${task.id}`);
+                if (fbDiv) fbDiv.innerHTML = isCorrect ? "✅ Correct" : `❌ Incorrect (correct: ${task.correct})`;
+            }
+            // store
+            if (!studentAnswers[lesson.id]) studentAnswers[lesson.id] = {};
+            studentAnswers[lesson.id][currentStudent] = newAnswers;
+            saveState();
+            const scoreDiv = document.getElementById("studentScoreDisplay");
+            scoreDiv.innerHTML = `<span class="success">Score: ${totalScore}/${lesson.tasks.length}</span>`;
+        });
+
+        document.getElementById("downloadProofBtn")?.addEventListener("click", () => {
+            downloadStudentProof(lesson.id, currentStudent);
+        });
+        // auto restore score display on load
+        const savedAnswers = (studentAnswers[lesson.id] || {})[currentStudent] || {};
+        let savedScore = 0;
+        for (let task of lesson.tasks) {
+            if (savedAnswers[task.id] && savedAnswers[task.id].answer == task.correct) savedScore++;
+        }
+        const scoreDiv = document.getElementById("studentScoreDisplay");
+        if (scoreDiv) scoreDiv.innerHTML = `<span class="success">Previously saved score: ${savedScore}/${lesson.tasks.length}</span>`;
+    }
+
+    // ----- Student login handler -----
+    function studentLogin() {
+        const emailInput = document.getElementById("studentEmail");
+        let email = emailInput.value.trim();
+        const regex = /^cba--.*@corbybusinessacademy\.org$/;
+        if (!regex.test(email)) {
+            alert("Please use a valid CBA email: cba--[username]@corbybusinessacademy.org");
+            return;
+        }
+        currentStudent = email;
+        renderStudentLesson();
+    }
+
+    // ----- Role switching UI -----
+    function setRole(role) {
+        currentRole = role;
+        document.getElementById("studentPanel").style.display = role === "student" ? "block" : "none";
+        document.getElementById("teacherPanel").style.display = role === "teacher" ? "block" : "none";
+        document.getElementById("coverPanel").style.display = role === "cover" ? "block" : "none";
+        document.getElementById("roleIndicator").innerText = `Current view: ${role.toUpperCase()}`;
+        if (role === "teacher") renderTeacher();
+        if (role === "cover") renderCover();
+        if (role === "student" && currentStudent) renderStudentLesson();
+        // highlight active role button
+        document.querySelectorAll(".role-btn").forEach(btn => {
+            if (btn.getAttribute("data-role") === role) btn.classList.add("active");
+            else btn.classList.remove("active");
+        });
+    }
+
+    // ----- Initialisation -----
+    function init() {
+        // default: first lesson not released for demo
+        if (!(lessons[0].id in releasedLessons)) releasedLessons[lessons[0].id] = false;
+        saveState();
+
+        document.querySelectorAll(".role-btn").forEach(btn => {
+            btn.addEventListener("click", () => setRole(btn.getAttribute("data-role")));
+        });
+        document.getElementById("studentLoginBtn")?.addEventListener("click", studentLogin);
+        setRole("student"); // start as student
+    }
+    init();
+</script>
+</body>
+</html>
