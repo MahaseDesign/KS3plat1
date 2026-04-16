@@ -523,42 +523,94 @@ function renderYearCards() {
   if (!grid) return;
   const released = getReleased();
 
-  grid.innerHTML = [7, 8, 9].map(year => {
+  grid.innerHTML = '';
+
+  [7, 8, 9].forEach(year => {
     const meta       = YEAR_META[year];
     const lessons    = LESSONS[year];
     const accessible = isYearAccessible(year);
     const relCount   = (released[year] || []).length;
-    const lockedCls  = accessible ? '' : ' locked';
     const yearAccent = meta.color;
 
-    const lessonItems = lessons.map((l, i) => {
+    // Build card element
+    const card = document.createElement('div');
+    card.className = 'year-card' + (accessible ? '' : ' locked');
+    card.setAttribute('data-year', year);
+
+    // Badge
+    const badge = document.createElement('div');
+    badge.className = 'year-badge';
+    badge.style.cssText = '--card-accent:' + yearAccent;
+    badge.textContent = year;
+    card.appendChild(badge);
+
+    // Title + desc
+    const h3 = document.createElement('h3');
+    h3.textContent = meta.title;
+    card.appendChild(h3);
+
+    const p = document.createElement('p');
+    p.textContent = meta.desc;
+    card.appendChild(p);
+
+    // Lesson list
+    const ul = document.createElement('ul');
+    ul.className = 'lesson-list';
+
+    lessons.forEach((l, i) => {
       const rel = isReleased(year, i);
-      const done = rel ? '' : '';
-      if (accessible) {
-        return '<li class="lesson-list-item ' + (rel ? 'released' : 'locked-item') + '" onclick="' + (rel ? 'openLesson(' + year + ',' + i + ')' : '') + '">' +
-          '<span class="li-num">0' + (i+1) + '</span>' +
-          '<span class="li-title">' + l.title + '</span>' +
-          '<span class="li-icon">' + (rel ? '▶' : '🔒') + '</span>' +
-          '</li>';
+      const li  = document.createElement('li');
+      li.className = 'lesson-list-item ' + (accessible && rel ? 'released' : 'locked-item');
+
+      const numSpan   = document.createElement('span');
+      numSpan.className = 'li-num';
+      numSpan.textContent = '0' + (i + 1);
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'li-title';
+      titleSpan.textContent = l.title;
+
+      const iconSpan  = document.createElement('span');
+      iconSpan.className = 'li-icon';
+      iconSpan.textContent = (accessible && rel) ? '▶' : '🔒';
+
+      li.appendChild(numSpan);
+      li.appendChild(titleSpan);
+      li.appendChild(iconSpan);
+
+      // Attach click with addEventListener — works reliably unlike inline onclick
+      if (accessible && rel) {
+        li.addEventListener('click', (function(y, idx) {
+          return function() { openLesson(y, idx); };
+        })(year, i));
+      } else if (accessible && !rel) {
+        li.addEventListener('click', function() {
+          showToast('🔒 This lesson has not been released yet', 'error');
+        });
       }
-      return '<li class="lesson-list-item locked-item">' +
-        '<span class="li-num">0' + (i+1) + '</span>' +
-        '<span class="li-title">' + l.title + '</span>' +
-        '<span class="li-icon">🔒</span></li>';
-    }).join('');
 
-    const footerBadge = accessible
-      ? '<span class="released-badge">✓ ' + relCount + ' / ' + lessons.length + ' released</span>'
-      : '<span class="lock-badge">🔒 Year ' + (state.user ? state.user.year : '') + ' only</span>';
+      ul.appendChild(li);
+    });
+    card.appendChild(ul);
 
-    return '<div class="year-card' + lockedCls + '" data-year="' + year + '">' +
-      '<div class="year-badge" style="--card-accent:' + yearAccent + '">' + year + '</div>' +
-      '<h3>' + meta.title + '</h3>' +
-      '<p>' + meta.desc + '</p>' +
-      '<ul class="lesson-list">' + lessonItems + '</ul>' +
-      '<div class="card-footer"><div></div>' + footerBadge + '</div>' +
-      '</div>';
-  }).join('');
+    // Footer badge
+    const footer = document.createElement('div');
+    footer.className = 'card-footer';
+    const emptyDiv = document.createElement('div');
+    const badge2 = document.createElement('span');
+    if (accessible) {
+      badge2.className = 'released-badge';
+      badge2.textContent = '✓ ' + relCount + ' / ' + lessons.length + ' released';
+    } else {
+      badge2.className = 'lock-badge';
+      badge2.textContent = '🔒 Year ' + (state.user ? state.user.year : '') + ' only';
+    }
+    footer.appendChild(emptyDiv);
+    footer.appendChild(badge2);
+    card.appendChild(footer);
+
+    grid.appendChild(card);
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -589,33 +641,89 @@ function renderDashboard() {
 }
 
 function renderReleaseControls() {
-  const grid    = document.getElementById('release-grid');
+  const grid = document.getElementById('release-grid');
   if (!grid) return;
   const released = getReleased();
-  const colors   = { 7:'var(--accent-y7)', 8:'var(--accent-y8)', 9:'var(--accent-y9)' };
+  const colors = { 7:'var(--accent-y7)', 8:'var(--accent-y8)', 9:'var(--accent-y9)' };
 
-  grid.innerHTML = [7,8,9].map(year => {
+  grid.innerHTML = '';
+
+  [7, 8, 9].forEach(year => {
     const lessons = LESSONS[year];
     const rel     = released[year] || [];
     const allOn   = rel.length === lessons.length;
-    const rows    = lessons.map((l,i) => {
-      const on = rel.includes(i);
-      return '<div class="release-row">' +
-        '<span class="rn">0' + (i+1) + '</span>' +
-        '<span class="rt">' + l.title + '</span>' +
-        '<span class="rf">' + l.file.replace('lessons/','') + '</span>' +
-        '<label class="toggle-sw"><input type="checkbox" ' + (on?'checked':'') + ' onchange="toggleTopic(' + year + ',' + i + ',this.checked)"><span class="t-track"></span></label>' +
-        '</div>';
-    }).join('');
-    return '<div class="release-card">' +
-      '<div class="release-card-head">' +
-      '<span style="display:flex;align-items:center;gap:8px"><span class="year-dot" style="background:' + colors[year] + '"></span>Year ' + year + '</span>' +
-      '<span style="color:var(--text-muted);font-weight:400;font-size:12px">' + rel.length + '/' + lessons.length + ' released</span>' +
-      '</div>' + rows +
-      '<div class="release-all-row"><span>Release all Year ' + year + '</span>' +
-      '<label class="toggle-sw"><input type="checkbox" ' + (allOn?'checked':'') + ' onchange="toggleAllTopics(' + year + ',this.checked)"><span class="t-track"></span></label>' +
-      '</div></div>';
-  }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'release-card';
+
+    // Header
+    const head = document.createElement('div');
+    head.className = 'release-card-head';
+    head.innerHTML = '<span style="display:flex;align-items:center;gap:8px"><span class="year-dot" style="background:' + colors[year] + '"></span>Year ' + year + '</span>' +
+      '<span style="color:var(--text-muted);font-weight:400;font-size:12px">' + rel.length + '/' + lessons.length + ' released</span>';
+    card.appendChild(head);
+
+    // Topic rows
+    lessons.forEach((l, i) => {
+      const on  = rel.includes(i);
+      const row = document.createElement('div');
+      row.className = 'release-row';
+
+      const rn = document.createElement('span');
+      rn.className = 'rn';
+      rn.textContent = '0' + (i+1);
+
+      const rt = document.createElement('span');
+      rt.className = 'rt';
+      rt.textContent = l.title;
+
+      const rf = document.createElement('span');
+      rf.className = 'rf';
+      rf.textContent = l.file.replace('lessons/','');
+
+      const label = document.createElement('label');
+      label.className = 'toggle-sw';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = on;
+      cb.addEventListener('change', (function(y, idx) {
+        return function() { toggleTopic(y, idx, this.checked); };
+      })(year, i));
+      const track = document.createElement('span');
+      track.className = 't-track';
+      label.appendChild(cb);
+      label.appendChild(track);
+
+      row.appendChild(rn);
+      row.appendChild(rt);
+      row.appendChild(rf);
+      row.appendChild(label);
+      card.appendChild(row);
+    });
+
+    // Release-all row
+    const allRow = document.createElement('div');
+    allRow.className = 'release-all-row';
+    const allLabel = document.createElement('span');
+    allLabel.textContent = 'Release all Year ' + year;
+    const allToggle = document.createElement('label');
+    allToggle.className = 'toggle-sw';
+    const allCb = document.createElement('input');
+    allCb.type = 'checkbox';
+    allCb.checked = allOn;
+    allCb.addEventListener('change', (function(y) {
+      return function() { toggleAllTopics(y, this.checked); };
+    })(year));
+    const allTrack = document.createElement('span');
+    allTrack.className = 't-track';
+    allToggle.appendChild(allCb);
+    allToggle.appendChild(allTrack);
+    allRow.appendChild(allLabel);
+    allRow.appendChild(allToggle);
+    card.appendChild(allRow);
+
+    grid.appendChild(card);
+  });
 }
 
 function exportCSV() {
