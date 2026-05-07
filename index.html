@@ -92,12 +92,15 @@ body::before {
   min-height: 100vh;
 }
 
-.view { display: none; }
-.view.active { display: block; }
-#view-login { display: flex; }
-#view-login.active { display: flex; }
-#view-teacher-pin.active { display: flex; }
-#view-grading.active { display: flex; }
+/* VIEW SYSTEM — only .active views ever render */
+.view { display: none !important; }
+.view.active { display: block !important; }
+
+/* Views that need flex layout when active */
+#view-login.active,
+#view-teacher-pin.active,
+#view-grading.active,
+#view-present.active { display: flex !important; }
 
 /* ─── TOP BAR ────────────────────────────────────────────────────── */
 #topbar {
@@ -1159,6 +1162,491 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   color: var(--text2);
 }
 
+
+/* ─── DASHBOARD TABS ─────────────────────────────────────────────── */
+.dash-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--border2);
+  padding-bottom: 0;
+}
+.dash-tab {
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--sans);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+}
+.dash-tab:hover { color: var(--text); }
+.dash-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+.dash-panel { display: none; }
+.dash-panel.active { display: block; }
+
+/* ─── CLASS CODE MANAGER ─────────────────────────────────────────── */
+.code-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.code-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+}
+.code-chip .code-del {
+  color: var(--red);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+.code-chip .code-del:hover { background: rgba(248,81,73,0.1); }
+
+.add-code-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+.add-code-row input { max-width: 220px; text-transform: uppercase; }
+
+/* ─── PRESENTATION ───────────────────────────────────────────────── */
+#view-present {
+  position: fixed;
+  inset: 0;
+  background: #0d1117;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+}
+#view-present.active { display: flex; }
+
+.present-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: rgba(13,17,23,0.95);
+  border-bottom: 1px solid var(--border2);
+  flex-shrink: 0;
+}
+.present-bar .pb-left {
+  display: flex; align-items: center; gap: 16px;
+}
+.present-bar .pb-title {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+.present-bar .pb-counter {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text3);
+}
+
+.present-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100%;
+  max-width: 960px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 52px 64px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+}
+
+.slide-type {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.slide-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+  color: var(--text);
+  line-height: 1.2;
+}
+.slide-body {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  color: var(--text2);
+  white-space: pre-wrap;
+}
+.slide-body.large {
+  font-size: 1.4rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.slide-week-badge {
+  position: absolute;
+  top: 32px; right: 40px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text3);
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 4px 14px;
+}
+
+.kv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+}
+.kv-item {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+}
+.kv-term {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.kv-def {
+  font-size: 0.875rem;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.task-slide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+}
+.task-slide-num {
+  background: var(--accent2);
+  color: white;
+  border-radius: 6px;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.task-slide-text { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+.example-box {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: #e6edf3;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+.teacher-note-area {
+  width: 100%;
+  background: rgba(210,153,34,0.08);
+  border: 1px solid rgba(210,153,34,0.3);
+  border-radius: var(--radius);
+  padding: 14px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--text);
+  resize: none;
+  min-height: 120px;
+  margin-top: 8px;
+}
+.teacher-note-area:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(210,153,34,0.15);
+}
+
+.present-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px 24px;
+  background: rgba(13,17,23,0.95);
+  border-top: 1px solid var(--border2);
+  flex-shrink: 0;
+}
+.slide-dots {
+  display: flex; gap: 8px; align-items: center;
+}
+.slide-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--text3);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.slide-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+.slide-dot.done   { background: var(--green); }
+
+/* ─── STUDENT FOLLOW-ALONG BANNER ────────────────────────────────── */
+#lesson-banner {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0d1117;
+  z-index: 900;
+  flex-direction: column;
+}
+#lesson-banner.active { display: flex; }
+
+.banner-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border2);
+  font-size: 0.8rem;
+  color: var(--text2);
+  font-family: var(--mono);
+}
+
+.banner-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+}
+
+
+/* ═══ LOGIN PAGE — TWO PANEL LAYOUT ═══════════════════════════════ */
+#view-login.active {
+  display: flex !important;
+  align-items: stretch;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.login-page {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.login-left {
+  width: 380px;
+  flex-shrink: 0;
+  background: linear-gradient(160deg, #1a3a5c 0%, #0d1117 60%);
+  border-right: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 40px;
+}
+
+.login-brand .logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  border-radius: 14px;
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0d1117;
+  margin-bottom: 20px;
+  box-shadow: 0 0 28px rgba(88,166,255,0.3);
+}
+.login-brand h1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  line-height: 1.2;
+  color: var(--text);
+}
+.login-brand p {
+  font-size: 0.85rem;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.login-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 40px 0;
+}
+.lf-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.88rem;
+  color: var(--text2);
+}
+.lf-icon {
+  font-size: 1.1rem;
+  width: 28px;
+  text-align: center;
+}
+
+.btn-teacher-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(88,166,255,0.1);
+  border: 1px solid rgba(88,166,255,0.3);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.15s;
+}
+.btn-teacher-entry:hover {
+  background: rgba(88,166,255,0.18);
+  border-color: var(--accent);
+}
+
+.login-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px;
+  max-width: 480px;
+}
+
+@media (max-width: 720px) {
+  .login-page { flex-direction: column; }
+  .login-left {
+    width: 100%;
+    padding: 32px 24px;
+    min-height: auto;
+  }
+  .login-features { display: none; }
+  .login-right { padding: 32px 24px; max-width: 100%; }
+}
+
+/* ═══ SCENARIO HUB — PROPER CARDS ══════════════════════════════════ */
+.hub-welcome {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.hw-text h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.hw-text p { font-size: 0.85rem; color: var(--text2); }
+.hw-stats {
+  display: flex; gap: 20px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text3);
+}
+
+.scenario-card {
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.scenario-card:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.sc-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(88,166,255,0.1);
+  color: var(--accent);
+  font-size: 1rem;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.scenario-card:hover .sc-arrow {
+  background: var(--accent);
+  color: #0d1117;
+  transform: translateX(3px);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+  grid-column: 1 / -1;
+}
+.empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state h3 { font-size: 1rem; color: var(--text2); margin-bottom: 6px; }
+.empty-state p { font-size: 0.85rem; }
+
 /* ─── LOADING STATE ──────────────────────────────────────────────── */
 #global-loading { display: none !important; }
 
@@ -1261,80 +1749,115 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 
   <!-- ══ VIEW: LOGIN ══════════════════════════════════════════════ -->
   <div id="view-login" class="view active">
-    <div class="login-wrap">
-      <div class="login-hero">
-        <div class="logo-mark">CS</div>
-        <h1>KS3 Scenario Platform</h1>
-        <p>Corby Business Academy &mdash; Computer Science</p>
-      </div>
+    <div class="login-page">
 
-      <div class="login-tabs">
-        <button class="login-tab active" onclick="switchLoginTab('login')">Sign In</button>
-        <button class="login-tab" onclick="switchLoginTab('register')">Register</button>
-      </div>
-
-      <!-- SIGN IN PANEL -->
-      <div class="login-form-panel active" id="panel-login">
-        <div class="alert alert-error" id="login-error"></div>
-        <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="login-username" placeholder="your username" autocomplete="username">
+      <!-- LEFT PANEL: Branding -->
+      <div class="login-left">
+        <div class="login-brand">
+          <div class="logo-mark">CS</div>
+          <h1>KS3 Scenario<br>Platform</h1>
+          <p>Corby Business Academy<br>Computer Science Department</p>
         </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+        <div class="login-features">
+          <div class="lf-item"><span class="lf-icon">📋</span><span>Step-by-step projects</span></div>
+          <div class="lf-item"><span class="lf-icon">💾</span><span>Progress saved automatically</span></div>
+          <div class="lf-item"><span class="lf-icon">🤖</span><span>AI-powered feedback</span></div>
+          <div class="lf-item"><span class="lf-icon">⚡</span><span>Accessibility built in</span></div>
         </div>
-        <button class="btn btn-primary btn-full btn-lg" id="btn-login" onclick="doLogin()">
-          Sign In →
+        <button class="btn-teacher-entry" onclick="showView('view-teacher-pin')">
+          🔒 Teacher Login
         </button>
       </div>
 
-      <!-- REGISTER PANEL -->
-      <div class="login-form-panel" id="panel-register">
-        <div class="alert alert-error" id="reg-error"></div>
-        <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="reg-username" placeholder="choose a username">
+      <!-- RIGHT PANEL: Forms -->
+      <div class="login-right">
+        <div class="login-tabs">
+          <button class="login-tab active" onclick="switchLoginTab('login')">Sign In</button>
+          <button class="login-tab" onclick="switchLoginTab('register')">Register</button>
         </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="reg-password" placeholder="choose a password">
+
+        <!-- SIGN IN -->
+        <div class="login-form-panel active" id="panel-login">
+          <div class="alert alert-error" id="login-error"></div>
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="login-username" placeholder="your username" autocomplete="username"
+              onkeydown="if(event.key==='Enter') doLogin()">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter') doLogin()">
+          </div>
+          <button class="btn btn-primary btn-full btn-lg" id="btn-login" onclick="doLogin()">
+            Sign In →
+          </button>
+          <p style="text-align:center;margin-top:14px;font-size:0.8rem;color:var(--text3)">
+            New here? Click <strong style="color:var(--accent);cursor:pointer" onclick="switchLoginTab('register')">Register</strong> to create an account.
+          </p>
         </div>
-        <div class="form-group">
-          <label>Year Group</label>
-          <select id="reg-year">
-            <option value="">— select —</option>
-            <option value="Y7">Year 7</option>
-            <option value="Y8">Year 8</option>
-            <option value="Y9">Year 9</option>
-          </select>
+
+        <!-- REGISTER -->
+        <div class="login-form-panel" id="panel-register">
+          <div class="alert alert-error" id="reg-error"></div>
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="reg-username" placeholder="choose a username (e.g. jsmith)">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="reg-password" placeholder="at least 6 characters">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Year Group</label>
+              <select id="reg-year">
+                <option value="">— select —</option>
+                <option value="Y7">Year 7</option>
+                <option value="Y8">Year 8</option>
+                <option value="Y9">Year 9</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Class Code</label>
+              <input type="text" id="reg-classcode" placeholder="e.g. CBA7A" style="text-transform:uppercase">
+            </div>
+          </div>
+          <button class="btn btn-primary btn-full btn-lg" style="margin-top:16px" onclick="doRegister()">
+            Create Account →
+          </button>
+          <p style="text-align:center;margin-top:14px;font-size:0.8rem;color:var(--text3)">
+            Already registered? Click <strong style="color:var(--accent);cursor:pointer" onclick="switchLoginTab('login')">Sign In</strong>.
+          </p>
         </div>
-        <div class="form-group">
-          <label>Class Code</label>
-          <input type="text" id="reg-classcode" placeholder="given by your teacher" style="text-transform:uppercase">
+
+        <div class="login-footer">
+          KS3 Computer Science &bull; Corby Business Academy &bull; v1.1
         </div>
-        <button class="btn btn-primary btn-full btn-lg" onclick="doRegister()">
-          Create Account →
-        </button>
       </div>
 
-      <a class="teacher-link" onclick="showView('view-teacher-pin')">🔒 Teacher Dashboard</a>
-
-      <div class="login-footer">
-        Corby Business Academy &bull; KS3 Computer Science &bull; v1.0
-      </div>
     </div>
   </div>
 
   <!-- ══ VIEW: SCENARIO HUB ═══════════════════════════════════════ -->
   <div id="view-hub" class="view">
-    <div class="hub-header">
-      <div class="hub-greeting" id="hub-greeting">WELCOME BACK</div>
-      <h2>Choose Your Scenario</h2>
-      <p>Select a project to work on. Your progress is saved automatically.</p>
-    </div>
-    <div class="scenario-grid" id="scenario-grid">
-      <!-- Populated by JS -->
+    <div style="max-width:1100px;margin:0 auto;padding:32px 24px">
+
+      <div class="hub-welcome">
+        <div class="hw-text">
+          <h2 id="hub-greeting-name">Welcome back</h2>
+          <p>Choose a project below to continue or start. Your progress is saved automatically.</p>
+        </div>
+        <div class="hw-stats" id="hub-stats"></div>
+      </div>
+
+      <div class="scenario-grid" id="scenario-grid">
+        <div class="empty-state">
+          <div class="es-icon">⏳</div>
+          <h3>Loading your scenarios...</h3>
+          <p>Just a moment</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1471,7 +1994,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
     <div class="dashboard-header">
       <div>
         <h2>📊 Teacher Dashboard</h2>
-        <p style="font-size:0.82rem;color:var(--text2);margin-top:2px">Per-task status for all students</p>
+        <p style="font-size:0.82rem;color:var(--text2);margin-top:2px">Corby Business Academy — Computer Science</p>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">⟳ Refresh</button>
@@ -1480,26 +2003,130 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
       </div>
     </div>
 
-    <div class="dashboard-filters">
-      <select id="filter-year" onchange="applyFilters()" style="width:140px">
-        <option value="">All Years</option>
-        <option value="Y7">Year 7</option>
-        <option value="Y8">Year 8</option>
-        <option value="Y9">Year 9</option>
-      </select>
-      <select id="filter-class" onchange="applyFilters()" style="width:160px">
-        <option value="">All Classes</option>
-      </select>
-      <select id="filter-scenario" onchange="applyFilters()" style="width:220px">
-        <option value="">All Scenarios</option>
-      </select>
+    <!-- Dashboard Tabs -->
+    <div class="dash-tabs">
+      <button class="dash-tab active" onclick="switchDashTab('results')">📊 Results</button>
+      <button class="dash-tab" onclick="switchDashTab('classes')">🏫 Class Codes</button>
+      <button class="dash-tab" onclick="switchDashTab('present')">📽 Present</button>
     </div>
 
-    <div class="data-table-wrap">
-      <table class="data-table" id="dashboard-table">
-        <thead id="dashboard-thead"></thead>
-        <tbody id="dashboard-tbody"></tbody>
-      </table>
+    <!-- TAB: RESULTS -->
+    <div class="dash-panel active" id="panel-results">
+      <div class="dashboard-filters">
+        <select id="filter-year" onchange="applyFilters()" style="width:140px">
+          <option value="">All Years</option>
+          <option value="Y7">Year 7</option>
+          <option value="Y8">Year 8</option>
+          <option value="Y9">Year 9</option>
+        </select>
+        <select id="filter-class" onchange="applyFilters()" style="width:160px">
+          <option value="">All Classes</option>
+        </select>
+        <select id="filter-scenario" onchange="applyFilters()" style="width:220px">
+          <option value="">All Scenarios</option>
+        </select>
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="dashboard-table">
+          <thead id="dashboard-thead"></thead>
+          <tbody id="dashboard-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: CLASS CODES -->
+    <div class="dash-panel" id="panel-classes">
+      <div class="card" style="max-width:700px">
+        <div class="card-title" style="margin-bottom:6px">Active Class Codes</div>
+        <div class="card-sub" style="margin-bottom:20px">Students enter one of these codes when registering. Add or remove codes here — changes take effect immediately.</div>
+        <div class="code-grid" id="code-grid">
+          <div style="color:var(--text3);font-size:0.85rem">Loading...</div>
+        </div>
+        <div class="divider"></div>
+        <div class="add-code-row">
+          <input type="text" id="new-code-input" placeholder="e.g. CBA7C" maxlength="10"
+            style="text-transform:uppercase"
+            onkeydown="if(event.key==='Enter') addClassCode()">
+          <button class="btn btn-primary" onclick="addClassCode()">+ Add Code</button>
+        </div>
+        <div class="alert alert-error" id="code-error" style="margin-top:12px"></div>
+        <div class="alert alert-success" id="code-success" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+    <!-- TAB: PRESENT -->
+    <div class="dash-panel" id="panel-present">
+      <div class="card" style="max-width:760px">
+        <div class="card-title" style="margin-bottom:6px">Launch Lesson Presentation</div>
+        <div class="card-sub" style="margin-bottom:20px">Choose a scenario and week, then click Present. The slides will go fullscreen on this device. Students will see the slides on their screens automatically.</div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+          <div class="form-group" style="margin-bottom:0;flex:1;min-width:200px">
+            <label>Scenario</label>
+            <select id="present-scenario" onchange="loadWeekOptions()" style="width:100%">
+              <option value="">— select scenario —</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;width:160px">
+            <label>Week</label>
+            <select id="present-week" style="width:100%">
+              <option value="">— select week —</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="present-note-wrap" style="display:none;margin-bottom:16px">
+          <div class="form-group" style="margin-bottom:0">
+            <label>Your Note for This Week (optional — appears on the final slide)</label>
+            <textarea id="present-teacher-note" rows="3"
+              placeholder="e.g. Focus on the CSS task today — we'll review your stylesheets next session."
+              style="font-family:var(--sans);font-size:0.9rem"></textarea>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary btn-lg" onclick="launchPresentation()" id="btn-launch-present" disabled>
+            ▶ Launch Presentation
+          </button>
+          <button class="btn btn-secondary" onclick="clearActiveLesson()" id="btn-clear-lesson" style="display:none">
+            ✕ End Lesson
+          </button>
+        </div>
+        <div style="margin-top:12px;font-size:0.78rem;color:var(--text3)" id="present-status"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ VIEW: PRESENTATION (FULLSCREEN) ═══════════════════════════ -->
+  <div id="view-present" class="view">
+    <div class="present-bar">
+      <div class="pb-left">
+        <span class="pb-title" id="present-bar-title">Lesson</span>
+        <span class="pb-counter" id="present-bar-counter">Slide 1 of 5</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary btn-sm" onclick="endPresentation()">✕ End Presentation</button>
+      </div>
+    </div>
+    <div class="present-stage">
+      <div class="slide" id="slide-content"></div>
+    </div>
+    <div class="present-nav">
+      <button class="btn btn-secondary" id="btn-prev-slide" onclick="prevSlide()">← Prev</button>
+      <div class="slide-dots" id="slide-dots"></div>
+      <button class="btn btn-primary" id="btn-next-slide" onclick="nextSlide()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══ STUDENT LESSON BANNER ════════════════════════════════════ -->
+  <div id="lesson-banner">
+    <div class="banner-topbar">
+      <span id="banner-title">Lesson in progress</span>
+      <span style="color:var(--accent)" id="banner-slide-info">Slide 1 of 5</span>
+    </div>
+    <div class="banner-stage">
+      <div class="slide" id="banner-slide-content" style="pointer-events:none"></div>
     </div>
   </div>
 
@@ -1529,7 +2156,11 @@ const CONFIG = {
   JSONBIN_BIN_ID:   '69fcb345250b1311c3197667',
   CLAUDE_API_KEY:   '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',
   TEACHER_PIN:      '1984',
-  CLASS_CODES:      ['CBA7A','CBA7B','CBA8A','CBA8B','CBA9A','CBA9B'], // edit as needed
+  CLASS_CODES:      [
+    '7Y1','7Y2','7Y3','7Y4','7X1','7X2','7X3','7X4',
+    '8Y1','8Y2','8Y3','8Y4','8X1','8X2','8X3','8X4',
+    '9Y1','9Y2','9Y3','9Y4','9X1','9X2','9X3','9X4',
+  ],
   SCENARIOS_FILE:   'scenarios.json',
   CLAUDE_MODEL:     'claude-sonnet-4-20250514',
 };
@@ -1541,9 +2172,13 @@ let STATE = {
   currentScenario: null,
   currentTaskIdx:  0,
   allStudents:     [],
+  classCodes:      [],
   saveTimer:       null,
   superpower:      false,
   overlay:         'none',
+  teacherMode:     false,
+  presentation:    null,   // { scenarioId, week, slides, currentIdx }
+  lessonPollTimer: null,
 };
 
 /* ─── UTILS ──────────────────────────────────────────────────────── */
@@ -1571,28 +2206,41 @@ function hideAlert(id) {
 }
 
 function showView(id) {
+  // Hide ALL views first
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+
+  // Show the requested view
   const v = document.getElementById(id);
-  if (v) { v.classList.add('active'); window.scrollTo(0,0); }
+  if (!v) { console.warn('showView: no element with id', id); return; }
+  v.classList.add('active');
+  window.scrollTo(0, 0);
 
-  const loggedIn = !!STATE.user;
-  const isTeacherView = (id === 'view-teacher' || id === 'view-teacher-pin');
-  const hideBar = id === 'view-login' || id === 'view-teacher-pin';
+  // Topbar visibility logic
+  const loggedIn  = !!STATE.user;
+  const isTeacher = (id === 'view-teacher' || id === 'view-present');
+  const isAuth    = (id === 'view-login' || id === 'view-teacher-pin');
 
-  // Show topbar for logged-in students OR teacher dashboard
-  const showTop = (loggedIn && !hideBar) || id === 'view-teacher';
-  document.getElementById('topbar').style.display     = showTop ? 'flex' : 'none';
-  document.getElementById('access-bar').style.display = (loggedIn && !hideBar) ? 'flex' : 'none';
+  const topbar    = document.getElementById('topbar');
+  const accessBar = document.getElementById('access-bar');
 
-  // Update topbar logo text for teacher
-  if (id === 'view-teacher') {
-    document.getElementById('topbar-username').textContent = 'Teacher';
-    document.getElementById('btn-logout').textContent = 'Exit';
-    document.getElementById('btn-logout').onclick = () => showView('view-login');
+  if (isAuth) {
+    topbar.style.display    = 'none';
+    accessBar.style.display = 'none';
+  } else if (isTeacher) {
+    topbar.style.display    = 'flex';
+    accessBar.style.display = 'none';
+    document.getElementById('topbar-username').textContent = '🔒 Teacher';
+    document.getElementById('btn-logout').textContent = '← Exit';
+    document.getElementById('btn-logout').onclick = exitDashboard;
   } else if (loggedIn) {
-    document.getElementById('topbar-username').textContent = STATE.user.username;
-    document.getElementById('btn-logout').textContent = 'logout';
+    topbar.style.display    = 'flex';
+    accessBar.style.display = 'flex';
+    document.getElementById('topbar-username').textContent = STATE.user.username + ' · ' + STATE.user.yearGroup;
+    document.getElementById('btn-logout').textContent = 'Log out';
     document.getElementById('btn-logout').onclick = doLogout;
+  } else {
+    topbar.style.display    = 'none';
+    accessBar.style.display = 'none';
   }
 }
 
@@ -1608,27 +2256,57 @@ const BIN_HEADERS = {
   'X-Bin-Versioning': 'false',
 };
 
-async function fetchStudents() {
+async function fetchBin() {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 7000);
   try {
     const r = await fetch(BIN_URL(), { headers: BIN_HEADERS, signal: controller.signal });
     clearTimeout(timeout);
-    if (!r.ok) return [];
+    if (!r.ok) return {};
     const d = await r.json();
-    return d.record.students || [];
+    return d.record || {};
   } catch(e) {
     clearTimeout(timeout);
-    return [];
+    return {};
   }
 }
 
-async function saveStudents(students) {
+async function fetchStudents() {
+  const rec = await fetchBin();
+  return rec.students || [];
+}
+
+async function saveBin(data) {
+  const current = await fetchBin();
+  const merged = { ...current, ...data };
   await fetch(BIN_URL(), {
     method: 'PUT',
     headers: BIN_HEADERS,
-    body: JSON.stringify({ students }),
+    body: JSON.stringify(merged),
   });
+}
+
+async function saveStudents(students) {
+  await saveBin({ students });
+}
+
+async function fetchClassCodes() {
+  const rec = await fetchBin();
+  // Fall back to hardcoded config if not yet in JSONBin
+  return rec.classCodes || CONFIG.CLASS_CODES;
+}
+
+async function saveClassCodes(codes) {
+  await saveBin({ classCodes: codes });
+}
+
+async function setActiveLesson(lessonData) {
+  await saveBin({ activeLesson: lessonData });
+}
+
+async function fetchActiveLesson() {
+  const rec = await fetchBin();
+  return rec.activeLesson || null;
 }
 
 /* ─── SCENARIOS ──────────────────────────────────────────────────── */
@@ -1697,7 +2375,8 @@ async function doRegister() {
   if (password.length < 6) {
     showAlert('reg-error', 'Password must be at least 6 characters.'); return;
   }
-  if (!CONFIG.CLASS_CODES.includes(classCode)) {
+  const liveCodes = await fetchClassCodes();
+  if (!liveCodes.map(c=>c.toUpperCase()).includes(classCode)) {
     showAlert('reg-error', 'Class code not recognised. Check with your teacher.'); return;
   }
 
@@ -1731,10 +2410,23 @@ async function doRegister() {
 }
 
 function afterLogin() {
-  document.getElementById('topbar-username').textContent = STATE.user.username;
   loadAccessibility();
-  renderHub();
-  showView('view-hub');
+  // Ensure scenarios are loaded before rendering hub
+  if (!STATE.scenarios.length) {
+    loadScenarios().then(() => {
+      renderHub();
+      showView('view-hub');
+      startLessonPoll();
+    }).catch(() => {
+      renderHub(); // render anyway even if scenarios fail
+      showView('view-hub');
+      startLessonPoll();
+    });
+  } else {
+    renderHub();
+    showView('view-hub');
+    startLessonPoll();
+  }
 }
 
 async function tryAutoLogin() {
@@ -1753,6 +2445,8 @@ async function tryAutoLogin() {
 }
 
 function doLogout() {
+  stopLessonPoll();
+  document.getElementById('lesson-banner').classList.remove('active');
   STATE.user = null;
   STATE.currentScenario = null;
   localStorage.removeItem('ks3cs_session');
@@ -1763,32 +2457,43 @@ document.getElementById('btn-logout').addEventListener('click', doLogout);
 
 /* ─── HUB ────────────────────────────────────────────────────────── */
 function renderHub() {
-  const grid = document.getElementById('scenario-grid');
-  const greeting = document.getElementById('hub-greeting');
-  const u = STATE.user;
+  const grid    = document.getElementById('scenario-grid');
+  const nameEl  = document.getElementById('hub-greeting-name');
+  const statsEl = document.getElementById('hub-stats');
+  const u       = STATE.user;
 
-  greeting.textContent = `WELCOME BACK, ${u.username.toUpperCase()} · ${u.yearGroup} · ${u.classCode}`;
+  nameEl.textContent = `Welcome back, ${u.username}`;
 
   const applicable = STATE.scenarios.filter(s => s.yearGroups.includes(u.yearGroup));
+  const totalDone  = applicable.filter(s => u.scenarios?.[s.id]?.status === 'submitted').length;
+  const inProgress = applicable.filter(s => u.scenarios?.[s.id]?.status === 'in_progress').length;
+
+  statsEl.innerHTML = `
+    <span>📚 ${applicable.length} scenario${applicable.length!==1?'s':''}</span>
+    <span>✅ ${totalDone} submitted</span>
+    <span>🔄 ${inProgress} in progress</span>
+    <span>${u.yearGroup} · ${u.classCode}</span>`;
 
   if (!applicable.length) {
-    grid.innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center;color:var(--text2)">
-      No scenarios available for ${u.yearGroup} yet. Check back soon.</div>`;
+    grid.innerHTML = `<div class="empty-state">
+      <div class="es-icon">📭</div>
+      <h3>No scenarios available yet</h3>
+      <p>No projects have been set up for ${u.yearGroup} yet — check back soon.</p>
+    </div>`;
     return;
   }
 
   grid.innerHTML = applicable.map(s => {
-    const sd = u.scenarios?.[s.id] || {};
-    const total = s.tasks.length;
-    const done  = Object.values(sd.taskStatuses || {}).filter(x => x === 'complete').length;
-    const pct   = total ? Math.round((done/total)*100) : 0;
+    const sd     = u.scenarios?.[s.id] || {};
+    const total  = s.tasks.length;
+    const done   = Object.values(sd.taskStatuses || {}).filter(x => x === 'complete').length;
+    const pct    = total ? Math.round((done/total)*100) : 0;
     const status = sd.status || 'not_started';
 
-    const statusBadge = status === 'submitted'
-      ? `<span class="badge badge-green">✓ Submitted</span>`
-      : status === 'in_progress'
-        ? `<span class="badge badge-amber">In Progress</span>`
-        : `<span class="badge badge-blue">Not Started</span>`;
+    const statusBadge =
+      status === 'submitted'   ? `<span class="badge badge-green">✓ Submitted</span>` :
+      status === 'in_progress' ? `<span class="badge badge-amber">🔄 In Progress</span>` :
+                                  `<span class="badge badge-blue">Not Started</span>`;
 
     const yearBadge = s.yearGroups.map(y =>
       `<span class="badge badge-purple">${y}</span>`).join('');
@@ -1796,17 +2501,24 @@ function renderHub() {
     const progressHtml = status !== 'not_started' ? `
       <div class="progress-bar-wrap">
         <div class="progress-label">
-          <span>Progress</span><span>${done}/${total} tasks</span>
+          <span>${status==='submitted'?'Complete':'Progress'}</span>
+          <span>${done}/${total} tasks</span>
         </div>
         <div class="progress-bar">
           <div class="progress-fill ${status==='submitted'?'complete':''}" style="width:${pct}%"></div>
         </div>
-      </div>` : '';
+      </div>` : `<div style="height:8px"></div>`;
 
-    return `<div class="scenario-card" onclick="openScenarioIntro('${s.id}')">
+    const actionLabel =
+      status === 'submitted'   ? 'View Results' :
+      status === 'in_progress' ? `Resume — Task ${done+1 > total ? total : done+1} of ${total}` :
+                                  'Start Project';
+
+    return `<div class="scenario-card" onclick="openScenarioIntro('${s.id}')" tabindex="0"
+      onkeydown="if(event.key==='Enter') openScenarioIntro('${s.id}')">
       <div class="sc-meta">${yearBadge}${statusBadge}</div>
       <div class="sc-title">${s.title}</div>
-      <div class="sc-context">${s.context.substring(0,120)}...</div>
+      <div class="sc-context">${s.context.substring(0,130)}...</div>
       ${progressHtml}
       <div class="sc-footer">
         <div class="sc-stats">
@@ -1814,7 +2526,12 @@ function renderHub() {
           <span>⏱ ${s.estimatedMinutes}min</span>
           <span>📅 ${s.estimatedSessions} sessions</span>
         </div>
-        <span style="font-size:0.8rem;color:var(--accent)">Open →</span>
+        <div class="sc-arrow">→</div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border2)">
+        <button class="btn btn-primary btn-sm btn-full" onclick="event.stopPropagation();openScenarioIntro('${s.id}')">
+          ${actionLabel} →
+        </button>
       </div>
     </div>`;
   }).join('');
@@ -2419,9 +3136,438 @@ function loadAccessibility() {
   setOverlay(ov);
 }
 
+
+/* ─── DASHBOARD TABS ─────────────────────────────────────────────── */
+function switchDashTab(tab) {
+  document.querySelectorAll('.dash-tab').forEach((t,i) => {
+    t.classList.toggle('active',
+      (i===0&&tab==='results')||(i===1&&tab==='classes')||(i===2&&tab==='present'));
+  });
+  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`panel-${tab}`).classList.add('active');
+
+  if (tab === 'classes') loadClassCodes();
+  if (tab === 'present') loadPresentOptions();
+}
+
+/* ─── CLASS CODE MANAGER ─────────────────────────────────────────── */
+async function loadClassCodes() {
+  const grid = document.getElementById('code-grid');
+  grid.innerHTML = '<div style="color:var(--text3);font-size:0.85rem">Loading...</div>';
+  try {
+    const codes = await fetchClassCodes();
+    STATE.classCodes = codes;
+    renderCodeGrid(codes);
+  } catch(e) {
+    grid.innerHTML = '<div style="color:var(--red)">Failed to load codes.</div>';
+  }
+}
+
+function renderCodeGrid(codes) {
+  const grid = document.getElementById('code-grid');
+  if (!codes.length) {
+    grid.innerHTML = '<div style="color:var(--text3);font-size:0.85rem">No class codes set yet. Add one below.</div>';
+    return;
+  }
+  grid.innerHTML = codes.map(c => `
+    <div class="code-chip">
+      <span>${c}</span>
+      <span class="code-del" onclick="deleteClassCode('${c}')" title="Remove">✕</span>
+    </div>`).join('');
+}
+
+async function addClassCode() {
+  const input = document.getElementById('new-code-input');
+  const code  = input.value.trim().toUpperCase();
+  hideAlert('code-error'); hideAlert('code-success');
+
+  if (!code) { showAlert('code-error','Enter a class code first.'); return; }
+  if (code.length < 3) { showAlert('code-error','Code must be at least 3 characters.'); return; }
+  if (STATE.classCodes.includes(code)) { showAlert('code-error','That code already exists.'); return; }
+
+  try {
+    const codes = [...STATE.classCodes, code];
+    await saveClassCodes(codes);
+    STATE.classCodes = codes;
+    renderCodeGrid(codes);
+    input.value = '';
+    showAlert('code-success', `Code "${code}" added. Students can now register with this code.`, 'success');
+    setTimeout(() => hideAlert('code-success'), 3000);
+  } catch(e) {
+    showAlert('code-error', 'Failed to save. Check your JSONBin connection.');
+  }
+}
+
+async function deleteClassCode(code) {
+  if (!confirm(`Remove class code "${code}"? Students already registered with this code will keep their accounts.`)) return;
+  try {
+    const codes = STATE.classCodes.filter(c => c !== code);
+    await saveClassCodes(codes);
+    STATE.classCodes = codes;
+    renderCodeGrid(codes);
+  } catch(e) {
+    alert('Failed to remove code. Check your JSONBin connection.');
+  }
+}
+
+/* ─── PRESENTATION SETUP ─────────────────────────────────────────── */
+function loadPresentOptions() {
+  const sel = document.getElementById('present-scenario');
+  sel.innerHTML = '<option value="">— select scenario —</option>' +
+    STATE.scenarios.map(s => `<option value="${s.id}">${s.title} (${s.yearGroups.join(', ')})</option>`).join('');
+  checkPresentReady();
+}
+
+function loadWeekOptions() {
+  const scenId = document.getElementById('present-scenario').value;
+  const sc = STATE.scenarios.find(x => x.id === scenId);
+  const weekSel = document.getElementById('present-week');
+
+  if (!sc) { weekSel.innerHTML = '<option value="">— select week —</option>'; checkPresentReady(); return; }
+
+  const weeks = sc.weeks || buildWeeksFromTasks(sc);
+  weekSel.innerHTML = '<option value="">— select week —</option>' +
+    weeks.map((w,i) => `<option value="${i}">${w.label || 'Week ' + (i+1)}</option>`).join('');
+  checkPresentReady();
+}
+
+function buildWeeksFromTasks(sc) {
+  // Group tasks by week number
+  const weekMap = {};
+  (sc.tasks || []).forEach(t => {
+    const w = t.week || 1;
+    if (!weekMap[w]) weekMap[w] = [];
+    weekMap[w].push(t);
+  });
+  return Object.entries(weekMap).map(([w, tasks]) => ({
+    label: `Week ${w}`,
+    weekNum: parseInt(w),
+    tasks,
+  }));
+}
+
+function checkPresentReady() {
+  const scenId = document.getElementById('present-scenario').value;
+  const week   = document.getElementById('present-week').value;
+  const btn    = document.getElementById('btn-launch-present');
+  const wrap   = document.getElementById('present-note-wrap');
+  const ready  = !!(scenId && week !== '');
+  btn.disabled = !ready;
+  wrap.style.display = ready ? 'block' : 'none';
+}
+
+document.getElementById('present-week').addEventListener('change', checkPresentReady);
+
+/* ─── BUILD SLIDES ───────────────────────────────────────────────── */
+function buildSlides(sc, weekIdx, teacherNote) {
+  const weeks  = sc.weeks || buildWeeksFromTasks(sc);
+  const week   = weeks[weekIdx];
+  if (!week) return [];
+  const wNum   = week.weekNum || (weekIdx + 1);
+  const badge  = `Week ${wNum}`;
+  const tasks  = week.tasks || [];
+
+  // Pull week data from scenario if pre-written, else auto-generate
+  const wd = (sc.weekData && sc.weekData[wNum]) || {};
+
+  const slides = [];
+
+  // Slide 1: Starter Question
+  slides.push({
+    type: 'starter',
+    typeLabel: '🧠 Starter Question',
+    title: wd.starterTitle || `Week ${wNum} Starter`,
+    body: wd.starterQuestion || generateStarterQuestion(sc, wNum),
+    badge,
+    large: true,
+  });
+
+  // Slide 2: Key Terms
+  slides.push({
+    type: 'keyterms',
+    typeLabel: '📖 Key Terms',
+    title: 'This Week's Vocabulary',
+    terms: wd.keyTerms || generateKeyTerms(sc, wNum),
+    badge,
+  });
+
+  // Slide 3: Tasks for Today
+  slides.push({
+    type: 'tasks',
+    typeLabel: '✅ Tasks for Today',
+    title: `Week ${wNum} — What We're Doing`,
+    tasks: tasks.map(t => ({ num: t.id, title: t.title, type: t.type, marks: t.maxMarks })),
+    badge,
+  });
+
+  // Slide 4: Example
+  slides.push({
+    type: 'example',
+    typeLabel: '💡 Example',
+    title: wd.exampleTitle || 'Worked Example',
+    body: wd.exampleBody || generateExample(sc, wNum),
+    code: wd.exampleCode || null,
+    badge,
+  });
+
+  // Slide 5: Teacher Note
+  slides.push({
+    type: 'note',
+    typeLabel: '📌 Teacher Note',
+    title: 'Before You Start...',
+    body: teacherNote || wd.defaultNote || `Good luck with Week ${wNum}! Complete both tasks before the end of the lesson. Ask if you're stuck.`,
+    badge,
+  });
+
+  return slides;
+}
+
+function generateStarterQuestion(sc, wNum) {
+  const q = {
+    'scenario_y7_binary': {
+      1: 'How many fingers do humans have? Now imagine if computers used the same number of digits as fingers — what number system would they use?',
+      2: 'Convert 10 to binary. Then convert 01010 to denary. Can you do it without using the place value table?',
+      3: 'What is the largest number you can store in 4 bits? What about 8 bits?',
+      4: 'In Scratch, how do you make a sprite move to a random position? What blocks would you use?',
+      5: 'What is the difference between a variable and a score in a game?',
+      6: 'If a game has 3 lives and the player loses one each time they get a wrong answer, how would you code that in Scratch?',
+    },
+    'scenario_y8_hexcolour': {
+      1: 'What do you think the "base" of a number system means? Denary is base 10. What does base 16 mean?',
+      2: 'The hex digit B equals 11 in denary. What do you think 1B equals in denary?',
+      3: 'If #FF0000 is red and #0000FF is blue, what do you think #FF00FF would look like?',
+      4: 'What Python function would you use to get input from the user? What does it return?',
+      5: 'What is a Python dictionary? Can you give an example?',
+      6: 'What does a for loop do? Write the Python syntax for a loop that runs 5 times.',
+    },
+    'scenario_y8_fansite': {
+      1: 'What is the difference between HTML and CSS? What does each one do?',
+      2: 'What does the <head> section of an HTML file contain? What goes in the <body>?',
+      3: 'What is an attribute in HTML? Give an example using the <img> tag.',
+      4: 'What does a CSS selector do? How would you target all <h1> elements?',
+      5: 'What is the difference between a relative and absolute file path?',
+      6: 'Name three ways you could make a website more accessible for users with visual impairments.',
+    },
+    'scenario_y9_soundcolour': {
+      1: 'If a photo has 1000 pixels wide and 1000 pixels tall, how many pixels is that in total?',
+      2: 'What does "bit depth" mean for an image? What is the difference between 1-bit and 24-bit colour?',
+      3: 'A song plays for 3 minutes. A computer samples the sound 44,100 times per second. How many samples is that in total?',
+      4: 'What is the difference between lossless and lossy compression? Give an example of each.',
+      5: 'What does a Python function do? Why is it better to use functions than to repeat code?',
+      6: 'What is input validation? Why is it important in a game?',
+    },
+  };
+  return (q[sc.id] && q[sc.id][wNum]) || `Think about what you learned last lesson. What is one key fact you remember about ${sc.title}?`;
+}
+
+function generateKeyTerms(sc, wNum) {
+  const t = {
+    'scenario_y7_binary': {
+      1: [{term:'Binary',def:'A number system that uses only two digits: 0 and 1'},{term:'Bit',def:'A single binary digit — either 0 or 1'},{term:'Base-2',def:'Another name for binary — it has 2 possible values per digit'}],
+      2: [{term:'Place value',def:'The value of a digit based on its position (128, 64, 32, 16, 8, 4, 2, 1)'},{term:'Denary',def:'Our normal base-10 number system using digits 0–9'},{term:'Convert',def:'To change a number from one system to another'}],
+      3: [{term:'Byte',def:'8 bits grouped together'},{term:'Pixel',def:'A single dot in a digital image — stored as a binary value'},{term:'Overflow',def:'When a number is too large to be stored in the available bits'}],
+      4: [{term:'Sprite',def:'A character or object in a Scratch game'},{term:'Script',def:'A set of Scratch code blocks attached to a sprite'},{term:'Event',def:'Something that triggers a script, e.g. clicking the green flag'}],
+      5: [{term:'Variable',def:'A named storage location that holds a value which can change'},{term:'Score',def:'A variable that tracks how well the player is doing'},{term:'Initialise',def:'To set a variable to its starting value at the beginning of the game'}],
+      6: [{term:'Condition',def:'A test that is either true or false (e.g. score > 10)'},{term:'Loop',def:'A block of code that repeats — forever or a set number of times'},{term:'Broadcast',def:'A Scratch message that triggers scripts in other sprites'}],
+    },
+    'scenario_y8_hexcolour': {
+      1: [{term:'Hexadecimal',def:'A base-16 number system using digits 0–9 and A–F'},{term:'Base-16',def:'A system where each position is worth 16 times the previous'},{term:'Nibble',def:'4 bits — exactly one hex digit'}],
+      2: [{term:'Place value (hex)',def:'Powers of 16: ...256, 16, 1'},{term:'Conversion',def:'Changing a value between number systems'},{term:'Remainder',def:'What is left over after division — used in denary-to-hex conversion'}],
+      3: [{term:'RGB',def:'Red, Green, Blue — the three colour channels in digital colour'},{term:'Hex colour code',def:'A 6-digit hex number representing an RGB colour, e.g. #FF5733'},{term:'Colour depth',def:'How many bits are used to represent each colour channel'}],
+      4: [{term:'Variable',def:'A name that stores a value in Python'},{term:'input()',def:'A Python function that reads text typed by the user'},{term:'print()',def:'A Python function that displays text on screen'}],
+      5: [{term:'Dictionary',def:'A Python collection storing key-value pairs, e.g. {'red': 'FF0000'}'},{term:'Key',def:'The label used to look up a value in a dictionary'},{term:'random.choice()',def:'A Python function that picks a random item from a list'}],
+      6: [{term:'Loop',def:'Code that repeats — for loops run a fixed number of times'},{term:'range()',def:'Generates a sequence of numbers for use in a for loop'},{term:'Conditional',def:'An if/elif/else block that runs code only when a condition is true'}],
+    },
+  };
+  const fallback = [
+    {term:'Key Term 1', def:'Definition to be added in scenarios.json weekData'},
+    {term:'Key Term 2', def:'Definition to be added in scenarios.json weekData'},
+    {term:'Key Term 3', def:'Definition to be added in scenarios.json weekData'},
+  ];
+  return (t[sc.id] && t[sc.id][wNum]) || fallback;
+}
+
+function generateExample(sc, wNum) {
+  const ex = {
+    'scenario_y7_binary': {
+      1: {body:'Convert the denary number 13 to binary:', code:'Place values:  128  64  32  16  8  4  2  1\n               0    0   0   0   1  1  0  1\n\n8 + 4 + 1 = 13  ✓\n\nSo 13 in binary is: 00001101'},
+      2: {body:'Convert binary 01001010 to denary:', code:'Place values:  128  64  32  16  8  4  2  1\nBinary:          0   1   0   0  1  0  1  0\n\n64 + 8 + 2 = 74  ✓'},
+      3: {body:'How many bits to store a 4×4 black and white image?', code:'Width × Height × Colour depth\n= 4 × 4 × 1 bit\n= 16 bits\n= 2 bytes'},
+    },
+    'scenario_y8_hexcolour': {
+      1: {body:'Convert hex 2A to denary:', code:'2A in hex:\n  2 × 16 = 32\n  A × 1  = 10  (A = 10)\n  Total  = 42\n\nHex 2A = Denary 42  ✓'},
+      2: {body:'Convert denary 75 to hex:', code:'75 ÷ 16 = 4 remainder 11\n11 in hex = B\n4 in hex  = 4\n\nDenary 75 = Hex 4B  ✓'},
+      3: {body:'What colour is #1A9EFF?', code:'R = 1A = 26   (very dark red — almost none)\nG = 9E = 158  (medium green)\nB = FF = 255  (maximum blue)\n\nResult: a bright sky blue colour'},
+    },
+  };
+  const e = ex[sc.id] && ex[sc.id][wNum];
+  if (e) return e;
+  return { body: `A worked example for Week ${wNum} of ${sc.title} will appear here.\n\nAdd it to the weekData section of scenarios.json.`, code: null };
+}
+
+/* ─── LAUNCH PRESENTATION ────────────────────────────────────────── */
+async function launchPresentation() {
+  const scenId = document.getElementById('present-scenario').value;
+  const weekIdx = parseInt(document.getElementById('present-week').value);
+  const note    = document.getElementById('present-teacher-note').value.trim();
+  const sc      = STATE.scenarios.find(x => x.id === scenId);
+  if (!sc) return;
+
+  const slides = buildSlides(sc, weekIdx, note);
+  const weeks  = sc.weeks || buildWeeksFromTasks(sc);
+  const week   = weeks[weekIdx];
+
+  STATE.presentation = { scenarioId: scenId, weekIdx, slides, currentIdx: 0 };
+
+  // Write active lesson to JSONBin so students can follow along
+  const lessonData = {
+    scenarioId: scenId,
+    weekLabel: week.label || `Week ${week.weekNum || weekIdx+1}`,
+    scenarioTitle: sc.title,
+    currentSlide: 0,
+    slides,
+    startedAt: new Date().toISOString(),
+  };
+  try {
+    await setActiveLesson(lessonData);
+  } catch(e) { console.warn('Could not sync lesson to students:', e); }
+
+  // Update status
+  document.getElementById('present-status').textContent = '✅ Lesson active — students will see slides on their screens';
+  document.getElementById('btn-clear-lesson').style.display = 'inline-flex';
+
+  // Launch fullscreen presentation
+  showSlide(0);
+  showView('view-present');
+  document.getElementById('present-bar-title').textContent = `${sc.title} — ${week.label || 'Week ' + (weekIdx+1)}`;
+}
+
+function showSlide(idx) {
+  const p = STATE.presentation;
+  if (!p || idx < 0 || idx >= p.slides.length) return;
+  p.currentIdx = idx;
+
+  const slide  = p.slides[idx];
+  const total  = p.slides.length;
+  const el     = document.getElementById('slide-content');
+
+  document.getElementById('present-bar-counter').textContent = `Slide ${idx+1} of ${total}`;
+  document.getElementById('btn-prev-slide').disabled = (idx === 0);
+  document.getElementById('btn-next-slide').textContent = idx === total-1 ? '✓ Finish' : 'Next →';
+
+  // Dots
+  document.getElementById('slide-dots').innerHTML = p.slides.map((_,i) =>
+    `<div class="slide-dot ${i<idx?'done':i===idx?'active':''}" onclick="showSlide(${i})"></div>`
+  ).join('');
+
+  el.innerHTML = renderSlide(slide);
+
+  // Sync to students
+  updateLessonSlide(idx);
+}
+
+function renderSlide(slide) {
+  const badge = `<span class="slide-week-badge">${slide.badge}</span>`;
+  const type  = `<div class="slide-type">${slide.typeLabel}</div>`;
+  const title = `<div class="slide-title">${slide.title}</div>`;
+
+  if (slide.type === 'starter') {
+    return `${badge}${type}${title}<div class="slide-body large">${slide.body}</div>`;
+  }
+  if (slide.type === 'keyterms') {
+    const terms = (slide.terms||[]).map(t =>
+      `<div class="kv-item"><div class="kv-term">${t.term}</div><div class="kv-def">${t.def}</div></div>`
+    ).join('');
+    return `${badge}${type}${title}<div class="kv-grid">${terms}</div>`;
+  }
+  if (slide.type === 'tasks') {
+    const typeIcon = {text:'✏️', multichoice:'🗳️', code:'💻'};
+    const items = (slide.tasks||[]).map((t,i) =>
+      `<div class="task-slide-item">
+        <div class="task-slide-num">${i+1}</div>
+        <div class="task-slide-text"><strong>${t.title}</strong><br>
+        <span style="font-size:0.78rem;color:var(--text3)">${typeIcon[t.type]||'📋'} ${t.type} · ${t.marks} mark${t.marks!==1?'s':''}</span></div>
+      </div>`
+    ).join('');
+    return `${badge}${type}${title}<div class="tasks-list">${items}</div>`;
+  }
+  if (slide.type === 'example') {
+    const codeBlock = slide.code ? `<div class="example-box">${slide.code}</div>` : '';
+    return `${badge}${type}${title}<div class="slide-body">${slide.body}</div>${codeBlock}`;
+  }
+  if (slide.type === 'note') {
+    return `${badge}${type}${title}<div class="slide-body large" style="color:var(--amber)">${slide.body}</div>`;
+  }
+  return `${badge}${type}${title}<div class="slide-body">${slide.body||''}</div>`;
+}
+
+async function updateLessonSlide(idx) {
+  try {
+    const rec = await fetchBin();
+    if (rec.activeLesson) {
+      rec.activeLesson.currentSlide = idx;
+      await fetch(BIN_URL(), { method:'PUT', headers: BIN_HEADERS,
+        body: JSON.stringify(rec) });
+    }
+  } catch(e) { /* silent */ }
+}
+
+function prevSlide() { showSlide(STATE.presentation.currentIdx - 1); }
+function nextSlide() {
+  const p = STATE.presentation;
+  if (p.currentIdx >= p.slides.length - 1) { endPresentation(); return; }
+  showSlide(p.currentIdx + 1);
+}
+
+async function endPresentation() {
+  showView('view-teacher');
+  switchDashTab('present');
+  STATE.presentation = null;
+}
+
+async function clearActiveLesson() {
+  try { await setActiveLesson(null); } catch(e) {}
+  document.getElementById('present-status').textContent = 'Lesson ended.';
+  document.getElementById('btn-clear-lesson').style.display = 'none';
+  // Dismiss student banners
+}
+
+/* ─── STUDENT FOLLOW-ALONG ───────────────────────────────────────── */
+function startLessonPoll() {
+  stopLessonPoll();
+  STATE.lessonPollTimer = setInterval(pollLesson, 5000);
+  pollLesson();
+}
+
+function stopLessonPoll() {
+  if (STATE.lessonPollTimer) { clearInterval(STATE.lessonPollTimer); STATE.lessonPollTimer = null; }
+}
+
+async function pollLesson() {
+  try {
+    const lesson = await fetchActiveLesson();
+    const banner = document.getElementById('lesson-banner');
+    if (!lesson) {
+      banner.classList.remove('active');
+      return;
+    }
+    // Show banner
+    banner.classList.add('active');
+    document.getElementById('banner-title').textContent =
+      `📽 ${lesson.scenarioTitle} — ${lesson.weekLabel}`;
+    document.getElementById('banner-slide-info').textContent =
+      `Slide ${lesson.currentSlide + 1} of ${lesson.slides.length}`;
+    const slide = lesson.slides[lesson.currentSlide];
+    if (slide) {
+      document.getElementById('banner-slide-content').innerHTML = renderSlide(slide);
+    }
+  } catch(e) { /* silent */ }
+}
+
+
 /* ─── INIT ───────────────────────────────────────────────────────── */
 
-// Show login immediately — no waiting for anything
+// Show login immediately — synchronous, no waiting
 showView('view-login');
 
 // Then attempt auto-login in background
