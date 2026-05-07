@@ -94,6 +94,8 @@ body::before {
 
 .view { display: none; }
 .view.active { display: block; }
+#view-login { display: flex; }
+#view-login.active { display: flex; }
 
 /* ─── TOP BAR ────────────────────────────────────────────────────── */
 #topbar {
@@ -1156,17 +1158,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 }
 
 /* ─── LOADING STATE ──────────────────────────────────────────────── */
-#global-loading {
-  position: fixed; inset: 0;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9998;
-  flex-direction: column;
-  gap: 16px;
-}
-#global-loading.hidden { display: none; }
+#global-loading { display: none !important; }
 
 .loading-logo {
   font-family: var(--mono);
@@ -2397,15 +2389,14 @@ function loadAccessibility() {
 }
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
-(async function init() {
-  // Hide loading screen IMMEDIATELY — never block on network
-  document.getElementById('global-loading').classList.add('hidden');
-  showView('view-login');
 
-  // Load scenarios in background (non-blocking)
+// Show login immediately — no waiting for anything
+showView('view-login');
+
+// Then attempt auto-login in background
+(async function init() {
   loadScenarios().catch(() => {});
 
-  // Attempt auto-login only if JSONBin is configured
   const configured = CONFIG.JSONBIN_API_KEY !== 'REPLACE_WITH_YOUR_JSONBIN_API_KEY'
     && CONFIG.JSONBIN_BIN_ID !== 'REPLACE_WITH_YOUR_BIN_ID';
 
@@ -2414,7 +2405,7 @@ function loadAccessibility() {
   try {
     const autoLoggedIn = await Promise.race([
       tryAutoLogin(),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
     ]);
     if (autoLoggedIn) {
       await loadScenarios();
