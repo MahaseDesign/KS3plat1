@@ -97,7 +97,12 @@ body::before {
 .view.active { display: block !important; }
 
 /* Views that need flex layout when active */
-#view-login.active,
+#view-login.active {
+  display: flex !important;
+  align-items: stretch;
+  min-height: 100vh;
+  padding: 0;
+}
 #view-teacher-pin.active,
 #view-grading.active,
 #view-present.active { display: flex !important; }
@@ -328,13 +333,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 /* ════════════════════════════════════════════════════════════════════
    VIEW: LANDING / LOGIN
 ════════════════════════════════════════════════════════════════════ */
-#view-login {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-}
+/* #view-login layout moved to .active rule */
 
 .login-wrap {
   width: 100%;
@@ -1063,12 +1062,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   padding: 40px 24px;
 }
 
-#view-teacher-pin {
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* teacher-pin layout handled inline */
 
 .pin-box {
   background: var(--surface);
@@ -1473,12 +1467,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 
 
 /* ═══ LOGIN PAGE — TWO PANEL LAYOUT ═══════════════════════════════ */
-#view-login.active {
-  display: flex !important;
-  align-items: stretch;
-  min-height: 100vh;
-  padding: 0;
-}
+/* merged into combined .active rule above */
 
 .login-page {
   display: flex;
