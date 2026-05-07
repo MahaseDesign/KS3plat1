@@ -1599,10 +1599,18 @@ const BIN_HEADERS = {
 };
 
 async function fetchStudents() {
-  const r = await fetch(BIN_URL(), { headers: BIN_HEADERS });
-  if (!r.ok) return [];
-  const d = await r.json();
-  return d.record.students || [];
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 7000);
+  try {
+    const r = await fetch(BIN_URL(), { headers: BIN_HEADERS, signal: controller.signal });
+    clearTimeout(timeout);
+    if (!r.ok) return [];
+    const d = await r.json();
+    return d.record.students || [];
+  } catch(e) {
+    clearTimeout(timeout);
+    return [];
+  }
 }
 
 async function saveStudents(students) {
@@ -2381,9 +2389,27 @@ function loadAccessibility() {
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
 (async function init() {
+  // Load scenarios (fails silently if file missing)
   await loadScenarios();
 
-  const autoLoggedIn = await tryAutoLogin();
+  // If JSONBin isn't configured yet, skip auto-login and go straight to login
+  const configured = CONFIG.JSONBIN_API_KEY !== 'REPLACE_WITH_YOUR_JSONBIN_API_KEY'
+    && CONFIG.JSONBIN_BIN_ID !== 'REPLACE_WITH_YOUR_BIN_ID';
+
+  let autoLoggedIn = false;
+
+  if (configured) {
+    try {
+      autoLoggedIn = await Promise.race([
+        tryAutoLogin(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000))
+      ]);
+    } catch(e) {
+      console.warn('Auto-login failed or timed out:', e.message);
+      autoLoggedIn = false;
+    }
+  }
+
   document.getElementById('global-loading').classList.add('hidden');
 
   if (autoLoggedIn) {
