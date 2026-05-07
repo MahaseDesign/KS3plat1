@@ -96,6 +96,8 @@ body::before {
 .view.active { display: block; }
 #view-login { display: flex; }
 #view-login.active { display: flex; }
+#view-teacher-pin.active { display: flex; }
+#view-grading.active { display: flex; }
 
 /* ─── TOP BAR ────────────────────────────────────────────────────── */
 #topbar {
@@ -1474,7 +1476,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">⟳ Refresh</button>
         <button class="btn btn-secondary btn-sm" onclick="exportCSV()">↓ Export CSV</button>
-        <button class="btn btn-ghost btn-sm" onclick="showView('view-login')">← Exit</button>
+        <button class="btn btn-ghost btn-sm" onclick="exitDashboard()">← Exit</button>
       </div>
     </div>
 
@@ -1574,8 +1576,24 @@ function showView(id) {
   if (v) { v.classList.add('active'); window.scrollTo(0,0); }
 
   const loggedIn = !!STATE.user;
-  document.getElementById('topbar').style.display     = (loggedIn && id !== 'view-login' && id !== 'view-teacher-pin') ? 'flex' : 'none';
-  document.getElementById('access-bar').style.display = (loggedIn && id !== 'view-login' && id !== 'view-teacher-pin') ? 'flex' : 'none';
+  const isTeacherView = (id === 'view-teacher' || id === 'view-teacher-pin');
+  const hideBar = id === 'view-login' || id === 'view-teacher-pin';
+
+  // Show topbar for logged-in students OR teacher dashboard
+  const showTop = (loggedIn && !hideBar) || id === 'view-teacher';
+  document.getElementById('topbar').style.display     = showTop ? 'flex' : 'none';
+  document.getElementById('access-bar').style.display = (loggedIn && !hideBar) ? 'flex' : 'none';
+
+  // Update topbar logo text for teacher
+  if (id === 'view-teacher') {
+    document.getElementById('topbar-username').textContent = 'Teacher';
+    document.getElementById('btn-logout').textContent = 'Exit';
+    document.getElementById('btn-logout').onclick = () => showView('view-login');
+  } else if (loggedIn) {
+    document.getElementById('topbar-username').textContent = STATE.user.username;
+    document.getElementById('btn-logout').textContent = 'logout';
+    document.getElementById('btn-logout').onclick = doLogout;
+  }
 }
 
 function closeModal() {
@@ -2184,15 +2202,28 @@ function renderResults(sd) {
 }
 
 /* ─── TEACHER DASHBOARD ──────────────────────────────────────────── */
+function exitDashboard() {
+  STATE.teacherMode = false;
+  const pinInput = document.getElementById('pin-input');
+  if (pinInput) pinInput.value = '';
+  showView('view-login');
+}
+
 function checkPin() {
   const pin = document.getElementById('pin-input').value;
   if (pin === CONFIG.TEACHER_PIN) {
     hideAlert('pin-error');
+    STATE.teacherMode = true;
     STATE.allStudents = [];
-    showView('view-teacher');
-    loadDashboard();
+    // Load scenarios first so dashboard can label them
+    loadScenarios().catch(()=>{}).finally(() => {
+      showView('view-teacher');
+      loadDashboard();
+    });
   } else {
     showAlert('pin-error', 'Incorrect PIN.');
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
   }
 }
 
