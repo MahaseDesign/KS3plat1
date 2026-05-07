@@ -3286,7 +3286,7 @@ function buildSlides(sc, weekIdx, teacherNote) {
   slides.push({
     type: 'keyterms',
     typeLabel: '📖 Key Terms',
-    title: 'This Week's Vocabulary',
+    title: "This Week's Vocabulary",
     terms: wd.keyTerms || generateKeyTerms(sc, wNum),
     badge,
   });
@@ -3314,7 +3314,7 @@ function buildSlides(sc, weekIdx, teacherNote) {
   slides.push({
     type: 'note',
     typeLabel: '📌 Teacher Note',
-    title: 'Before You Start...',
+    title: "Before You Start...",
     body: teacherNote || wd.defaultNote || `Good luck with Week ${wNum}! Complete both tasks before the end of the lesson. Ask if you're stuck.`,
     badge,
   });
@@ -3375,7 +3375,7 @@ function generateKeyTerms(sc, wNum) {
       2: [{term:'Place value (hex)',def:'Powers of 16: ...256, 16, 1'},{term:'Conversion',def:'Changing a value between number systems'},{term:'Remainder',def:'What is left over after division — used in denary-to-hex conversion'}],
       3: [{term:'RGB',def:'Red, Green, Blue — the three colour channels in digital colour'},{term:'Hex colour code',def:'A 6-digit hex number representing an RGB colour, e.g. #FF5733'},{term:'Colour depth',def:'How many bits are used to represent each colour channel'}],
       4: [{term:'Variable',def:'A name that stores a value in Python'},{term:'input()',def:'A Python function that reads text typed by the user'},{term:'print()',def:'A Python function that displays text on screen'}],
-      5: [{term:'Dictionary',def:'A Python collection storing key-value pairs, e.g. {'red': 'FF0000'}'},{term:'Key',def:'The label used to look up a value in a dictionary'},{term:'random.choice()',def:'A Python function that picks a random item from a list'}],
+      5: [{term:'Dictionary',def:'A Python collection of key-value pairs e.g. hex:name pairs'},{term:'Key',def:'The label used to look up a value in a dictionary'},{term:'random.choice()',def:'A Python function that picks a random item from a list'}],
       6: [{term:'Loop',def:'Code that repeats — for loops run a fixed number of times'},{term:'range()',def:'Generates a sequence of numbers for use in a for loop'},{term:'Conditional',def:'An if/elif/else block that runs code only when a condition is true'}],
     },
   };
