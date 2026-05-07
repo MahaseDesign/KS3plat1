@@ -1533,7 +1533,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 const CONFIG = {
   JSONBIN_API_KEY:  '$2a$10$hJOuTgFo6.nu44x8ldlrC.QnZAw2r4P6UUgCzOQnMLCxkxSQv9/ta',
   JSONBIN_BIN_ID:   '69fcb345250b1311c3197667',
-  CLAUDE_API_KEY:   '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,
+  CLAUDE_API_KEY:   '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',
   TEACHER_PIN:      '1984',
   CLASS_CODES:      ['CBA7A','CBA7B','CBA8A','CBA8B','CBA9A','CBA9B'], // edit as needed
   SCENARIOS_FILE:   'scenarios.json',
@@ -1631,6 +1631,15 @@ async function loadScenarios() {
     STATE.scenarios = [];
     console.warn('scenarios.json not found — using empty list');
   }
+}
+
+/* ─── LOGIN TABS ─────────────────────────────────────────────────── */
+function switchLoginTab(tab) {
+  document.querySelectorAll('.login-tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+  });
+  document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+  document.getElementById('panel-register').classList.toggle('active', tab === 'register');
 }
 
 /* ─── AUTH ───────────────────────────────────────────────────────── */
