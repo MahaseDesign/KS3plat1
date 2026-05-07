@@ -2389,34 +2389,31 @@ function loadAccessibility() {
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
 (async function init() {
-  // Load scenarios (fails silently if file missing)
-  await loadScenarios();
+  // Hide loading screen IMMEDIATELY — never block on network
+  document.getElementById('global-loading').classList.add('hidden');
+  showView('view-login');
 
-  // If JSONBin isn't configured yet, skip auto-login and go straight to login
+  // Load scenarios in background (non-blocking)
+  loadScenarios().catch(() => {});
+
+  // Attempt auto-login only if JSONBin is configured
   const configured = CONFIG.JSONBIN_API_KEY !== 'REPLACE_WITH_YOUR_JSONBIN_API_KEY'
     && CONFIG.JSONBIN_BIN_ID !== 'REPLACE_WITH_YOUR_BIN_ID';
 
-  let autoLoggedIn = false;
+  if (!configured) return;
 
-  if (configured) {
-    try {
-      autoLoggedIn = await Promise.race([
-        tryAutoLogin(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000))
-      ]);
-    } catch(e) {
-      console.warn('Auto-login failed or timed out:', e.message);
-      autoLoggedIn = false;
+  try {
+    const autoLoggedIn = await Promise.race([
+      tryAutoLogin(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+    ]);
+    if (autoLoggedIn) {
+      await loadScenarios();
+      renderHub();
+      showView('view-hub');
     }
-  }
-
-  document.getElementById('global-loading').classList.add('hidden');
-
-  if (autoLoggedIn) {
-    renderHub();
-    showView('view-hub');
-  } else {
-    showView('view-login');
+  } catch(e) {
+    console.warn('Auto-login skipped:', e.message);
   }
 })();
 </script>
