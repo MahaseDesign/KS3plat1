@@ -1,0 +1,578 @@
+{
+  "scenarios": [
+    {
+      "id": "scenario_y7_binary",
+      "title": "Binary Games Lab",
+      "context": "You are a game developer who has been challenged to create a Scratch game that teaches other students about binary numbers. Over the next 6 weeks you will learn how binary works, practise converting numbers, and then build your own binary-themed game in Scratch — step by step, testing each part as you go.",
+      "yearGroups": [
+        "Y7"
+      ],
+      "estimatedMinutes": 360,
+      "estimatedSessions": 6,
+      "subjectPrompt": null,
+      "tasks": [
+        {
+          "id": "task_01",
+          "week": 1,
+          "type": "multichoice",
+          "title": "What is Binary?",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "Computers store all data using only two digits: 0 and 1. This is called the BINARY number system (base 2). Each digit is called a BIT.\n\nA normal light switch can only be ON or OFF — binary works the same way.\n\nAnswer these questions:\n\n1. How many different digits does the binary number system use?\n   A) 8   B) 2   C) 10   D) 16\n\n2. What is a single binary digit called?\n   A) A byte   B) A pixel   C) A bit   D) A nibble\n\n3. What does the binary number 1 represent in terms of a switch?\n   A) Broken   B) OFF   C) ON   D) Half on",
+          "options": [
+            "1: A, 2: A, 3: A",
+            "1: B, 2: C, 3: C",
+            "1: C, 2: B, 3: B",
+            "1: B, 2: A, 3: C"
+          ],
+          "correctAnswers": [
+            "1: B, 2: C, 3: C"
+          ],
+          "markScheme": "Award 3 marks for the correct combination: 1=B (2 digits), 2=C (bit), 3=C (ON). Award 2 marks if two of the three are correct. Award 1 mark if one is correct. Award 0 for all wrong."
+        },
+        {
+          "id": "task_02",
+          "week": 1,
+          "type": "text",
+          "title": "Counting in Binary",
+          "difficulty": "foundation",
+          "maxMarks": 4,
+          "question": "Binary uses place values that are powers of 2. Here is the 8-bit place value table:\n\n| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |\n\nTo convert binary to denary: add up the place values where there is a 1.\n\nExample: 0 0 0 0 1 1 0 1 = 8 + 4 + 1 = 13\n\nNow convert these binary numbers to denary. Write your four answers, one per line:\n\n1. 0 0 0 0 1 0 1 0\n2. 0 0 0 1 0 0 0 0\n3. 0 0 1 0 0 1 0 1\n4. 0 1 1 0 0 1 0 0",
+          "markScheme": "Correct answers: 1=10, 2=16, 3=37, 4=100. Award 1 mark per correct answer. Accept working shown even if final answer has a minor arithmetic error — award the mark if the method is clearly correct."
+        },
+        {
+          "id": "task_03",
+          "week": 2,
+          "type": "text",
+          "title": "Denary to Binary Conversion",
+          "difficulty": "foundation",
+          "maxMarks": 4,
+          "question": "Now go the other way — denary to binary.\n\nMethod: use the place value table. Starting from the left (128), ask 'does my number fit here?' If yes, write 1 and subtract. If no, write 0 and move right.\n\nPlace values: 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1\n\nConvert these denary numbers to 8-bit binary. Write your four answers, one per line:\n\n1. 25\n2. 72\n3. 143\n4. 200",
+          "markScheme": "Correct answers: 1=00011001, 2=01001000, 3=10001111, 4=11001000. Award 1 mark per correct answer. Accept answers with spaces between bits (e.g. 0001 1001). If a student has the right method but one bit wrong, award the mark and note the error in feedback."
+        },
+        {
+          "id": "task_04",
+          "week": 2,
+          "type": "text",
+          "title": "Binary in Context",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "Binary isn't just numbers — computers use it to store everything.\n\nAnswer these questions in full sentences:\n\n1. A computer stores a black and white image. Each pixel is either black (0) or white (1). An image is 4 pixels wide and 4 pixels tall. How many bits are needed to store the whole image?\n\n2. If 8 bits = 1 byte, how many bytes is that same image?\n\n3. Why do computers use binary instead of our normal base-10 number system? Give ONE reason.\n\n4. The letter 'A' is stored as 01000001 in binary. What is the denary value of 01000001?",
+          "markScheme": "1: 16 bits (4x4=16) — 1 mark. 2: 2 bytes (16÷8=2) — 1 mark. 3: Any valid reason e.g. electronic circuits have two states (on/off), reliable, simple — 1 mark. 4: 65 — 1 mark. Accept clear working even if arithmetic is slightly off."
+        },
+        {
+          "id": "task_05",
+          "week": 3,
+          "type": "text",
+          "title": "Plan Your Scratch Game",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "Time to start your game! Before you build anything, great developers always plan first.\n\nYour game must use binary in some way — it could be a quiz, a puzzle, a catching game, a racing game, anything — as long as binary numbers are part of the gameplay.\n\nWrite your game plan by answering ALL of these:\n\n1. What is the name of your game?\n2. What does the player have to DO? (describe the gameplay in 2-3 sentences)\n3. How does binary feature in the game? (e.g. player converts binary numbers, sprites move by binary values, score shown in binary)\n4. List at least THREE Scratch elements you will need (e.g. sprites, backgrounds, variables, broadcasts, loops)\n5. How will the player WIN or LOSE?",
+          "markScheme": "Award 1 mark each for: (1) a game name given, (2) clear gameplay description that makes sense, (3) a genuine and specific use of binary in the game mechanics, (4) at least 3 valid Scratch elements listed, (5) a clear win/lose condition described. Do not penalise creative or unusual ideas — reward clarity and thought."
+        },
+        {
+          "id": "task_06",
+          "week": 3,
+          "type": "text",
+          "title": "Build: Sprites and Stage",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "Open Scratch (scratch.mit.edu) and start building your game.\n\nThis week focus on setting up your stage and sprites:\n✅ Create or choose your background (stage)\n✅ Add your main sprite(s)\n✅ Make at least one sprite move (use arrow keys OR automatic movement)\n✅ Add your game title as a text element or on the backdrop\n\nTake a SCREENSHOT of your Scratch project showing your stage and at least one sprite moving.\n\nThen answer:\n1. What sprite(s) did you add and why did you choose them?\n2. How did you make the sprite move? (describe the blocks you used)",
+          "markScheme": "Award 1 mark: screenshot submitted showing a Scratch project with a stage and at least one sprite visible. Award 1 mark: student names their sprite(s) with a reason. Award 2 marks: clear description of movement blocks used (e.g. 'I used the when flag clicked block, then a forever loop with move 10 steps and if on edge bounce'). Award 1 mark only if description is vague but shows some understanding. If no screenshot is submitted, cap at 2 marks total."
+        },
+        {
+          "id": "task_07",
+          "week": 4,
+          "type": "text",
+          "title": "Build: Add the Binary Element",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "This is the most important part — adding binary to your game!\n\nThis week, build the part of your game that involves binary numbers. This might be:\n— A variable that stores or shows a binary number\n— A question that asks the player to convert a binary number\n— Sprites that are labelled with binary values\n— A score system that shows points in binary\n— Something else from your plan!\n\nTake a SCREENSHOT showing the binary element working in your project.\n\nThen answer:\n1. Describe exactly how binary is used in your game (be specific)\n2. Which Scratch blocks did you use to make this work?\n3. Did you have to change your original plan at all? If yes, what changed and why?",
+          "markScheme": "Award 2 marks: screenshot shows a genuine binary element in the game (numbers, variables, labels etc). Award 1 mark if screenshot shows the project but binary element is unclear. Award 2 marks: clear description of how binary is specifically used in gameplay mechanics. Award 1 mark: description of Scratch blocks used. Deduct 0 for plan changes — reward honest reflection."
+        },
+        {
+          "id": "task_08",
+          "week": 5,
+          "type": "text",
+          "title": "Build: Score, Lives and Game Logic",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "This week add the game logic that makes it a proper game:\n✅ A score variable that goes up when the player does something right\n✅ A lives or health system OR a timer\n✅ A Game Over screen or message when the player loses\n✅ A win condition or high score\n\nTake a SCREENSHOT showing your score/lives system working.\n\nThen answer:\n1. How does the player score points in your game?\n2. How does the player lose lives or run out of time?\n3. What Scratch blocks did you use for your score variable? (e.g. 'set score to 0', 'change score by 1')",
+          "markScheme": "Award 1 mark: screenshot shows score or lives variable visible on screen. Award 1 mark: clear explanation of how points are scored. Award 1 mark: clear explanation of lose condition (lives/timer). Award 2 marks: accurate description of Scratch variable blocks used (set to 0 on start, change by value on event). Award 1 mark if only one block described correctly."
+        },
+        {
+          "id": "task_09",
+          "week": 6,
+          "type": "text",
+          "title": "Final Build: Complete and Test",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "This is your final build session. Complete your game and test it thoroughly.\n\nChecklist before you submit:\n✅ The game starts when the green flag is clicked\n✅ Binary numbers are used somewhere in the gameplay\n✅ The player can score points\n✅ There is a way to lose (lives or timer)\n✅ There is a Game Over screen\n✅ The game resets properly when played again\n\nTake a FINAL SCREENSHOT of your completed game.\n\nThen write a short test log — for each item in the checklist above, write ONE sentence saying whether it works and how you know.",
+          "markScheme": "Award 1 mark: final screenshot submitted showing a more complete game than earlier screenshots. Award 1 mark per checklist item confirmed with a clear test sentence (max 5 marks from checklist). Total cap: 6 marks. If the screenshot shows a clearly incomplete game (just a blank stage), cap at 2 marks regardless of written answers."
+        },
+        {
+          "id": "task_10",
+          "week": 6,
+          "type": "text",
+          "title": "Evaluation",
+          "difficulty": "extension",
+          "maxMarks": 5,
+          "question": "Every good developer evaluates their finished work.\n\nWrite an evaluation of your binary game by answering ALL of these:\n\n1. Does your game successfully teach or use binary? Explain how.\n2. What is the BEST part of your game and why are you proud of it?\n3. What ONE thing would you improve if you had more time? Be specific.\n4. What was the hardest part of the project and how did you overcome it?\n5. Share your Scratch project link (go to File > Share in Scratch, then paste the URL here). If you cannot share it, explain why.",
+          "markScheme": "Award 1 mark each for: (1) genuine reflection on binary use in the game, (2) specific pride point with a reason, (3) specific and realistic improvement suggestion, (4) honest account of a challenge and how it was addressed, (5) a valid Scratch share URL provided OR a clear explanation of why it could not be shared. Reward honesty and self-awareness throughout."
+        }
+      ],
+      "gradingInstructions": "You are marking Year 7 Computer Science work. The student has been building a binary-themed game in Scratch over 6 weeks. Mark each task against its mark scheme. Be very encouraging — this is a Year 7 student's first programming project. Acknowledge creativity and effort generously. Screenshots are referenced by the student but you cannot see them — award screenshot marks if the student describes what their screenshot shows in sufficient detail. Overall feedback should be 3-5 sentences: celebrate what they built, highlight their strongest understanding of binary, give one clear and gentle improvement target. Return ONLY valid JSON — no preamble, no markdown fences.",
+      "gradingOutputFormat": {
+        "totalScore": "integer",
+        "maxScore": 45,
+        "overallFeedback": "string (3-5 sentences, very encouraging for Year 7)",
+        "tasks": [
+          {
+            "taskId": "string",
+            "score": "integer",
+            "maxMarks": "integer",
+            "feedback": "string (1-2 sentences)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario_y8_hexcolour",
+      "title": "Hex Colour Match",
+      "context": "You are a junior developer at a web design studio. Your team uses hexadecimal colour codes every day to style websites — but none of your colleagues understand how they actually work. Your challenge over the next 6 weeks is to learn hex inside out, then build a colour matching game in Python that tests a player's knowledge of hex colour codes.",
+      "yearGroups": [
+        "Y8"
+      ],
+      "estimatedMinutes": 360,
+      "estimatedSessions": 6,
+      "subjectPrompt": null,
+      "tasks": [
+        {
+          "id": "task_01",
+          "week": 1,
+          "type": "multichoice",
+          "title": "What is Hexadecimal?",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "Hexadecimal (hex) is a base-16 number system. It uses 16 symbols:\n0 1 2 3 4 5 6 7 8 9 A B C D E F\n\nWhere A=10, B=11, C=12, D=13, E=14, F=15.\n\nComputers use hex because it maps neatly to binary — 4 bits = 1 hex digit.\n\nAnswer these three questions:\n\n1. How many symbols does hexadecimal use?\n   A) 8   B) 10   C) 16   D) 2\n\n2. What is the decimal value of the hex digit F?\n   A) 6   B) 15   C) 16   D) 12\n\n3. How many bits does ONE hex digit represent?\n   A) 8   B) 2   C) 1   D) 4",
+          "options": [
+            "1: C, 2: B, 3: D",
+            "1: B, 2: C, 3: A",
+            "1: C, 2: D, 3: B",
+            "1: A, 2: B, 3: D"
+          ],
+          "correctAnswers": [
+            "1: C, 2: B, 3: D"
+          ],
+          "markScheme": "Award 3 marks for all correct (1=C, 2=B, 3=D). Award 2 marks for two correct. Award 1 mark for one correct. Award 0 for all wrong."
+        },
+        {
+          "id": "task_02",
+          "week": 1,
+          "type": "text",
+          "title": "Hex ↔ Denary Conversion",
+          "difficulty": "foundation",
+          "maxMarks": 6,
+          "question": "Hex place values work like denary but in powers of 16:\n... | 256 | 16 | 1 |\n\nTo convert hex to denary:\nExample: 2A = (2 × 16) + (10 × 1) = 32 + 10 = 42\n\nTo convert denary to hex:\nExample: 75 ÷ 16 = 4 remainder 11 → 4B\n\nConvert these — write all six answers, one per line:\n\nHex to denary:\n1. 1F\n2. B4\n3. FF\n\nDenary to hex:\n4. 28\n5. 100\n6. 255",
+          "markScheme": "Correct answers: 1=31, 2=180, 3=255, 4=1C, 5=64, 6=FF. Award 1 mark per correct answer. Accept uppercase or lowercase hex. Award the mark if working is shown and only a minor arithmetic error is present."
+        },
+        {
+          "id": "task_03",
+          "week": 2,
+          "type": "text",
+          "title": "Hex ↔ Binary Conversion",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "The real power of hex: each hex digit maps perfectly to exactly 4 binary bits.\n\nHex → Binary: convert each hex digit to its 4-bit binary equivalent separately.\nExample: A3 → A=1010, 3=0011 → 10100011\n\nBinary → Hex: split binary into groups of 4 from the right, convert each group.\nExample: 11010110 → 1101=D, 0110=6 → D6\n\nConvert these — write all six answers, one per line:\n\nHex to binary:\n1. 5C\n2. FF\n3. 3A\n\nBinary to hex:\n4. 10110100\n5. 00101111\n6. 11111111",
+          "markScheme": "Correct answers: 1=01011100, 2=11111111, 3=00111010, 4=B4, 5=2F, 6=FF. Award 1 mark per correct answer. Accept answers without leading zeros (e.g. 1011100 for question 1). Award the mark if the digit-by-digit method is clearly correct even with one transposition error."
+        },
+        {
+          "id": "task_04",
+          "week": 2,
+          "type": "text",
+          "title": "Hex Colour Codes",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "In web design, colours are written as hex codes like #FF5733.\n\nThe format is: #RRGGBB\n— RR = Red value (00 to FF)\n— GG = Green value (00 to FF)\n— BB = Blue value (00 to FF)\n\nFF in hex = 255 in denary (maximum brightness)\n00 in hex = 0 in denary (no colour)\n\nAnswer these questions:\n\n1. What colour would #FF0000 produce? Explain why.\n2. What would #000000 produce? Explain why.\n3. What would #FFFFFF produce? Explain why.\n4. Convert the hex colour #1A FF 3C into its three denary RGB values (R, G, B).\n5. A designer wants the colour RGB(0, 128, 255). Write this as a hex colour code.",
+          "markScheme": "1: Red — R=FF(max), G=00(none), B=00(none) — 1 mark for correct colour + reason. 2: Black — all channels 0 — 1 mark. 3: White — all channels at maximum — 1 mark. 4: R=26, G=255, B=60 — 1 mark (all three correct; accept 1 error for 0 marks on this part). 5: #0080FF — 1 mark (accept lowercase #0080ff). Partial credit: if method correct but one hex digit wrong, award the mark."
+        },
+        {
+          "id": "task_05",
+          "week": 3,
+          "type": "code",
+          "language": "python",
+          "title": "Python Foundations: Variables and Input",
+          "difficulty": "foundation",
+          "maxMarks": 5,
+          "question": "Open your online Python IDE (Trinket or Replit) and create a new Python file.\n\nWrite a Python program that:\n✅ Asks the player to enter their name using input()\n✅ Stores it in a variable called player_name\n✅ Prints a welcome message using their name\n✅ Asks the player to enter a hex colour code (e.g. FF5733)\n✅ Prints back: 'You entered the colour: #' + their hex code\n\nExample output:\nEnter your name: Joe\nWelcome to Hex Colour Match, Joe!\nEnter a hex colour code: FF0000\nYou entered the colour: #FF0000\n\nPaste your complete code below.",
+          "starterCode": "# Hex Colour Match - Getting Started\n# Week 3: Variables and Input\n\n# Step 1: Ask for the player's name\n\n# Step 2: Welcome the player\n\n# Step 3: Ask for a hex colour code\n\n# Step 4: Print the colour back\n",
+          "markScheme": "Award 1 mark: input() used to get player name. Award 1 mark: name stored in a variable. Award 1 mark: welcome message printed using the variable (not just hardcoded). Award 1 mark: input() used to get a hex code. Award 1 mark: hex code printed back with '#' prepended. Syntax errors that clearly show the right intent should still score marks — focus on understanding over perfect syntax."
+        },
+        {
+          "id": "task_06",
+          "week": 4,
+          "type": "code",
+          "language": "python",
+          "title": "Build: Colour Guessing Logic",
+          "difficulty": "core",
+          "maxMarks": 7,
+          "question": "Now build the core of your colour match game.\n\nCreate a program that:\n✅ Stores a list of at least 5 hex colour codes and their colour names\n   e.g. 'FF0000' = 'Red', '00FF00' = 'Green', '0000FF' = 'Blue'\n✅ Randomly picks one hex code from the list using random.choice()\n✅ Shows the player the hex code and asks them to guess the colour name\n✅ Checks if their answer is correct (case-insensitive)\n✅ Prints 'Correct!' or 'Wrong! It was [colour name]'\n\nTake a SCREENSHOT of your program running with a correct guess and a wrong guess shown.\n\nPaste your code below the screenshot description.",
+          "starterCode": "import random\n\n# Dictionary of hex codes and colour names\ncolours = {\n    'FF0000': 'Red',\n    '00FF00': 'Green',\n    '0000FF': 'Blue',\n    # Add more colours here!\n}\n\n# Pick a random hex code\n\n# Ask the player to guess\n\n# Check if correct\n",
+          "markScheme": "Award 1 mark: dictionary or list of at least 5 hex/colour pairs. Award 1 mark: random.choice() or equivalent used to select a colour. Award 1 mark: hex code displayed to player. Award 2 marks: input taken, compared to correct answer, correct/wrong message shown (1 mark if comparison works but case-sensitivity not handled). Award 1 mark: screenshot described showing a correct guess. Award 1 mark: screenshot described showing a wrong guess with the correct answer revealed."
+        },
+        {
+          "id": "task_07",
+          "week": 4,
+          "type": "code",
+          "language": "python",
+          "title": "Build: Score and Rounds",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "Extend your game to add multiple rounds and a score.\n\nAdd to your existing program:\n✅ A score variable starting at 0\n✅ A loop that runs the game for 5 rounds\n✅ Score increases by 1 for each correct answer\n✅ At the end, display the final score out of 5\n✅ A message that changes based on score:\n   — 5/5: 'Hex Master!'\n   — 3-4/5: 'Great work!'\n   — Below 3: 'Keep practising!'\n\nTake a SCREENSHOT showing your game running through multiple rounds.\n\nPaste your updated code below.",
+          "starterCode": "import random\n\ncolours = {\n    'FF0000': 'Red',\n    '00FF00': 'Green', \n    '0000FF': 'Blue',\n    'FFFF00': 'Yellow',\n    'FF00FF': 'Magenta',\n    'FFFFFF': 'White',\n    '000000': 'Black'\n}\n\nscore = 0\nrounds = 5\n\n# Add your loop here\n\n# Print final score and message\n",
+          "markScheme": "Award 1 mark: score variable initialised to 0. Award 1 mark: loop runs for correct number of rounds (for loop with range or while loop). Award 1 mark: score incremented correctly on right answer. Award 1 mark: final score displayed as X out of 5. Award 2 marks: conditional messages based on score bands (both conditions correct = 2, one correct = 1). Screenshot: if described, award marks as above — do not penalise for missing screenshot if code is complete and correct."
+        },
+        {
+          "id": "task_08",
+          "week": 5,
+          "type": "code",
+          "language": "python",
+          "title": "Build: Hex Conversion Challenge",
+          "difficulty": "core",
+          "maxMarks": 7,
+          "question": "Add a BONUS round to your game that tests the player's hex conversion skills.\n\nAfter the 5 colour rounds, add:\n✅ A bonus round that shows a hex code (e.g. 'FF')\n✅ Asks the player to type the denary value\n✅ Checks if the answer is correct\n✅ Awards 2 bonus points for a correct answer\n✅ Shows the correct answer if they get it wrong, with an explanation\n\nHint: you can use int('FF', 16) in Python to convert hex to denary!\n\nTake a SCREENSHOT showing the bonus round working.\n\nPaste your complete updated code.",
+          "starterCode": "# Hint: Python can convert hex to denary for you!\n# int('FF', 16) returns 255\n# int('1A', 16) returns 26\n\n# Pick a random hex value for the bonus round\nimport random\nhex_values = ['FF', '1A', 'B4', '3C', '64', '0F', 'A0']\n\n# Your bonus round code here\n",
+          "markScheme": "Award 1 mark: a hex value selected for the bonus round. Award 1 mark: player asked for denary value. Award 1 mark: int(hex, 16) or equivalent conversion used to check answer. Award 1 mark: correct answer checked against player input. Award 1 mark: 2 bonus points awarded correctly. Award 1 mark: wrong answer shows correct denary value with explanation. Award 1 mark: screenshot described showing bonus round interaction. If student has not used int(hex,16) but has manually checked the answer correctly, still award the conversion mark."
+        },
+        {
+          "id": "task_09",
+          "week": 6,
+          "type": "code",
+          "language": "python",
+          "title": "Final Build: Polish and Complete",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "This is your final build session. Complete and polish your Hex Colour Match game.\n\nFinal checklist:\n✅ Game starts with a welcome message and player name\n✅ 5 colour rounds with correct/wrong feedback\n✅ Score tracked and shown at the end\n✅ Final score message (Hex Master / Great Work / Keep Practising)\n✅ Bonus hex conversion round\n✅ Code is commented — at least 5 comments explaining what sections do\n\nTake a FINAL SCREENSHOT of your complete game running from start to finish.\n\nPaste your final complete code below.\n\nAlso paste your Trinket or Replit share link so your teacher can run it.",
+          "starterCode": "",
+          "markScheme": "Award 1 mark: welcome message with player name present in code. Award 1 mark: 5 rounds with scoring present and working. Award 1 mark: final score message with correct conditions. Award 1 mark: bonus round present. Award 1 mark: at least 5 meaningful comments in the code (not just # comment here). Award 1 mark: share link provided OR clear explanation of why it could not be shared. Screenshot: if final screenshot described as showing full game run, this confirms the above — use it to validate marks."
+        },
+        {
+          "id": "task_10",
+          "week": 6,
+          "type": "text",
+          "title": "Evaluation",
+          "difficulty": "extension",
+          "maxMarks": 5,
+          "question": "Write an evaluation of your Hex Colour Match game.\n\nAnswer ALL of these:\n\n1. How does your game help a player learn about hexadecimal? Give a specific example from your game.\n\n2. What is the most complex part of your Python code? Explain how it works in plain English.\n\n3. If you were to add one more feature to improve the game, what would it be and why?\n\n4. What was the trickiest Python concept to understand during this project?\n\n5. A friend says 'hex is just letters and numbers, it has nothing to do with computers.' Write 2-3 sentences explaining why they are wrong.",
+          "markScheme": "Award 1 mark each for: (1) specific example of hex learning in the game, (2) accurate plain-English explanation of a complex code section, (3) realistic and specific feature suggestion with reasoning, (4) honest reflection on a Python challenge, (5) correct explanation mentioning: hex maps to binary, used in colour codes/memory addresses/computer data storage. Reward quality of explanation over length."
+        }
+      ],
+      "gradingInstructions": "You are marking Year 8 Computer Science work. The student has been building a Hex Colour Match game in Python over 6 weeks using an online IDE (Trinket or Replit). Mark each task against its mark scheme. Be encouraging and constructive. For code tasks: focus on whether the logic is correct and the student demonstrates understanding — do not penalise for minor syntax errors if the intent is clear. Screenshots cannot be viewed directly — award screenshot marks if the student describes what the screenshot shows. Overall feedback: 3-5 sentences celebrating their Python progress, noting their strongest hex understanding, and giving one specific improvement target. Return ONLY valid JSON — no preamble, no markdown fences.",
+      "gradingOutputFormat": {
+        "totalScore": "integer",
+        "maxScore": 56,
+        "overallFeedback": "string (3-5 sentences, encouraging for Year 8)",
+        "tasks": [
+          {
+            "taskId": "string",
+            "score": "integer",
+            "maxMarks": "integer",
+            "feedback": "string (1-2 sentences)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario_y8_fansite",
+      "title": "Build Your Fan Site",
+      "context": "You are a huge fan of something — a sport, a band, a game, a film, an animal, anything you love. You have decided to build a proper website all about it so the world can share your passion. By the end of this project you will have designed and coded a four-page fan site with its own stylesheet, images, and working links — built entirely from scratch.",
+      "yearGroups": [
+        "Y8"
+      ],
+      "estimatedMinutes": 90,
+      "topicsCovered": [
+        "HTML structure",
+        "CSS styling",
+        "hyperlinks",
+        "images",
+        "multi-page websites"
+      ],
+      "subjectPrompt": "Before you begin, type the name of your chosen fan site topic below (e.g. Manchester City, Taylor Swift, Minecraft, Great White Sharks).",
+      "subjectFieldLabel": "My fan site is about:",
+      "tasks": [
+        {
+          "id": "task_01",
+          "type": "multichoice",
+          "title": "What is HTML?",
+          "difficulty": "foundation",
+          "maxMarks": 2,
+          "question": "Before you start building, let's check the basics. HTML stands for HyperText Markup Language. It uses TAGS wrapped in angle brackets to structure a webpage.\n\nWhich TWO of the following are valid HTML tags?",
+          "options": [
+            "<heading>",
+            "<h1>",
+            "<title>",
+            "[bold]",
+            "**strong**"
+          ],
+          "correctAnswers": [
+            "<h1>",
+            "<title>"
+          ],
+          "markScheme": "Award 1 mark for each correct answer selected (<h1> and <title>). Deduct 1 mark for each incorrect answer selected. Minimum 0."
+        },
+        {
+          "id": "task_02",
+          "type": "multichoice",
+          "title": "Essential HTML Structure",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "Every HTML page needs a basic structure. Put these five elements in the correct order, from the very first line to the last:\n\n<!DOCTYPE html>  |  </html>  |  <html>  |  <body>  |  </body>\n\nWhich of the following shows the correct order?",
+          "options": [
+            "<html> → <!DOCTYPE html> → <body> → </body> → </html>",
+            "<!DOCTYPE html> → <html> → <body> → </body> → </html>",
+            "<!DOCTYPE html> → <body> → <html> → </html> → </body>",
+            "<body> → <html> → <!DOCTYPE html> → </body> → </html>"
+          ],
+          "correctAnswers": [
+            "<!DOCTYPE html> → <html> → <body> → </body> → </html>"
+          ],
+          "markScheme": "Award 3 marks for the correct answer. Award 1 mark if the student selects an answer where <!DOCTYPE html> appears first but the rest is wrong."
+        },
+        {
+          "id": "task_03",
+          "type": "text",
+          "title": "Linking a Stylesheet",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "Your fan site will use ONE shared stylesheet called style.css that all four pages link to. This keeps your styling consistent and is how real websites work.\n\nThe link tag goes inside the <head> section of every HTML page.\n\nWrite the correct <link> tag to connect an external stylesheet called style.css to an HTML page.",
+          "markScheme": "Award 3 marks for: <link rel=\"stylesheet\" href=\"style.css\"> (or with type=\"text/css\" also present). Award 2 marks if rel and href are present but minor syntax error. Award 1 mark if the student writes a link tag with href=\"style.css\" but missing rel=\"stylesheet\". Award 0 for anything that would not function."
+        },
+        {
+          "id": "task_04",
+          "type": "code",
+          "language": "html",
+          "title": "Build Your Home Page",
+          "difficulty": "core",
+          "maxMarks": 8,
+          "question": "Time to build! Create your Home page (index.html) for your {subject} fan site from scratch.\n\nYour Home page MUST include:\n✅ Full HTML structure (DOCTYPE, html, head, body)\n✅ A <link> to style.css in the <head>\n✅ A <title> tag showing your fan site name\n✅ An <h1> heading welcoming visitors to your site\n✅ At least one paragraph <p> introducing your topic\n✅ A navigation bar with links to your other three pages:\n   — about.html, gallery.html, contact.html\n\nTip: use <nav> and <a href=\"\"> tags for your navigation.",
+          "starterCode": "",
+          "markScheme": "Award marks as follows — check the submitted code meets each requirement:\n2 marks: Full valid HTML structure (DOCTYPE, html, head, body all present and correctly nested)\n1 mark: <link rel=\"stylesheet\" href=\"style.css\"> present in <head>\n1 mark: <title> tag present in <head> with relevant content\n1 mark: <h1> heading present in body\n1 mark: At least one <p> tag with relevant introductory content about {subject}\n2 marks: Navigation present with working href links to about.html, gallery.html, and contact.html (1 mark if only 1–2 links present)"
+        },
+        {
+          "id": "task_05",
+          "type": "code",
+          "language": "html",
+          "title": "Build Your About Page",
+          "difficulty": "core",
+          "maxMarks": 7,
+          "question": "Now build your About page (about.html). This page should tell visitors more about your chosen topic — {subject} — and about you as a fan.\n\nYour About page MUST include:\n✅ Full HTML structure with <link> to style.css\n✅ An <h1> or <h2> heading\n✅ At least TWO paragraphs of content about {subject}\n✅ At least ONE image using <img src=\"\" alt=\"\">\n   (use a real URL from the web OR a placeholder: https://placehold.co/400x300)\n✅ A navigation bar linking back to your other pages",
+          "starterCode": "",
+          "markScheme": "Award marks as follows:\n1 mark: Valid HTML structure with stylesheet link\n1 mark: Appropriate heading present\n2 marks: At least two paragraphs of relevant content about {subject}\n2 marks: At least one <img> tag with src and alt attributes both present (1 mark if img present but alt missing)\n1 mark: Navigation bar present with links to other pages"
+        },
+        {
+          "id": "task_06",
+          "type": "code",
+          "language": "html",
+          "title": "Build Your Gallery Page",
+          "difficulty": "core",
+          "maxMarks": 8,
+          "question": "Build your Gallery page (gallery.html). This page should show a collection of images related to {subject}.\n\nYour Gallery page MUST include:\n✅ Full HTML structure with <link> to style.css\n✅ An <h1> or <h2> heading (e.g. 'Gallery' or '{subject} Gallery')\n✅ At least THREE images using <img src=\"\" alt=\"\">\n✅ A caption under each image using <p> or <figcaption>\n✅ A navigation bar linking to your other pages\n\nBonus challenge: wrap each image and caption in a <figure> tag.",
+          "starterCode": "",
+          "markScheme": "Award marks as follows:\n1 mark: Valid HTML structure with stylesheet link\n1 mark: Appropriate heading\n3 marks: At least three <img> tags each with src and alt (1 mark per image, deduct 0.5 per missing alt)\n2 marks: A caption present under each image using <p>, <figcaption>, or similar\n1 mark: Navigation bar present\nBonus (note only, do not add to score): <figure> usage noted positively in feedback"
+        },
+        {
+          "id": "task_07",
+          "type": "code",
+          "language": "html",
+          "title": "Build Your Contact Page",
+          "difficulty": "core",
+          "maxMarks": 7,
+          "question": "Build your Contact page (contact.html). This page should let fans get in touch or find out more.\n\nYour Contact page MUST include:\n✅ Full HTML structure with <link> to style.css\n✅ An <h1> or <h2> heading\n✅ At least one paragraph inviting visitors to get in touch\n✅ At least ONE external link using <a href=\"https://...\"> opening in a new tab (target=\"_blank\")\n   — link to an official site, social page, or Wikipedia article about {subject}\n✅ A navigation bar linking to your other pages",
+          "starterCode": "",
+          "markScheme": "Award marks as follows:\n1 mark: Valid HTML structure with stylesheet link\n1 mark: Appropriate heading\n1 mark: At least one paragraph of relevant content\n2 marks: External <a href> link present pointing to a real URL with target=\"_blank\" (1 mark if link present but target=\"_blank\" missing)\n2 marks: Navigation bar present with correct links to other pages"
+        },
+        {
+          "id": "task_08",
+          "type": "code",
+          "language": "css",
+          "title": "Write Your Stylesheet",
+          "difficulty": "core",
+          "maxMarks": 8,
+          "question": "Now write your shared stylesheet (style.css). This file controls the look of ALL four pages.\n\nYour stylesheet MUST include rules for:\n✅ body — set a background-color and a font-family\n✅ h1 — set a color and font-size\n✅ p — set a color and line-height\n✅ nav — add some padding and a background-color to make it stand out\n✅ img — set a max-width so images don't overflow the page (hint: max-width: 100%)\n\nChallenge: add a hover effect to your nav links using a:hover { }",
+          "starterCode": "",
+          "markScheme": "Award marks as follows:\n1 mark: body rule with background-color and font-family both set\n1 mark: h1 rule with color and font-size both set\n1 mark: p rule with color and line-height both set\n2 marks: nav rule with padding and background-color (1 mark if only one property)\n2 marks: img rule with max-width set to a sensible value (100%, or a pixel value)\n1 mark: a:hover rule present with at least one property changed\nDo not penalise for colour choices or font preferences — award marks for structure and correct CSS syntax."
+        },
+        {
+          "id": "task_09",
+          "type": "text",
+          "title": "Reflection — What Makes a Good Website?",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "You have now built a four-page website about {subject} — well done!\n\nAnswer BOTH of these questions in a few sentences each:\n\n1. Why is it better to use an external stylesheet (style.css) rather than writing CSS inside every HTML page separately?\n\n2. Name ONE thing you would improve about your fan site if you had more time, and explain why.",
+          "markScheme": "Question 1 (2 marks): Award 2 marks for a clear explanation that covers: one change updates all pages at once / avoids repetition / easier to maintain. Award 1 mark for a partially correct answer (e.g. 'it saves time' without explaining why). Award 0 for irrelevant answers.\nQuestion 2 (2 marks): Award 2 marks for a specific, realistic improvement with a clear reason (e.g. 'I would add a JavaScript slideshow to the gallery because it would make it more interactive'). Award 1 mark for a vague but relevant answer. Award 0 for 'nothing' or off-topic responses.\nTone: be encouraging — this is a Year 8 student who has just built their first website."
+        },
+        {
+          "id": "task_10",
+          "type": "text",
+          "title": "Evaluation — Does Your Site Meet the Brief?",
+          "difficulty": "extension",
+          "maxMarks": 5,
+          "question": "A good developer always checks their work against the original brief.\n\nThe brief for your {subject} fan site was:\n— 4 pages: Home, About, Gallery, Contact\n— At least one image on each content page\n— Working navigation links between all pages\n— One shared external CSS stylesheet\n— At least one external link on the Contact page\n\nWrite a short evaluation (3–5 sentences) that:\n✅ Confirms which parts of the brief you completed successfully\n✅ Identifies anything you were unable to finish and why\n✅ Suggests one way a future version of the site could be extended",
+          "markScheme": "Award marks as follows:\n2 marks: Student clearly identifies which brief requirements they met (specific, not just 'I did everything')\n2 marks: Student honestly identifies something incomplete OR, if fully complete, suggests a genuine limitation or area for improvement\n1 mark: A realistic, specific suggestion for extending the site in a future version\nTone: reward honesty and self-awareness. A student who admits something didn't work and explains why should score well on that criterion."
+        }
+      ],
+      "gradingInstructions": "You are marking Year 8 Computer Science work. The student has built a fan site about {subject}. Mark each task against its mark scheme. Be encouraging, constructive, and age-appropriate in your feedback. Acknowledge effort and creativity alongside technical accuracy. Overall feedback should be 3–5 sentences: start with a genuine positive, identify the strongest technical achievement, then give one clear, actionable improvement target. Return ONLY valid JSON — no preamble, no markdown fences.",
+      "gradingOutputFormat": {
+        "totalScore": "integer",
+        "maxScore": 55,
+        "overallFeedback": "string (3-5 sentences, encouraging tone)",
+        "tasks": [
+          {
+            "taskId": "string",
+            "score": "integer",
+            "maxMarks": "integer",
+            "feedback": "string (1-2 sentences)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario_y9_soundcolour",
+      "title": "Digital Storage Game",
+      "context": "You are a digital media technician who needs to explain to clients why their image and audio files are so large — and why compressing them loses quality. Over 6 weeks you will master how computers store sound and colour data, learn to calculate file sizes, and then build your own Python game that demonstrates these concepts in an engaging way. The game concept is yours to choose — your creativity is the only limit.",
+      "yearGroups": [
+        "Y9"
+      ],
+      "estimatedMinutes": 360,
+      "estimatedSessions": 6,
+      "subjectPrompt": "Before you begin, briefly describe the game you are planning to build (one sentence is fine — you can change your mind later).",
+      "subjectFieldLabel": "My game idea:",
+      "tasks": [
+        {
+          "id": "task_01",
+          "week": 1,
+          "type": "text",
+          "title": "Colour Depth and Image Storage",
+          "difficulty": "foundation",
+          "maxMarks": 6,
+          "question": "Computers store images as a grid of pixels. Each pixel stores a colour value in binary.\n\nKEY TERMS:\n— Colour depth (bit depth for images): number of bits used per pixel\n— More bits per pixel = more possible colours = larger file\n— Colour depth of 1 bit = 2 colours (black/white)\n— Colour depth of 8 bits = 256 colours\n— Colour depth of 24 bits = 16,777,216 colours (True Colour / RGB)\n\nFILE SIZE FORMULA:\nFile size (bits) = image width × image height × colour depth\nThen divide by 8 for bytes, 1024 for KB, 1024 again for MB.\n\nAnswer ALL of these:\n\n1. An image is 100 × 100 pixels with a colour depth of 8 bits. Calculate the file size in bits, then in bytes.\n\n2. A 24-bit colour image is 1920 × 1080 pixels. Calculate the file size in MB. Show your working.\n\n3. Why does increasing colour depth increase file size?\n\n4. A black and white (1-bit) image is 200 × 200 pixels. How many bytes is it?",
+          "markScheme": "1: 100×100×8 = 80,000 bits = 10,000 bytes — 1 mark for bits, 1 mark for bytes. 2: 1920×1080×24 = 49,766,400 bits ÷ 8 = 6,220,800 bytes ÷ 1024 = 6,075 KB ÷ 1024 ≈ 5.93 MB — award 1 mark for correct bits, 1 mark for correct MB (accept 5.9–6.0 MB). 3: More bits per pixel means more data stored per pixel, so the total file requires more storage — 1 mark for a clear explanation. 4: 200×200×1 = 40,000 bits ÷ 8 = 5,000 bytes — 1 mark."
+        },
+        {
+          "id": "task_02",
+          "week": 1,
+          "type": "text",
+          "title": "Sound Storage",
+          "difficulty": "foundation",
+          "maxMarks": 6,
+          "question": "Sound is stored digitally by sampling the sound wave at regular intervals.\n\nKEY TERMS:\n— Sample rate: how many samples taken per second (measured in Hz or kHz)\n  e.g. CD quality = 44,100 Hz (44.1 kHz)\n— Bit depth: how many bits used to store each sample\n  e.g. CD quality = 16 bits per sample\n— Higher sample rate + higher bit depth = better quality + larger file\n\nFILE SIZE FORMULA (uncompressed):\nFile size (bits) = sample rate × bit depth × duration (seconds) × channels\n(Mono = 1 channel, Stereo = 2 channels)\n\nAnswer ALL of these:\n\n1. A 10-second mono audio clip is recorded at 44,100 Hz with a bit depth of 16. Calculate the file size in bits, then in KB. Show your working.\n\n2. The same clip is recorded in stereo. How does the file size change? Show the new calculation.\n\n3. What happens to sound quality if you REDUCE the sample rate? Why?\n\n4. Why might a game developer choose a lower bit depth for background music compared to a key sound effect?",
+          "markScheme": "1: 44100×16×10×1 = 7,056,000 bits ÷ 8 = 882,000 bytes ÷ 1024 ≈ 861 KB — 1 mark for correct bits, 1 mark for correct KB (accept 860-862). 2: Multiply by 2 channels = 1,764,000 bytes ÷ 1024 ≈ 1,722 KB — 1 mark for doubled value. 3: Fewer samples captured per second means the wave shape is less accurately represented, leading to lower audio quality / loss of detail — 1 mark. 4: Valid reason e.g. background music is less critical to gameplay so lower quality is acceptable to save storage/memory — 1 mark. Award marks generously for clear understanding even if exact figures differ slightly."
+        },
+        {
+          "id": "task_03",
+          "week": 2,
+          "type": "text",
+          "title": "File Size Calculations — Extended",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "Practise your file size calculations with these more challenging problems. Show ALL working.\n\n1. A game contains a 30-second stereo sound effect at 22,050 Hz, 8-bit. Calculate the file size in KB.\n\n2. A game sprite sheet is 512 × 512 pixels at 24-bit colour. Calculate the file size in KB.\n\n3. A game developer has 50 MB of storage left. They need to store:\n   — A 2-minute stereo music track at 44,100 Hz, 16-bit\n   — A 1024 × 768 background image at 24-bit colour\n   Do they have enough space? Show all calculations and give a clear YES or NO answer.\n\n4. Explain ONE way a developer could reduce the file size of the music track without changing its duration.",
+          "markScheme": "1: 22050×8×30×2 = 10,584,000 bits ÷ 8 = 1,323,000 bytes ÷ 1024 ≈ 1,292 KB — 1 mark. 2: 512×512×24 = 6,291,456 bits ÷ 8 = 786,432 bytes ÷ 1024 = 768 KB — 1 mark. 3: Music: 44100×16×120×2 = 169,344,000 bits ÷ 8 = 21,168,000 bytes ÷ 1024 ÷ 1024 ≈ 20.19 MB. Image: 1024×768×24 = 18,874,368 bits ÷ 8 ÷ 1024 ÷ 1024 ≈ 2.25 MB. Total ≈ 22.44 MB — YES, they have enough — 2 marks (1 for each correct calculation, 1 for correct conclusion). 4: Reduce sample rate OR reduce bit depth OR convert to mono OR use compression — 1 mark for any valid answer with brief explanation."
+        },
+        {
+          "id": "task_04",
+          "week": 2,
+          "type": "text",
+          "title": "Plan Your Python Game",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "Time to plan your game! Your Python game must demonstrate knowledge of either sound storage, colour storage, or both — but the game concept is entirely your choice.\n\nSome ideas to spark inspiration (you do NOT have to use these):\n— A quiz that asks players to calculate file sizes\n— A game where players guess colour depth from image quality descriptions\n— A 'spot the difference' text game comparing storage settings\n— A challenge where players optimise a game's assets within a storage budget\n\nWrite your full game plan:\n\n1. Game title and one-sentence description\n2. What does the player DO each round? (gameplay loop)\n3. How does the game demonstrate sound or colour storage concepts?\n4. What Python features will you use? (e.g. loops, functions, dictionaries, random)\n5. How does the player win, lose, or get a score?",
+          "markScheme": "Award 1 mark each: (1) title and clear concept, (2) clear and playable gameplay loop described, (3) genuine and specific link to storage concepts (not just 'it's about sound'), (4) at least 3 valid Python features named, (5) clear scoring or win/lose condition. Reward ambitious and creative plans — do not penalise unusual ideas."
+        },
+        {
+          "id": "task_05",
+          "week": 3,
+          "type": "code",
+          "language": "python",
+          "title": "Build: Core Game Structure",
+          "difficulty": "core",
+          "maxMarks": 7,
+          "question": "Open your online Python IDE and build the core structure of your game.\n\nThis week, build the skeleton that everything else will plug into:\n✅ A welcome message and introduction explaining the game\n✅ At least one function defined (e.g. def play_round():)\n✅ A main game loop (while or for)\n✅ A score variable initialised to 0\n✅ At least one round of gameplay working end-to-end\n   (even if it's simple — the point is it runs without errors)\n\nTake a SCREENSHOT of your game running at least one round.\n\nPaste your code below.",
+          "starterCode": "# Digital Storage Game\n# Your name:\n# Date:\n\ndef welcome():\n    print('Welcome to [Your Game Name]!')\n    print('[Brief game instructions here]')\n\ndef play_round():\n    # Your round logic here\n    pass\n\ndef main():\n    welcome()\n    score = 0\n    rounds = 5\n    # Your main loop here\n\nmain()\n",
+          "markScheme": "Award 1 mark: welcome message present and runs. Award 2 marks: at least one function defined and called correctly (1 mark if defined but not called, or called but not defined). Award 1 mark: loop structure present (for/while). Award 1 mark: score variable initialised. Award 2 marks: at least one complete round runs without crashing — test by reading the code logic (2 marks if fully working, 1 mark if clearly intended but has a minor bug). Screenshot: if described as showing a running game, confirms the above."
+        },
+        {
+          "id": "task_06",
+          "week": 4,
+          "type": "code",
+          "language": "python",
+          "title": "Build: Storage Concepts in Gameplay",
+          "difficulty": "core",
+          "maxMarks": 8,
+          "question": "This week, build the part of your game that directly demonstrates sound or colour storage knowledge.\n\nThis is the heart of your game — it must include at least ONE of:\n— A calculation the player performs or the code performs (e.g. file size)\n— Data about colour depth, sample rate, or bit depth used in the game logic\n— Questions or challenges that require the player to apply storage knowledge\n\nRequirements:\n✅ Storage concept clearly embedded in gameplay (not just mentioned in a comment)\n✅ Player input used and validated (handle wrong input gracefully)\n✅ Correct/incorrect feedback given to the player\n✅ Score updated based on performance\n\nTake a SCREENSHOT showing your storage concept working in the game.\nPaste your updated code.",
+          "starterCode": "",
+          "markScheme": "Award 2 marks: storage concept (colour depth, sample rate, bit depth, or file size calculation) genuinely embedded in gameplay logic. Award 1 mark if only superficially referenced. Award 2 marks: player input taken and invalid input handled (e.g. try/except or .isdigit() check) — 1 mark if input taken but not validated. Award 2 marks: correct/wrong feedback given with score updated correctly. Award 1 mark if feedback present but score not updating. Award 1 mark: screenshot described showing storage concept in action."
+        },
+        {
+          "id": "task_07",
+          "week": 5,
+          "type": "code",
+          "language": "python",
+          "title": "Build: Multiple Rounds and Difficulty",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "Extend your game to be more complete and replayable.\n\nAdd ALL of these:\n✅ At least 5 different rounds or questions (no repeats)\n✅ Some form of difficulty variation (e.g. harder calculations, less time-obvious answers, higher values)\n✅ A lives system OR a timer OR a strike system (3 wrong = game over)\n✅ Final score displayed as X out of Y with a rating message\n\nTake a SCREENSHOT showing at least 3 rounds of your game running.\nPaste your updated code.",
+          "starterCode": "",
+          "markScheme": "Award 1 mark: at least 5 distinct rounds or questions present in code. Award 1 mark: evidence of difficulty variation (different values, harder concepts, progression). Award 2 marks: lives/timer/strike system implemented and working correctly (1 mark if present but not functioning). Award 1 mark: final score shown as fraction. Award 1 mark: rating message varies based on score. Screenshot: confirms the above — award marks if described."
+        },
+        {
+          "id": "task_08",
+          "week": 5,
+          "type": "code",
+          "language": "python",
+          "title": "Build: Functions and Code Quality",
+          "difficulty": "extension",
+          "maxMarks": 6,
+          "question": "At Year 9, code quality matters as well as functionality.\n\nRefactor your game so that:\n✅ At least 3 separate functions are defined, each doing one clear job\n   (e.g. welcome(), play_round(), show_score(), game_over())\n✅ Each function has a comment above it explaining what it does\n✅ No section of code is repeated — if you do something twice, it's in a function\n✅ Variables have clear, meaningful names (not a, b, x)\n✅ The main() function calls the others in logical order\n\nPaste your refactored code. You do NOT need a screenshot this week — the code speaks for itself.",
+          "starterCode": "",
+          "markScheme": "Award 2 marks: at least 3 functions defined, each with a single clear purpose (1 mark if only 2 functions, 0 if only one or none). Award 1 mark: each function has a comment explaining its purpose. Award 1 mark: no obvious code repetition — same logic not copy-pasted. Award 1 mark: all variable names are meaningful (reject single letters for important variables). Award 1 mark: main() function orchestrates the others in logical order. This task rewards good habits — be generous if the code is well-structured even if imperfect."
+        },
+        {
+          "id": "task_09",
+          "week": 6,
+          "type": "code",
+          "language": "python",
+          "title": "Final Build: Complete and Test",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "Final session. Complete your Digital Storage Game and test it fully.\n\nFinal checklist:\n✅ Game runs from start to finish without crashing\n✅ All rounds work correctly\n✅ Score is tracked and displayed\n✅ Storage concept is clearly demonstrated in gameplay\n✅ Code is commented and well-structured (functions used)\n✅ Game handles unexpected input without crashing\n\nTake a FINAL SCREENSHOT of your complete game running.\n\nPaste your final complete code.\n\nPaste your Trinket or Replit share link.",
+          "starterCode": "",
+          "markScheme": "Award 1 mark: share link provided (or clear reason why not). Award 1 mark: final screenshot described showing complete game run. Award 1 mark: all rounds functional in code. Award 1 mark: score tracked and displayed. Award 1 mark: storage concept demonstrably present in game logic. Award 1 mark: input error handling present somewhere in code. Read the full code holistically — a complete, working, well-structured game should score full marks."
+        },
+        {
+          "id": "task_10",
+          "week": 6,
+          "type": "text",
+          "title": "Evaluation",
+          "difficulty": "extension",
+          "maxMarks": 5,
+          "question": "Write a technical evaluation of your Digital Storage Game.\n\nAnswer ALL of these:\n\n1. How does your game demonstrate sound or colour storage concepts? Give TWO specific examples from your code or gameplay.\n\n2. A client asks: 'Why is my uncompressed 24-bit colour image so much larger than my old 8-bit one at the same resolution?' Write a clear technical answer (3-4 sentences) as if you are explaining it to them.\n\n3. Identify ONE part of your Python code you are most proud of and explain why it was technically challenging.\n\n4. If you were to develop this game further, describe ONE feature that would deepen the player's understanding of digital storage. Explain how it would work.\n\n5. Reflect honestly: what would you do differently if you started this project again?",
+          "markScheme": "Award 1 mark: two specific examples of storage concepts in gameplay (vague answers score 0). Award 1 mark: technically accurate explanation of colour depth and file size for the client (must mention bits per pixel and multiplication). Award 1 mark: specific code achievement identified with genuine technical explanation. Award 1 mark: realistic feature suggestion that genuinely deepens storage understanding. Award 1 mark: honest and specific reflection — 'nothing' or vague answers score 0. This is a Year 9 evaluation — expect and reward technical precision."
+        }
+      ],
+      "gradingInstructions": "You are marking Year 9 Computer Science work. The student has been building a Python game about sound and colour storage over 6 weeks using an online IDE. Mark each task against its mark scheme. Be encouraging but appropriately rigorous for Year 9 — reward technical precision and penalise vague answers. For code tasks: reward correct logic and good structure; be forgiving of minor syntax errors if intent is clear. Screenshots cannot be viewed — award marks if the student describes what the screenshot shows. Overall feedback: 3-5 sentences. Acknowledge the ambition of their project, highlight their strongest technical achievement in either Python or storage theory, then give one specific and actionable improvement target appropriate for Year 9. Return ONLY valid JSON — no preamble, no markdown fences.",
+      "gradingOutputFormat": {
+        "totalScore": "integer",
+        "maxScore": 61,
+        "overallFeedback": "string (3-5 sentences, rigorous but encouraging for Year 9)",
+        "tasks": [
+          {
+            "taskId": "string",
+            "score": "integer",
+            "maxMarks": "integer",
+            "feedback": "string (1-2 sentences)"
+          }
+        ]
+      }
+    }
+  ]
+}
