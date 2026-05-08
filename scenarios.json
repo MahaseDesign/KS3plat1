@@ -573,6 +573,459 @@
           }
         ]
       }
+    },
+    {
+      "id": "scenario_y7_ethics_ai",
+      "title": "The Ethics of Artificial Intelligence",
+      "context": "Artificial intelligence is changing the world — but is it always for the better? Over the next 6 weeks you will explore how AI works, where it is used, and the ethical questions it raises. Your final task is to create a Canva poster that explains the ethics of AI to someone your age — and share it here for feedback.",
+      "yearGroups": [
+        "Y7"
+      ],
+      "estimatedMinutes": 360,
+      "estimatedSessions": 6,
+      "subjectPrompt": null,
+      "tasks": [
+        {
+          "id": "task_01",
+          "week": 1,
+          "type": "multichoice",
+          "title": "What is Artificial Intelligence?",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "Artificial Intelligence (AI) means computers that can do tasks that normally need human intelligence — like recognising faces, understanding speech, or making decisions.\n\nWhich THREE of the following are examples of AI being used in real life?",
+          "options": [
+            "A calculator working out 2 + 2",
+            "Netflix recommending a show you might like",
+            "A spam filter deciding if an email is junk",
+            "A light switch turning on when you flick it",
+            "A self-driving car steering around obstacles"
+          ],
+          "correctAnswers": [
+            "Netflix recommending a show you might like",
+            "A spam filter deciding if an email is junk",
+            "A self-driving car steering around obstacles"
+          ],
+          "markScheme": "Award 1 mark per correct answer selected (max 3). Deduct 1 mark for each incorrect answer selected. Minimum 0. Correct answers: Netflix recommendations, spam filter, self-driving car."
+        },
+        {
+          "id": "task_02",
+          "week": 1,
+          "type": "text",
+          "title": "How Does AI Learn?",
+          "difficulty": "foundation",
+          "maxMarks": 4,
+          "question": "AI learns from DATA — huge amounts of examples. A system shown millions of cat photos eventually learns to spot cats.\n\nThis is called MACHINE LEARNING.\n\nAnswer these questions in full sentences:\n\n1. What is machine learning? Explain it in your own words.\n\n2. Give ONE real-world example of machine learning that affects your daily life.\n\n3. Why might an AI make mistakes if it is trained on biased data? Give an example.\n\n4. Who do you think should be responsible when an AI system makes a mistake — the company that built it, the person using it, or someone else?",
+          "markScheme": "1: Clear explanation that AI learns from large amounts of data/examples — 1 mark. 2: Any valid example (voice assistant, recommendation algorithm, autocorrect, face unlock etc) — 1 mark. 3: Valid explanation with example e.g. if trained only on certain types of faces it may not recognise others — 1 mark. 4: Any reasoned answer showing the student has thought about responsibility — 1 mark. Reward personal opinion with reasoning."
+        },
+        {
+          "id": "task_03",
+          "week": 2,
+          "type": "multichoice",
+          "title": "The Benefits of AI",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "AI can do amazing things. Read each statement and choose the THREE that describe genuine benefits of AI.",
+          "options": [
+            "AI can help doctors spot cancer in scans more accurately than humans",
+            "AI always makes fairer decisions than humans",
+            "AI can predict natural disasters and save lives",
+            "AI never makes mistakes",
+            "AI can help people with disabilities communicate more easily"
+          ],
+          "correctAnswers": [
+            "AI can help doctors spot cancer in scans more accurately than humans",
+            "AI can predict natural disasters and save lives",
+            "AI can help people with disabilities communicate more easily"
+          ],
+          "markScheme": "Award 1 mark per correct answer (max 3). Correct: medical diagnosis, disaster prediction, disability assistance. Deduct 1 per wrong selection. Min 0."
+        },
+        {
+          "id": "task_04",
+          "week": 2,
+          "type": "text",
+          "title": "The Risks of AI",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "AI also brings serious risks and ethical questions. Ethics means thinking about what is right and wrong.\n\nRead each scenario and write 2-3 sentences explaining the ethical concern:\n\n1. A company uses AI to decide who gets a job interview. The AI was trained on data from the last 10 years — when most employees were male.\n\n2. An AI chatbot gives a person incorrect medical advice.\n\n3. AI can create fake videos of real people saying things they never said (called 'deepfakes').\n\n4. A school uses AI to monitor students' emotions during lessons to see if they are paying attention.\n\n5. Millions of factory workers lose their jobs because AI-powered robots can do the work faster and cheaper.",
+          "markScheme": "Award 1 mark per scenario for a response that: identifies a specific harm or unfairness, names who is affected, or suggests a reason why it is ethically problematic. Do not require perfect answers — reward genuine ethical thinking. Award 0 for 'it is bad' with no reasoning."
+        },
+        {
+          "id": "task_05",
+          "week": 3,
+          "type": "text",
+          "title": "AI and Bias",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "BIAS in AI means the system treats some people unfairly — often because the training data was unfair in the first place.\n\nAnswer ALL of these questions:\n\n1. What does 'bias' mean in the context of AI?\n\n2. A facial recognition system is tested. It correctly identifies white faces 99% of the time but only dark-skinned faces 65% of the time. Why might this happen?\n\n3. Why is AI bias a serious problem if it is used in decisions about loans, jobs, or prison sentences?\n\n4. Suggest TWO ways that AI companies could try to reduce bias in their systems.\n\n5. Do you think it is ever acceptable to use a biased AI system? Explain your view.",
+          "markScheme": "1: Clear definition — unfair treatment of certain groups due to skewed training data — 1 mark. 2: Training data contained more white faces than dark-skinned faces — 1 mark. 3: Unfair life-changing decisions made at scale affecting many people — 1 mark. 4: Two valid suggestions e.g. diverse training data, human oversight, regular audits, diverse development teams — 1 mark for any two. 5: Any clearly reasoned opinion — 1 mark. Reward depth of thinking."
+        },
+        {
+          "id": "task_06",
+          "week": 4,
+          "type": "text",
+          "title": "AI in Your Life",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "Think about your own life and the world around you.\n\n1. List FIVE places where you interact with AI in a typical day (think about your phone, streaming services, school, transport, shopping...).\n\n2. Choose ONE of those examples. Do you think the benefits outweigh the risks for that particular use of AI? Write 3-4 sentences explaining your view.\n\n3. Should there be laws controlling how AI is used? What rules would you make if you were in charge? Give at least TWO specific rules.\n\n4. Who do you think has the most power to make AI more ethical — governments, companies, or ordinary people? Explain your answer.",
+          "markScheme": "1: Five plausible examples — 1 mark (need at least 4 for the mark). 2: Clear argument with specific evidence related to their chosen example — 1 mark. 3: Two specific, realistic rules stated — 1 mark. 4: Any well-reasoned answer picking one group and explaining why — 1 mark. General quality: award 1 bonus mark if the overall response shows strong critical thinking throughout."
+        },
+        {
+          "id": "task_07",
+          "week": 4,
+          "type": "text",
+          "title": "Plan Your Poster",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "You are going to create a Canva poster about the Ethics of AI. Your poster needs to inform someone your age about this topic.\n\nYour poster MUST include:\n✅ A clear title\n✅ An explanation of what AI is (simple, for your age group)\n✅ At least TWO benefits of AI with examples\n✅ At least TWO risks or ethical concerns with examples\n✅ Your personal view — do you think AI is more good or more harmful overall?\n✅ At least ONE statistic or real-world fact\n✅ Images or graphics (Canva has free ones)\n\nBefore you start designing, write your poster plan here:\n1. What is your title?\n2. What are your two benefits?\n3. What are your two risks/ethical concerns?\n4. What fact or statistic will you include?\n5. What is your personal viewpoint statement (one punchy sentence)?",
+          "markScheme": "Award 1 mark each for: (1) a clear, engaging title, (2) two specific benefits stated, (3) two specific risks stated, (4) a real statistic or fact named (even if approximate), (5) a clear personal viewpoint sentence. Reward ambition and creativity."
+        },
+        {
+          "id": "task_08",
+          "week": 5,
+          "type": "text",
+          "title": "Build Your Poster — Progress Check",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "You should now be working on your Canva poster.\n\nGo to canva.com and create your poster. Use the A4 or Poster template.\n\nProgress check — answer these questions:\n\n1. What have you completed on your poster so far? (describe what sections are done)\n\n2. What do you still need to add?\n\n3. Paste your Canva share link here so your teacher can see your work in progress:\n   (In Canva: click Share → Copy Link)\n\n4. What is one design choice you have made to make your poster appealing to someone your age?",
+          "markScheme": "1: Clear description of progress — 1 mark. 2: Honest account of what remains — 1 mark. 3: A Canva link provided (any valid URL) — 1 mark. Award even if incomplete. 4: A specific design decision mentioned e.g. colour scheme, font choice, image selection — 1 mark."
+        },
+        {
+          "id": "task_09",
+          "week": 6,
+          "type": "text",
+          "title": "Final Poster — Submit Your Work",
+          "difficulty": "core",
+          "maxMarks": 8,
+          "question": "Your poster is complete! Time to share it.\n\nStep 1: In Canva, click Share → Copy Link. Paste the link below.\nStep 2: Answer these questions about your finished poster.\n\n1. Paste your final Canva poster link here:\n\n2. Does your poster include all of the required elements? Go through the checklist:\n   ✅ Clear title\n   ✅ What AI is (explained simply)\n   ✅ Two benefits with examples\n   ✅ Two risks/ethical concerns with examples\n   ✅ A statistic or real-world fact\n   ✅ Your personal viewpoint\n   ✅ Images or graphics\n   For each item, write YES or NO and a brief reason.\n\n3. Who is the intended audience for your poster and how did you design it for them?",
+          "markScheme": "1: A Canva link provided — 1 mark. 2: Award 1 mark for each checklist item confirmed with a brief reason (max 5 marks from this section — count items confirmed as YES with reasons). Partial: 3 marks if only 3-4 confirmed. 3: Clear identification of audience with a specific design decision linked to it — 1 mark. If no link is provided, cap total at 4 marks but still mark the written content."
+        },
+        {
+          "id": "task_10",
+          "week": 6,
+          "type": "text",
+          "title": "Reflection and Evaluation",
+          "difficulty": "extension",
+          "maxMarks": 5,
+          "question": "Now that you have completed your study of AI ethics and created your poster, reflect on what you have learned.\n\nAnswer ALL of these:\n\n1. What is the most important thing you have learned about AI during this project?\n\n2. Has your opinion about AI changed during this project? Explain how and why.\n\n3. What was the hardest part of making your poster, and how did you solve it?\n\n4. If you could ask one question to the CEO of an AI company, what would it be and why?\n\n5. Rate your poster out of 10 and explain your rating honestly.",
+          "markScheme": "Award 1 mark each for: (1) a genuine specific insight about AI ethics, (2) honest reflection on changed/unchanged opinion with explanation, (3) specific challenge identified and solved, (4) an insightful and relevant question to a CEO, (5) honest self-assessment with specific justification. Reward depth of reflection throughout — this is an extension task."
+        }
+      ],
+      "gradingInstructions": "You are marking Year 7 Computer Science work on the Ethics of AI. The student has completed a 6-week project including a Canva poster. Mark each task against its mark scheme. Be very encouraging — this is a Year 7 student engaging with complex ethical ideas for the first time. Praise genuine thinking and personal opinions even if not perfectly expressed. For the poster tasks: you cannot view Canva links directly — award link marks if a URL is present, and mark written content based on what the student has described. Overall feedback: 3-5 sentences. Celebrate their ethical thinking, highlight the strongest argument they made, and suggest one way to develop their critical thinking further. Return ONLY valid JSON — no preamble, no markdown fences.",
+      "gradingOutputFormat": {
+        "totalScore": "integer",
+        "maxScore": 47,
+        "overallFeedback": "string",
+        "tasks": [
+          {
+            "taskId": "string",
+            "score": "integer",
+            "maxMarks": "integer",
+            "feedback": "string"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario_y7_facial_recognition",
+      "title": "The Ethics of Facial Recognition",
+      "context": "Cameras are everywhere — and many of them can now recognise your face. Facial recognition technology is being used by police, schools, shops, and governments. But is it safe? Is it fair? Over 6 weeks you will investigate how facial recognition works and whether it should be used — then create a Canva poster making your case.",
+      "yearGroups": [
+        "Y7"
+      ],
+      "estimatedMinutes": 360,
+      "estimatedSessions": 6,
+      "subjectPrompt": null,
+      "tasks": [
+        {
+          "id": "task_01",
+          "week": 1,
+          "type": "multichoice",
+          "title": "How Does Facial Recognition Work?",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "Facial recognition technology scans a face and creates a digital 'map' of features — the distance between your eyes, the shape of your nose, the width of your jaw. This map is compared to a database.\n\nChoose the THREE correct statements about facial recognition:",
+          "options": [
+            "It works by measuring features of your face and creating a unique map",
+            "It can only work if you are looking directly at the camera",
+            "It is used by police in some countries to identify suspects in crowds",
+            "It is 100% accurate and never makes mistakes",
+            "It can be used to unlock smartphones"
+          ],
+          "correctAnswers": [
+            "It works by measuring features of your face and creating a unique map",
+            "It is used by police in some countries to identify suspects in crowds",
+            "It can be used to unlock smartphones"
+          ],
+          "markScheme": "Award 1 mark per correct answer. Correct: face mapping, police use, phone unlock. Deduct 1 per incorrect selection. Min 0."
+        },
+        {
+          "id": "task_02",
+          "week": 1,
+          "type": "text",
+          "title": "Where Is Facial Recognition Used?",
+          "difficulty": "foundation",
+          "maxMarks": 4,
+          "question": "Facial recognition is used in many places. For each example below, write one sentence explaining whether you think this use is acceptable or not, and why.\n\n1. Police using facial recognition to find missing children\n2. A school using facial recognition to take register\n3. A supermarket using facial recognition to catch shoplifters\n4. A government using facial recognition to monitor protesters",
+          "markScheme": "Award 1 mark per response that gives a clear opinion with a specific reason. 'Yes because it helps' scores 0 — must explain the specific benefit or harm. 'No because it is an invasion of privacy and students have not consented' scores 1. Reward nuanced responses that acknowledge both sides."
+        },
+        {
+          "id": "task_03",
+          "week": 2,
+          "type": "text",
+          "title": "The Accuracy Problem",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "Studies have shown that facial recognition systems are less accurate for women, people with darker skin tones, and older people — because the training data contained mostly white male faces.\n\nIn 2020, Robert Williams — a Black man in the USA — was wrongly arrested because a facial recognition system incorrectly matched his face to a suspect.\n\nAnswer ALL of these:\n\n1. Why might a facial recognition system be less accurate for some groups of people?\n\n2. What are the consequences of a false match in a criminal investigation?\n\n3. Should police be allowed to use facial recognition technology if it is known to be less accurate for certain groups? Explain your view.\n\n4. What should happen to someone who is wrongly arrested because of a facial recognition error?\n\n5. How could the accuracy problem be reduced?",
+          "markScheme": "1: Training data was biased — fewer examples of certain groups — 1 mark. 2: Wrongful arrest, trauma, loss of trust in justice system — 1 mark for any two consequences. 3: Any clearly reasoned opinion — 1 mark. 4: Any reasonable response mentioning compensation, apology, or accountability — 1 mark. 5: Diverse training data, human review of matches, higher confidence thresholds — 1 mark for any valid suggestion."
+        },
+        {
+          "id": "task_04",
+          "week": 2,
+          "type": "multichoice",
+          "title": "Privacy and Your Rights",
+          "difficulty": "core",
+          "maxMarks": 3,
+          "question": "The UK has laws protecting your privacy. The right to privacy means you can control information about yourself.\n\nWhich THREE of the following would be a violation of your privacy rights?",
+          "options": [
+            "A police officer asking your name after a crime",
+            "A shop scanning your face without telling you",
+            "Your school sharing your photo with an advertising company",
+            "A doctor keeping your medical records confidential",
+            "A government building a database of every citizen's face without consent"
+          ],
+          "correctAnswers": [
+            "A shop scanning your face without telling you",
+            "Your school sharing your photo with an advertising company",
+            "A government building a database of every citizen's face without consent"
+          ],
+          "markScheme": "Award 1 mark per correct answer. Correct: covert shop scanning, sharing photo without consent, government database without consent. Deduct 1 per wrong selection. Min 0."
+        },
+        {
+          "id": "task_05",
+          "week": 3,
+          "type": "text",
+          "title": "The Debate — Should We Use It?",
+          "difficulty": "core",
+          "maxMarks": 6,
+          "question": "There is a real debate about whether facial recognition technology should be used at all.\n\nArguments FOR:\n— Helps catch criminals and terrorists\n— Can find missing people quickly\n— Makes phone security easier\n\nArguments AGAINST:\n— Inaccurate, especially for certain groups\n— Invades privacy without consent\n— Could be used to control and monitor citizens\n\nYour task:\n1. Add TWO more arguments FOR facial recognition (your own ideas)\n2. Add TWO more arguments AGAINST (your own ideas)\n3. Which side do you agree with more? Write a paragraph (4-6 sentences) arguing your position clearly, using evidence from your research.",
+          "markScheme": "1: Two additional FOR arguments — 1 mark each (max 2). Must be different from examples given. 2: Two additional AGAINST arguments — 1 mark each (max 2). 3: A clear opinion paragraph with at least two pieces of specific evidence or reasoning — 2 marks. 1 mark if opinion stated but weakly supported. Reward students who acknowledge the other side before arguing their own."
+        },
+        {
+          "id": "task_06",
+          "week": 4,
+          "type": "text",
+          "title": "Case Studies",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "Read these real-world examples and answer the questions.\n\nCASE 1: In 2022, King's Cross shopping centre in London was found to be secretly scanning shoppers' faces without their knowledge or consent. The Information Commissioner's Office investigated.\n\nCASE 2: China uses a national facial recognition system linked to CCTV cameras in public spaces. It has been used to catch criminals — but also to monitor ethnic minorities and political activists.\n\nCASE 3: Several US cities including San Francisco and Boston have BANNED police from using facial recognition technology.\n\nFor each case, write 2-3 sentences:\n1. What is the ethical concern in Case 1?\n2. What is the argument FOR the system in Case 2, and what is the main concern?\n3. Why do you think some cities have chosen to ban facial recognition completely?",
+          "markScheme": "1: Identifies lack of consent and covert surveillance as the concern — 1 mark. 2: FOR — crime prevention / national security. CONCERN — surveillance of minorities, political control, chilling effect on free speech — 1 mark for both sides. 3: Any valid reason e.g. accuracy concerns, civil liberties, chilling effect on protest — 1 mark. Overall quality: 1 bonus mark if all three responses show clear, specific ethical reasoning."
+        },
+        {
+          "id": "task_07",
+          "week": 4,
+          "type": "text",
+          "title": "Plan Your Poster",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "You are going to create a Canva poster titled: 'Should We Use Facial Recognition? — The Debate'\n\nYour poster MUST include:\n✅ A clear title\n✅ A simple explanation of what facial recognition is\n✅ At least TWO arguments FOR with real examples\n✅ At least TWO arguments AGAINST with real examples\n✅ Your personal verdict — YES, NO, or ONLY WITH STRICT RULES\n✅ At least ONE statistic or fact\n✅ Clear, eye-catching design\n\nPlan your poster by answering:\n1. What is your personal verdict and why?\n2. What TWO facts or statistics will you include?\n3. What real-world example will you highlight?\n4. What colours and style will you use to make it look balanced, not one-sided?\n5. Who is your target audience?",
+          "markScheme": "1 mark each: (1) clear verdict with reason, (2) two facts or statistics named, (3) specific real example from research, (4) design thinking for balance, (5) audience identified. Reward posters planned to be genuinely informative rather than one-sided propaganda."
+        },
+        {
+          "id": "task_08",
+          "week": 5,
+          "type": "text",
+          "title": "Poster Progress Check",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "You should now be building your Canva poster.\n\n1. What sections have you completed so far?\n2. Paste your Canva work-in-progress link here\n3. What is one thing you are proud of in your design so far?\n4. What one thing do you want to improve before you submit?",
+          "markScheme": "1: Description of completed sections — 1 mark. 2: Any URL provided — 1 mark. 3: Specific design element mentioned with a reason — 1 mark. 4: Honest specific improvement target — 1 mark."
+        },
+        {
+          "id": "task_09",
+          "week": 6,
+          "type": "text",
+          "title": "Final Poster Submission",
+          "difficulty": "core",
+          "maxMarks": 8,
+          "question": "Your poster is complete. Submit it here.\n\n1. Paste your final Canva poster link:\n\n2. Check your poster against the brief. For each item write YES or NO and a brief reason:\n   ✅ Clear title\n   ✅ What facial recognition is (explained clearly)\n   ✅ Two FOR arguments with real examples\n   ✅ Two AGAINST arguments with real examples\n   ✅ One statistic or fact\n   ✅ Your personal verdict clearly stated\n   ✅ Eye-catching design\n\n3. If someone read your poster, what is the ONE main message you want them to take away?",
+          "markScheme": "1: Link provided — 1 mark. 2: 1 mark per YES confirmed with a brief reason (max 5). 3: A clear, specific single message stated — 1 mark. If no link provided, cap at 4 marks but mark written content."
+        },
+        {
+          "id": "task_10",
+          "week": 6,
+          "type": "text",
+          "title": "Reflection",
+          "difficulty": "extension",
+          "maxMarks": 5,
+          "question": "Reflect on your learning over the past 6 weeks.\n\n1. Before this project, did you know your face could be scanned without your knowledge in public places in the UK? How do you feel about that now?\n\n2. What is the strongest argument on the side you DISAGREE with? Can you steelman it — argue it as well as possible even though you disagree?\n\n3. What would you want the UK government to do about facial recognition? Write two specific policies.\n\n4. Has this project changed how you think about walking past cameras in public? Explain.\n\n5. Rate your project out of 10 and give a specific reason for your rating.",
+          "markScheme": "1: Genuine personal reflection — 1 mark. 2: A fair, detailed steelman argument for the opposing view — 1 mark. Reward students who can genuinely argue the other side. 3: Two specific policies stated — 1 mark. 4: Honest personal reflection on behaviour change — 1 mark. 5: Self-rating with specific justification — 1 mark."
+        }
+      ],
+      "gradingInstructions": "You are marking Year 7 Computer Science work on the Ethics of Facial Recognition. Mark each task against its mark scheme. Be encouraging — this is complex ethical content for Year 7. Reward genuine critical thinking and personal opinions even if not perfectly expressed. For poster tasks: you cannot view Canva links — award link marks if a URL is present, mark written content from descriptions. Overall feedback: 3-5 sentences. Celebrate the student's ability to see both sides of a debate, note their strongest argument, suggest one way to develop further. Return ONLY valid JSON — no preamble, no markdown fences.",
+      "gradingOutputFormat": {
+        "totalScore": "integer",
+        "maxScore": 47,
+        "overallFeedback": "string",
+        "tasks": [
+          {
+            "taskId": "string",
+            "score": "integer",
+            "maxMarks": "integer",
+            "feedback": "string"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario_y7_online_privacy",
+      "title": "Online Privacy",
+      "context": "Every time you go online, you leave a digital footprint. Apps, websites, and companies collect data about you — often without you realising it. Over 6 weeks you will learn what data is collected, why it matters, and how to protect yourself. Your final task is to create a Canva poster helping young people understand their online privacy rights.",
+      "yearGroups": [
+        "Y7"
+      ],
+      "estimatedMinutes": 360,
+      "estimatedSessions": 6,
+      "subjectPrompt": null,
+      "tasks": [
+        {
+          "id": "task_01",
+          "week": 1,
+          "type": "multichoice",
+          "title": "What is a Digital Footprint?",
+          "difficulty": "foundation",
+          "maxMarks": 3,
+          "question": "A DIGITAL FOOTPRINT is all the data you leave behind when you use the internet — searches, likes, purchases, messages, location data, and more.\n\nChoose the THREE actions that ADD to your digital footprint:",
+          "options": [
+            "Searching for something on Google",
+            "Reading a book offline",
+            "Liking a post on social media",
+            "Walking to school without your phone",
+            "Signing up to a free app with your email address"
+          ],
+          "correctAnswers": [
+            "Searching for something on Google",
+            "Liking a post on social media",
+            "Signing up to a free app with your email address"
+          ],
+          "markScheme": "Award 1 mark per correct answer. Correct: Google search, social media like, app signup. Deduct 1 per wrong selection. Min 0."
+        },
+        {
+          "id": "task_02",
+          "week": 1,
+          "type": "text",
+          "title": "What Data is Collected About You?",
+          "difficulty": "foundation",
+          "maxMarks": 4,
+          "question": "Companies collect many types of data about you. Answer these questions in full sentences:\n\n1. Name FOUR types of personal data that apps or websites might collect about you.\n\n2. Why do companies want this data? What do they do with it?\n\n3. When you download a free app, you often have to agree to Terms and Conditions. Most people never read them. Why do you think companies make them so long and complicated?\n\n4. Is it fair that companies collect your data in exchange for free services? Give your opinion with a reason.",
+          "markScheme": "1: Four valid types e.g. name, location, age, browsing history, purchase history, contacts, photos — 1 mark (need at least 3 different types). 2: Targeted advertising, selling to third parties, improving products — 1 mark for any two valid reasons. 3: Any insight e.g. to hide what they are doing, reduce refusals, legal protection — 1 mark. 4: Any reasoned opinion — 1 mark. Reward students who see both sides."
+        },
+        {
+          "id": "task_03",
+          "week": 2,
+          "type": "multichoice",
+          "title": "Your Rights Under UK Law",
+          "difficulty": "core",
+          "maxMarks": 3,
+          "question": "In the UK, the DATA PROTECTION ACT and UK GDPR give you rights over your personal data.\n\nWhich THREE of the following are rights you have under UK data protection law?",
+          "options": [
+            "The right to know what data a company holds about you",
+            "The right to demand a company deletes your data",
+            "The right to read any company employee's private emails",
+            "The right to correct wrong information held about you",
+            "The right to earn money every time your data is used"
+          ],
+          "correctAnswers": [
+            "The right to know what data a company holds about you",
+            "The right to demand a company deletes your data",
+            "The right to correct wrong information held about you"
+          ],
+          "markScheme": "Award 1 mark per correct answer. Correct: right to know, right to erasure, right to correction. Deduct 1 per wrong selection. Min 0."
+        },
+        {
+          "id": "task_04",
+          "week": 2,
+          "type": "text",
+          "title": "Social Media and Privacy",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "Social media platforms collect enormous amounts of data about their users.\n\nAnswer ALL of these questions:\n\n1. You are 13 and have a social media account. Your profile says you are 18. What data risks does this create for you?\n\n2. A photo you post shows your house in the background. What information could someone work out from this?\n\n3. You post 'Can't wait for our holiday next week!' What risk does this create?\n\n4. Your friend tags you in a photo at a party without asking. What are your rights in this situation?\n\n5. TikTok, Instagram, and Snapchat all have settings to make your account private. Why is this not a complete solution to privacy?",
+          "markScheme": "1: Adults may target them differently, age-inappropriate content, false identity risks — 1 mark. 2: Location, neighbourhood, house appearance — 1 mark. 3: House is empty — burglary risk — 1 mark. 4: Can ask them to remove it, data protection rights, right to be forgotten — 1 mark. 5: Company still collects data, third party apps, data breaches, friends can screenshot — 1 mark."
+        },
+        {
+          "id": "task_05",
+          "week": 3,
+          "type": "text",
+          "title": "How to Protect Your Privacy",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "There are practical steps you can take to protect your online privacy.\n\n1. What is a strong password? Write an example of a WEAK password and explain why it is weak. Then describe what makes a password strong.\n\n2. What is two-factor authentication (2FA) and why does it help protect your accounts?\n\n3. What does 'phishing' mean and how can you spot a phishing email or message?\n\n4. What is a VPN and what does it do?\n\n5. You want to keep your social media account but improve your privacy. Write FOUR specific settings or habits you would change.",
+          "markScheme": "1: Weak example given with explanation (e.g. password123 — common word/predictable) + strong password described (long, mixed characters, not personal info) — 1 mark. 2: A second verification step sent to your phone/email — makes it harder for someone with your password to get in — 1 mark. 3: Fake messages pretending to be from legitimate organisations to steal info — 1 mark. 4: Virtual Private Network — encrypts connection, hides your location/IP — 1 mark. 5: Four specific changes e.g. private account, remove location from posts, limit friend list, disable location sharing, review app permissions — 1 mark."
+        },
+        {
+          "id": "task_06",
+          "week": 4,
+          "type": "text",
+          "title": "Big Picture — Surveillance and Society",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "Online privacy is not just a personal issue — it affects society.\n\n1. What is 'surveillance capitalism'? (The idea that companies make money by collecting and selling data about people)\n\n2. Some people say 'I have nothing to hide, so I do not care about privacy.' Write 2-3 sentences explaining why this argument is flawed.\n\n3. Edward Snowden leaked documents in 2013 showing that the US government was secretly collecting data on millions of ordinary people. Was he right to do it? Give your view with reasons.\n\n4. Do you think people your age are aware enough of online privacy risks? What would you want schools to teach?",
+          "markScheme": "1: Clear explanation that companies profit from collecting and monetising personal data — 1 mark. 2: Privacy protects everyone regardless of guilt, prevents future misuse, chilling effect on free speech — 1 mark for any two valid counter-arguments. 3: Any clearly reasoned view with specific points — 1 mark. 4: Honest personal view + specific teaching suggestion — 1 mark."
+        },
+        {
+          "id": "task_07",
+          "week": 4,
+          "type": "text",
+          "title": "Plan Your Privacy Poster",
+          "difficulty": "core",
+          "maxMarks": 5,
+          "question": "You are going to create a Canva poster to help young people understand online privacy. Your target audience is students aged 11-14.\n\nYour poster MUST include:\n✅ A clear, catchy title\n✅ An explanation of what a digital footprint is\n✅ At least THREE practical privacy tips for young people\n✅ At least ONE fact or statistic about data collection\n✅ Your top privacy tip (the MOST important one)\n✅ A clear, eye-catching design suitable for young people\n\nPlan your poster:\n1. What is your title?\n2. What are your three privacy tips?\n3. What fact or statistic will you use?\n4. What is your top tip and why is it the most important?\n5. What style or colours will make it appeal to your target audience?",
+          "markScheme": "Award 1 mark each: (1) catchy relevant title, (2) three practical tips for young people stated, (3) a specific fact or statistic named, (4) top tip chosen with clear reason, (5) design thinking linked to target audience. Reward posters planned to be genuinely useful to peers."
+        },
+        {
+          "id": "task_08",
+          "week": 5,
+          "type": "text",
+          "title": "Poster Progress Check",
+          "difficulty": "core",
+          "maxMarks": 4,
+          "question": "You should be well into building your Canva poster now.\n\n1. What sections have you completed?\n2. Paste your Canva work-in-progress link:\n3. What feedback would you give yourself at this stage?\n4. What will you focus on in your final session to finish strong?",
+          "markScheme": "1: Sections described — 1 mark. 2: URL provided — 1 mark. 3: Honest specific self-feedback — 1 mark. 4: Specific plan for final session — 1 mark."
+        },
+        {
+          "id": "task_09",
+          "week": 6,
+          "type": "text",
+          "title": "Final Poster Submission",
+          "difficulty": "core",
+          "maxMarks": 8,
+          "question": "Your poster is finished! Time to submit.\n\n1. Paste your final Canva poster link:\n\n2. Check your poster against the brief. For each item write YES or NO with a brief reason:\n   ✅ Clear catchy title\n   ✅ Digital footprint explained\n   ✅ Three practical privacy tips\n   ✅ A fact or statistic included\n   ✅ Top tip highlighted\n   ✅ Design suits the target audience (11-14 year olds)\n\n3. Would your poster actually change someone's behaviour? Why or why not?",
+          "markScheme": "1: Link provided — 1 mark. 2: 1 mark per YES item confirmed with a reason (max 5). 3: Honest realistic assessment of impact — 1 mark. If no link, cap at 4 marks."
+        },
+        {
+          "id": "task_10",
+          "week": 6,
+          "type": "text",
+          "title": "Reflection",
+          "difficulty": "extension",
+          "maxMarks": 5,
+          "question": "Reflect on your 6-week journey through online privacy.\n\n1. What is ONE thing you will actually change about your own online behaviour after this project?\n\n2. Who is responsible for protecting young people's online privacy — parents, schools, companies, or the government? Explain your view.\n\n3. Some people say that in 20 years privacy will not exist because everything will be recorded and shared. Do you agree? What would this world look like?\n\n4. What was the most surprising or shocking thing you learned during this project?\n\n5. Rate your poster out of 10 and give a specific honest reason.",
+          "markScheme": "1: Specific behaviour change identified — 1 mark. 2: A reasoned argument for one group with acknowledgement it is shared — 1 mark. 3: Any thoughtful response engaging with the future scenario — 1 mark. 4: Genuine surprised reaction to a specific fact or concept — 1 mark. 5: Honest self-rating with specific reason — 1 mark."
+        }
+      ],
+      "gradingInstructions": "You are marking Year 7 Computer Science work on Online Privacy. Mark each task against its mark scheme. Be encouraging — this is complex and important content for Year 7. Reward genuine thinking, personal opinions, and practical understanding. For poster tasks: you cannot view Canva links — award link marks if a URL is present, mark written content from descriptions. Overall feedback: 3-5 sentences. Celebrate their awareness of privacy issues, note the most insightful point they made, suggest one practical privacy habit to develop further. Return ONLY valid JSON — no preamble, no markdown fences.",
+      "gradingOutputFormat": {
+        "totalScore": "integer",
+        "maxScore": 46,
+        "overallFeedback": "string",
+        "tasks": [
+          {
+            "taskId": "string",
+            "score": "integer",
+            "maxMarks": "integer",
+            "feedback": "string"
+          }
+        ]
+      }
     }
   ]
 }
