@@ -3334,6 +3334,33 @@ function checkPin() {
 }
 
 
+
+async function resetStudentPassword(userId, username) {
+  const newPass = prompt(`Reset password for "${username}"\n\nEnter a new temporary password (min 6 characters):`);
+  if (!newPass) return;
+  if (newPass.length < 6) {
+    alert('Password must be at least 6 characters.'); return;
+  }
+
+  try {
+    const hash     = await sha256(newPass);
+    const students = await fetchStudents();
+    const idx      = students.findIndex(s => s.userId === userId);
+    if (idx === -1) { alert('Student not found.'); return; }
+
+    students[idx].passwordHash = hash;
+    await saveStudents(students);
+
+    // Update local copy too
+    const localIdx = STATE.allStudents.findIndex(s => s.userId === userId);
+    if (localIdx > -1) STATE.allStudents[localIdx].passwordHash = hash;
+
+    alert(`✅ Password for "${username}" has been reset to:\n\n${newPass}\n\nTell the student their new password. They can use it to log in immediately.`);
+  } catch(e) {
+    alert('Failed to reset password. Check your connection and try again.');
+  }
+}
+
 async function deleteStudent(userId, username) {
   if (!confirm(`Remove "${username}" from the platform? This will delete all their progress and cannot be undone.`)) return;
   try {
@@ -3453,7 +3480,23 @@ function renderDashboard(students, scenarioFilter = '') {
     </tr>
     <tr class="expand-row" id="expand-${student.userId}">
       <td colspan="${tasks.length+5}">
-        ${submitted && sd.aiFeedback ? `<strong>AI Feedback:</strong> ${escHtml(sd.aiFeedback)}` : 'Not yet submitted.'}
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div style="flex:1">
+            ${submitted && sd.aiFeedback
+              ? `<strong>AI Feedback:</strong><br><span style="color:var(--text2)">${escHtml(sd.aiFeedback)}</span>`
+              : '<span style="color:var(--text3)">Not yet submitted.</span>'}
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm"
+              onclick="resetStudentPassword('${student.userId}','${student.username}')">
+              🔑 Reset Password
+            </button>
+            <button class="btn btn-secondary btn-sm" style="color:var(--red);border-color:var(--red)"
+              onclick="deleteStudent('${student.userId}','${student.username}')">
+              ✕ Remove Student
+            </button>
+          </div>
+        </div>
       </td>
     </tr>`;
   }).join('');
