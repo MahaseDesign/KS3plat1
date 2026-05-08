@@ -766,26 +766,77 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   margin-bottom: 20px;
 }
 
-/* Multiple choice */
-.mc-options { display: flex; flex-direction: column; gap: 10px; }
+/* Multiple choice — clear card layout for Year 7 */
+.mc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
 
 .mc-option {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 16px;
+  padding: 16px 20px;
   background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.15s;
-  font-size: 0.88rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  user-select: none;
+  position: relative;
 }
-.mc-option:hover { border-color: var(--accent); background: rgba(88,166,255,0.05); }
-.mc-option.selected { border-color: var(--accent); background: rgba(88,166,255,0.1); color: var(--accent); }
+.mc-option:hover {
+  border-color: var(--accent);
+  background: rgba(88,166,255,0.07);
+  transform: translateX(3px);
+}
+.mc-option.selected {
+  border-color: var(--accent);
+  background: rgba(88,166,255,0.15);
+  color: var(--text);
+}
+.mc-option.selected .mc-letter {
+  background: var(--accent);
+  color: #0d1117;
+  border-color: var(--accent);
+}
 
+/* Hide the actual input — we use the letter badge instead */
 .mc-option input[type="radio"],
-.mc-option input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+.mc-option input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+}
+
+.mc-letter {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  color: var(--text2);
+  background: var(--surface);
+}
+
+.mc-tick {
+  margin-left: auto;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.mc-option.selected .mc-tick { opacity: 1; }
 
 /* Code editor placeholder */
 .code-editor-wrap {
@@ -1478,7 +1529,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 .login-left {
   width: 380px;
   flex-shrink: 0;
-  background: linear-gradient(160deg, #1a3a5c 0%, #0d1117 60%);
+  background: linear-gradient(160deg, #003399 0%, #001a66 100%);
   border-right: 1px solid var(--border2);
   display: flex;
   flex-direction: column;
@@ -1635,6 +1686,38 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 .empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
 .empty-state h3 { font-size: 1rem; color: var(--text2); margin-bottom: 6px; }
 .empty-state p { font-size: 0.85rem; }
+
+
+/* ─── TEACHER LIGHT THEME ────────────────────────────────────────── */
+body.teacher-theme {
+  --bg:       #f0f4f8;
+  --surface:  #ffffff;
+  --surface2: #e8eef5;
+  --border:   #c8d6e5;
+  --border2:  #d8e4f0;
+  --text:     #1a2a3a;
+  --text2:    #4a6080;
+  --text3:    #8a9ab0;
+  background: #f0f4f8;
+}
+body.teacher-theme #topbar {
+  background: #003399;
+  border-bottom: 1px solid #002288;
+}
+body.teacher-theme .topbar-logo { color: #ffffff; }
+body.teacher-theme .topbar-user { color: rgba(255,255,255,0.8); }
+body.teacher-theme #btn-logout {
+  color: rgba(255,255,255,0.8);
+}
+body.teacher-theme #btn-logout:hover { color: #ffffff; background: rgba(255,255,255,0.1); }
+body.teacher-theme .dash-tab { color: #4a6080; }
+body.teacher-theme .dash-tab.active { color: #003399; border-bottom-color: #003399; }
+body.teacher-theme .data-table th { background: #003399; color: #ffffff; }
+body.teacher-theme .card { box-shadow: 0 2px 8px rgba(0,51,153,0.08); }
+body.teacher-theme .btn-primary { background: #003399; }
+body.teacher-theme .btn-primary:hover { background: #0044cc; }
+body.teacher-theme .code-chip { border-color: #c8d6e5; }
+body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
 
 /* ─── LOADING STATE ──────────────────────────────────────────────── */
 #global-loading { display: none !important; }
@@ -1997,6 +2080,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
       <button class="dash-tab active" onclick="switchDashTab('results')">📊 Results</button>
       <button class="dash-tab" onclick="switchDashTab('classes')">🏫 Class Codes</button>
       <button class="dash-tab" onclick="switchDashTab('present')">📽 Present</button>
+      <button class="dash-tab" onclick="switchDashTab('settings')">⚙️ Settings</button>
     </div>
 
     <!-- TAB: RESULTS -->
@@ -2111,8 +2195,15 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   <!-- ══ STUDENT LESSON BANNER ════════════════════════════════════ -->
   <div id="lesson-banner">
     <div class="banner-topbar">
-      <span id="banner-title">Lesson in progress</span>
-      <span style="color:var(--accent)" id="banner-slide-info">Slide 1 of 5</span>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="color:var(--accent);font-size:0.85rem">📽 LIVE LESSON</span>
+        <span id="banner-title">Lesson in progress</span>
+        <span style="color:var(--text3)" id="banner-slide-info">Slide 1 of 5</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="dismissLessonBanner()"
+        style="font-size:0.75rem;padding:4px 12px">
+        ✕ Back to my work
+      </button>
     </div>
     <div class="banner-stage">
       <div class="slide" id="banner-slide-content" style="pointer-events:none"></div>
@@ -2142,8 +2233,8 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 /* ─── CONFIG ─────────────────────────────────────────────────────── */
 const CONFIG = {
   JSONBIN_API_KEY:  '$2a$10$hJOuTgFo6.nu44x8ldlrC.QnZAw2r4P6UUgCzOQnMLCxkxSQv9/ta',
-  JSONBIN_BIN_ID:   '69fcd547250b1311c31a4f2a',
-  CLAUDE_API_KEY:   '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',
+  JSONBIN_BIN_ID:   '69fcb345250b1311c3197667',
+  CLAUDE_API_KEY:   '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',
   TEACHER_PIN:      '1984',
   CLASS_CODES:      [
     '7Y1','7Y2','7Y3','7Y4','7X1','7X2','7X3','7X4',
@@ -2168,6 +2259,7 @@ let STATE = {
   teacherMode:     false,
   presentation:    null,   // { scenarioId, week, slides, currentIdx }
   lessonPollTimer: null,
+  lessonDismissed: false,
 };
 
 /* ─── UTILS ──────────────────────────────────────────────────────── */
@@ -2221,6 +2313,7 @@ function showView(id) {
     document.getElementById('topbar-username').textContent = '🔒 Teacher';
     document.getElementById('btn-logout').textContent = '← Exit';
     document.getElementById('btn-logout').onclick = exitDashboard;
+    document.body.classList.add('teacher-theme');
   } else if (loggedIn) {
     topbar.style.display    = 'flex';
     accessBar.style.display = 'flex';
@@ -2399,6 +2492,7 @@ async function doRegister() {
 }
 
 function afterLogin() {
+  STATE.lessonDismissed = false;
   loadAccessibility();
   // Ensure scenarios are loaded before rendering hub
   if (!STATE.scenarios.length) {
@@ -2435,6 +2529,7 @@ async function tryAutoLogin() {
 
 function doLogout() {
   stopLessonPoll();
+  STATE.lessonDismissed = false;
   document.getElementById('lesson-banner').classList.remove('active');
   STATE.user = null;
   STATE.currentScenario = null;
@@ -2640,13 +2735,20 @@ function renderTask(idx) {
   let html = '';
 
   if (t.type === 'multichoice') {
-    const savedArr = savedAnswer ? JSON.parse(savedAnswer) : [];
-    html = `<div class="mc-options">${(t.options||[]).map((opt,i) => {
-      const checked = savedArr.includes(opt) ? 'checked' : '';
-      const sel     = savedArr.includes(opt) ? 'selected' : '';
-      const inputType = (t.correctAnswers||[]).length > 1 ? 'checkbox' : 'radio';
+    const savedArr  = savedAnswer ? JSON.parse(savedAnswer) : [];
+    const letters   = ['A','B','C','D','E','F'];
+    const multiPick = (t.correctAnswers||[]).length > 1;
+    const hint      = multiPick
+      ? `<div style="font-size:0.78rem;color:var(--text3);margin-bottom:10px;font-family:var(--mono)">SELECT ALL THAT APPLY</div>`
+      : `<div style="font-size:0.78rem;color:var(--text3);margin-bottom:10px;font-family:var(--mono)">SELECT ONE ANSWER</div>`;
+    const inputType = multiPick ? 'checkbox' : 'radio';
+    html = hint + `<div class="mc-options">${(t.options||[]).map((opt,i) => {
+      const sel = savedArr.includes(opt) ? 'selected' : '';
       return `<label class="mc-option ${sel}" onclick="selectOption(this,'${inputType}')">
-        <input type="${inputType}" name="mc_${t.id}" value="${escHtml(opt)}" ${checked}> ${escHtml(opt)}
+        <div class="mc-letter">${letters[i]||i+1}</div>
+        <span style="flex:1">${escHtml(opt)}</span>
+        <span class="mc-tick">✓</span>
+        <input type="${inputType}" name="mc_${t.id}" value="${escHtml(opt)}" ${sel?'checked':''}>
       </label>`;
     }).join('')}</div>`;
   } else if (t.type === 'code') {
@@ -2910,6 +3012,7 @@ function renderResults(sd) {
 /* ─── TEACHER DASHBOARD ──────────────────────────────────────────── */
 function exitDashboard() {
   STATE.teacherMode = false;
+  document.body.classList.remove('teacher-theme');
   const pinInput = document.getElementById('pin-input');
   if (pinInput) pinInput.value = '';
   showView('view-login');
@@ -2930,6 +3033,23 @@ function checkPin() {
     showAlert('pin-error', 'Incorrect PIN.');
     document.getElementById('pin-input').value = '';
     document.getElementById('pin-input').focus();
+  }
+}
+
+
+async function deleteStudent(userId, username) {
+  if (!confirm(`Remove "${username}" from the platform? This will delete all their progress and cannot be undone.`)) return;
+  try {
+    const students = await fetchStudents();
+    const updated  = students.filter(s => s.userId !== userId);
+    await saveStudents(updated);
+    STATE.allStudents = updated;
+    applyFilters();
+    // Remove expand row if open
+    const row = document.getElementById(`expand-${userId}`);
+    if (row) row.remove();
+  } catch(e) {
+    alert('Could not remove student. Check your connection and try again.');
   }
 }
 
@@ -3024,7 +3144,11 @@ function renderDashboard(students, scenarioFilter = '') {
 
     const submitted = sd.status === 'submitted';
     return `<tr style="cursor:pointer" onclick="toggleExpand('${student.userId}','${primaryId}')">
-      <td><strong>${student.username}</strong></td>
+      <td><strong>${student.username}</strong>
+        <span onclick="event.stopPropagation();deleteStudent('${student.userId}','${student.username}')"
+          style="margin-left:8px;color:var(--red);font-size:0.72rem;cursor:pointer;opacity:0.6"
+          title="Remove student" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">✕</span>
+      </td>
       <td>${student.yearGroup}</td><td>${student.classCode}</td>
       ${cells}
       <td style="font-family:var(--mono);font-size:0.75rem">${submitted ? `${sd.score}/${sd.maxScore}` : '—'}</td>
@@ -3130,13 +3254,47 @@ function loadAccessibility() {
 function switchDashTab(tab) {
   document.querySelectorAll('.dash-tab').forEach((t,i) => {
     t.classList.toggle('active',
-      (i===0&&tab==='results')||(i===1&&tab==='classes')||(i===2&&tab==='present'));
+      (i===0&&tab==='results')||(i===1&&tab==='classes')||(i===2&&tab==='present')||(i===3&&tab==='settings'));
   });
   document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(`panel-${tab}`).classList.add('active');
 
-  if (tab === 'classes') loadClassCodes();
-  if (tab === 'present') loadPresentOptions();
+  if (tab === 'classes')  loadClassCodes();
+  if (tab === 'present')  loadPresentOptions();
+  if (tab === 'settings') loadSettingsInfo();
+}
+
+function loadSettingsInfo() {
+  const sc = document.getElementById('settings-scenario-count');
+  const st = document.getElementById('settings-student-count');
+  if (sc) sc.textContent = STATE.scenarios.length;
+  if (st) st.textContent = STATE.allStudents.length;
+}
+
+function changeTeacherPin() {
+  hideAlert('pin-change-error');
+  hideAlert('pin-change-success');
+  const current = document.getElementById('pin-current').value;
+  const newPin  = document.getElementById('pin-new').value;
+  const confirm = document.getElementById('pin-confirm').value;
+
+  if (current !== CONFIG.TEACHER_PIN) {
+    showAlert('pin-change-error', 'Current PIN is incorrect.'); return;
+  }
+  if (newPin.length < 4) {
+    showAlert('pin-change-error', 'New PIN must be at least 4 digits.'); return;
+  }
+  if (newPin !== confirm) {
+    showAlert('pin-change-error', 'New PINs do not match.'); return;
+  }
+
+  CONFIG.TEACHER_PIN = newPin;
+  document.getElementById('pin-current').value = '';
+  document.getElementById('pin-new').value     = '';
+  document.getElementById('pin-confirm').value = '';
+  showAlert('pin-change-success',
+    `PIN updated to "${newPin}" for this session. To make it permanent, update TEACHER_PIN in index.html and redeploy.`,
+    'success');
 }
 
 /* ─── CLASS CODE MANAGER ─────────────────────────────────────────── */
@@ -3533,17 +3691,31 @@ function stopLessonPoll() {
 }
 
 async function pollLesson() {
+  // If student has dismissed the banner this session, don't show it again
+  if (STATE.lessonDismissed) return;
+
   try {
     const lesson = await fetchActiveLesson();
-    const banner = document.getElementById('lesson-banner');
+    const banner  = document.getElementById('lesson-banner');
+
     if (!lesson) {
       banner.classList.remove('active');
       return;
     }
-    // Show banner
+
+    // Only show if lesson started within the last 2 hours
+    const startedAt = new Date(lesson.startedAt);
+    const ageMs     = Date.now() - startedAt.getTime();
+    const twoHours  = 2 * 60 * 60 * 1000;
+    if (ageMs > twoHours) {
+      banner.classList.remove('active');
+      return;
+    }
+
+    // Show banner and update slide
     banner.classList.add('active');
     document.getElementById('banner-title').textContent =
-      `📽 ${lesson.scenarioTitle} — ${lesson.weekLabel}`;
+      `${lesson.scenarioTitle} — ${lesson.weekLabel}`;
     document.getElementById('banner-slide-info').textContent =
       `Slide ${lesson.currentSlide + 1} of ${lesson.slides.length}`;
     const slide = lesson.slides[lesson.currentSlide];
@@ -3551,6 +3723,11 @@ async function pollLesson() {
       document.getElementById('banner-slide-content').innerHTML = renderSlide(slide);
     }
   } catch(e) { /* silent */ }
+}
+
+function dismissLessonBanner() {
+  STATE.lessonDismissed = true;
+  document.getElementById('lesson-banner').classList.remove('active');
 }
 
 
