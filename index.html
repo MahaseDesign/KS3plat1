@@ -805,12 +805,14 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   border-color: var(--accent);
 }
 
-/* Hide the actual input — we use the letter badge instead */
+/* Hide the actual input visually but keep it functional */
 .mc-option input[type="radio"],
 .mc-option input[type="checkbox"] {
   position: absolute;
   opacity: 0;
-  width: 0; height: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
 }
 
 .mc-letter {
@@ -1719,6 +1721,207 @@ body.teacher-theme .btn-primary:hover { background: #0044cc; }
 body.teacher-theme .code-chip { border-color: #c8d6e5; }
 body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
 
+
+/* ─── MEDIA MANAGER ─────────────────────────────────────────────── */
+.media-scenario-picker {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  align-items: flex-end;
+}
+.media-scenario-picker select { width: auto; min-width: 220px; }
+.media-scenario-picker .form-group { margin-bottom: 0; }
+
+.week-accordion { display: flex; flex-direction: column; gap: 10px; }
+
+.week-block {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.week-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+  gap: 12px;
+}
+.week-block-header:hover { background: var(--surface2); }
+
+.week-block-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex: 1;
+}
+.week-block-meta {
+  font-size: 0.75rem;
+  color: var(--text3);
+  font-family: var(--mono);
+  display: flex;
+  gap: 10px;
+}
+.media-count-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(88,166,255,0.15);
+  color: var(--accent);
+  font-family: var(--mono);
+}
+.week-chevron { color: var(--text3); transition: transform 0.2s; font-size: 0.8rem; }
+.week-chevron.open { transform: rotate(90deg); }
+
+.week-block-body {
+  display: none;
+  padding: 20px;
+  border-top: 1px solid var(--border2);
+  background: var(--surface2);
+}
+.week-block-body.open { display: block; }
+
+/* Media item cards */
+.media-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+
+.media-item {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.media-item-icon {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.media-icon-video  { background: rgba(248,81,73,0.15); }
+.media-icon-image  { background: rgba(63,185,80,0.15); }
+.media-icon-link   { background: rgba(88,166,255,0.15); }
+
+.media-item-content { flex: 1; min-width: 0; }
+.media-item-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: var(--text);
+}
+.media-item-url {
+  font-size: 0.72rem;
+  color: var(--text3);
+  font-family: var(--mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 400px;
+}
+.media-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* Add media form */
+.add-media-form {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 8px;
+}
+.add-media-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.add-media-form .form-group { margin-bottom: 0; }
+.media-type-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.media-type-tab {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  font-family: var(--sans);
+  transition: all 0.12s;
+}
+.media-type-tab.active {
+  background: var(--accent);
+  color: #0d1117;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Media preview in task view */
+.task-media-bar {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.task-media-item {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border2);
+}
+.task-media-label {
+  background: var(--surface2);
+  padding: 8px 14px;
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.task-media-video-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  background: #000;
+}
+.task-media-video-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.task-media-image img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  background: var(--surface2);
+  display: block;
+}
+.task-media-link a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background 0.1s;
+}
+.task-media-link a:hover { background: rgba(88,166,255,0.05); }
+
 /* ─── LOADING STATE ──────────────────────────────────────────────── */
 #global-loading { display: none !important; }
 
@@ -1985,6 +2188,7 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
         <div id="task-marks-badge" class="badge badge-blue">0 marks</div>
       </div>
       <div class="task-card-body">
+        <div id="task-media-bar"></div>
         <div class="task-question" id="task-question"></div>
         <div id="task-answer-area"><!-- dynamic --></div>
       </div>
@@ -2167,6 +2371,73 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
         </div>
         <div style="margin-top:12px;font-size:0.78rem;color:var(--text3)" id="present-status"></div>
       </div>
+    </div>
+
+    <!-- TAB: SETTINGS -->
+    <div class="dash-panel" id="panel-settings">
+
+      <!-- Settings sub-tabs -->
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" id="stab-media" onclick="switchSettingsTab('media')"
+          style="border-color:var(--accent);color:var(--accent)">🎬 Media &amp; Resources</button>
+        <button class="btn btn-secondary btn-sm" id="stab-pin" onclick="switchSettingsTab('pin')">🔑 Change PIN</button>
+        <button class="btn btn-secondary btn-sm" id="stab-info" onclick="switchSettingsTab('info')">ℹ️ Platform Info</button>
+      </div>
+
+      <!-- MEDIA MANAGER -->
+      <div id="spanel-media">
+        <div style="margin-bottom:16px">
+          <div class="card-title" style="margin-bottom:4px">🎬 Media &amp; Resources</div>
+          <div class="card-sub">Add YouTube videos, images, and resource links to each week of a scenario. They appear above student tasks and on the presentation Example slide.</div>
+        </div>
+        <div class="media-scenario-picker">
+          <div class="form-group">
+            <label>Scenario</label>
+            <select id="media-scenario-select" onchange="loadMediaWeeks()">
+              <option value="">— select scenario —</option>
+            </select>
+          </div>
+        </div>
+        <div id="media-week-accordion" class="week-accordion">
+          <div style="color:var(--text3);font-size:0.85rem;padding:20px 0">Select a scenario above to manage its media.</div>
+        </div>
+      </div>
+
+      <!-- PIN CHANGE -->
+      <div id="spanel-pin" style="display:none">
+        <div class="card" style="max-width:440px">
+          <div class="card-title" style="margin-bottom:6px">🔑 Change Teacher PIN</div>
+          <div class="card-sub" style="margin-bottom:20px">Updates the PIN for this session. To make permanent, update TEACHER_PIN in index.html.</div>
+          <div class="alert alert-error"   id="pin-change-error"   style="margin-bottom:12px"></div>
+          <div class="alert alert-success" id="pin-change-success" style="margin-bottom:12px"></div>
+          <div class="form-group">
+            <label>Current PIN</label>
+            <input type="password" id="pin-current" placeholder="current PIN" maxlength="8">
+          </div>
+          <div class="form-group">
+            <label>New PIN</label>
+            <input type="password" id="pin-new" placeholder="new PIN (4–8 digits)" maxlength="8">
+          </div>
+          <div class="form-group">
+            <label>Confirm New PIN</label>
+            <input type="password" id="pin-confirm" placeholder="repeat new PIN" maxlength="8">
+          </div>
+          <button class="btn btn-primary" onclick="changeTeacherPin()">Update PIN</button>
+        </div>
+      </div>
+
+      <!-- PLATFORM INFO -->
+      <div id="spanel-info" style="display:none">
+        <div class="card" style="max-width:440px">
+          <div class="card-title" style="margin-bottom:12px">ℹ️ Platform Info</div>
+          <div style="font-size:0.85rem;color:var(--text2);line-height:2.2">
+            <div>Version: <strong>1.1</strong></div>
+            <div>Scenarios loaded: <strong id="settings-scenario-count">—</strong></div>
+            <div>Students registered: <strong id="settings-student-count">—</strong></div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -2705,6 +2976,13 @@ function renderTask(idx) {
   // Counter
   document.getElementById('task-counter').textContent = `Task ${idx+1} of ${s.tasks.length}`;
 
+  // Load media for this week in background
+  const taskWeek = t.week || 1;
+  getTaskMedia(s.id, taskWeek).then(mediaItems => {
+    const mediaBar = document.getElementById('task-media-bar');
+    if (mediaBar) mediaBar.innerHTML = renderTaskMediaBar(mediaItems);
+  }).catch(() => {});
+
   // Pips
   const sd = STATE.user.scenarios?.[s.id] || {};
   const pips = s.tasks.map((tk, i) => {
@@ -2739,16 +3017,19 @@ function renderTask(idx) {
     const letters   = ['A','B','C','D','E','F'];
     const multiPick = (t.correctAnswers||[]).length > 1;
     const hint      = multiPick
-      ? `<div style="font-size:0.78rem;color:var(--text3);margin-bottom:10px;font-family:var(--mono)">SELECT ALL THAT APPLY</div>`
-      : `<div style="font-size:0.78rem;color:var(--text3);margin-bottom:10px;font-family:var(--mono)">SELECT ONE ANSWER</div>`;
+      ? `<div style="font-size:0.78rem;color:var(--text3);margin-bottom:10px;font-family:var(--mono)">✏️ SELECT ALL THAT APPLY</div>`
+      : `<div style="font-size:0.78rem;color:var(--text3);margin-bottom:10px;font-family:var(--mono)">✏️ SELECT ONE ANSWER</div>`;
     const inputType = multiPick ? 'checkbox' : 'radio';
-    html = hint + `<div class="mc-options">${(t.options||[]).map((opt,i) => {
-      const sel = savedArr.includes(opt) ? 'selected' : '';
-      return `<label class="mc-option ${sel}" onclick="selectOption(this,'${inputType}')">
+    const taskId    = t.id;
+    html = hint + `<div class="mc-options" id="mc-wrap-${taskId}">${(t.options||[]).map((opt,i) => {
+      const isSel = savedArr.includes(opt);
+      return `<label class="mc-option ${isSel?'selected':''}" for="mc-${taskId}-${i}">
         <div class="mc-letter">${letters[i]||i+1}</div>
         <span style="flex:1">${escHtml(opt)}</span>
         <span class="mc-tick">✓</span>
-        <input type="${inputType}" name="mc_${t.id}" value="${escHtml(opt)}" ${sel?'checked':''}>
+        <input type="${inputType}" id="mc-${taskId}-${i}" name="mc_${taskId}"
+          value="${escHtml(opt)}" ${isSel?'checked':''}
+          onchange="handleMcChange(this,'${inputType}')">
       </label>`;
     }).join('')}</div>`;
   } else if (t.type === 'code') {
@@ -2781,15 +3062,31 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function selectOption(label, type) {
+function handleMcChange(input, type) {
+  const wrap = input.closest('.mc-options');
+  if (!wrap) return;
+
   if (type === 'radio') {
-    document.querySelectorAll('.mc-option').forEach(l => {
-      l.classList.remove('selected');
-      l.querySelector('input').checked = false;
-    });
+    // Deselect all options in this group first
+    wrap.querySelectorAll('.mc-option').forEach(l => l.classList.remove('selected'));
+    wrap.querySelectorAll('input').forEach(i => { if (i !== input) i.checked = false; });
   }
-  label.classList.toggle('selected');
-  label.querySelector('input').checked = label.classList.contains('selected');
+
+  // Sync selected class to the parent label
+  const label = input.closest('.mc-option');
+  if (label) {
+    if (type === 'checkbox') {
+      label.classList.toggle('selected', input.checked);
+    } else {
+      label.classList.toggle('selected', input.checked);
+    }
+  }
+}
+
+// Keep selectOption as alias for any legacy calls
+function selectOption(label, type) {
+  const input = label.querySelector('input');
+  if (input) { input.checked = !input.checked; handleMcChange(input, type); }
 }
 
 function jumpToTask(idx) { saveCurrentAnswer(false); renderTask(idx); }
@@ -3639,8 +3936,14 @@ function renderSlide(slide) {
     return `${badge}${type}${title}<div class="tasks-list">${items}</div>`;
   }
   if (slide.type === 'example') {
-    const codeBlock = slide.code ? `<div class="example-box">${slide.code}</div>` : '';
-    return `${badge}${type}${title}<div class="slide-body">${slide.body}</div>${codeBlock}`;
+    const codeBlock  = slide.code ? `<div class="example-box">${slide.code}</div>` : '';
+    const videoBlock = slide.videoEmbed
+      ? `<div style="margin-top:16px;border-radius:8px;overflow:hidden;max-width:640px">
+          <div style="position:relative;padding-bottom:56.25%;height:0;background:#000">
+            <iframe src="${slide.videoEmbed}?rel=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
+          </div>
+        </div>` : '';
+    return `${badge}${type}${title}<div class="slide-body">${slide.body}</div>${codeBlock}${videoBlock}`;
   }
   if (slide.type === 'note') {
     return `${badge}${type}${title}<div class="slide-body large" style="color:var(--amber)">${slide.body}</div>`;
@@ -3730,6 +4033,255 @@ function dismissLessonBanner() {
   document.getElementById('lesson-banner').classList.remove('active');
 }
 
+
+
+/* ─── SETTINGS SUB-TABS ──────────────────────────────────────────── */
+function switchSettingsTab(tab) {
+  ['media','pin','info'].forEach(t => {
+    const el = document.getElementById(`spanel-${t}`);
+    const btn = document.getElementById(`stab-${t}`);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+    if (btn) {
+      btn.style.borderColor = t === tab ? 'var(--accent)' : '';
+      btn.style.color       = t === tab ? 'var(--accent)' : '';
+    }
+  });
+}
+
+/* ─── MEDIA MANAGER ─────────────────────────────────────────────── */
+function loadSettingsInfo() {
+  const sc = document.getElementById('settings-scenario-count');
+  const st = document.getElementById('settings-student-count');
+  if (sc) sc.textContent = STATE.scenarios.length;
+  if (st) st.textContent = STATE.allStudents.length;
+
+  // Populate media scenario picker
+  const sel = document.getElementById('media-scenario-select');
+  if (sel) {
+    sel.innerHTML = '<option value="">— select scenario —</option>' +
+      STATE.scenarios.map(s =>
+        `<option value="${s.id}">${s.title} (${s.yearGroups.join(', ')})</option>`
+      ).join('');
+  }
+}
+
+async function loadMediaWeeks() {
+  const scenId = document.getElementById('media-scenario-select').value;
+  const accordion = document.getElementById('media-week-accordion');
+  if (!scenId) {
+    accordion.innerHTML = '<div style="color:var(--text3);font-size:0.85rem;padding:20px 0">Select a scenario above.</div>';
+    return;
+  }
+
+  const sc = STATE.scenarios.find(x => x.id === scenId);
+  if (!sc) return;
+
+  accordion.innerHTML = '<div style="color:var(--text3);font-size:0.85rem;padding:16px 0">Loading media...</div>';
+
+  // Fetch existing media from JSONBin
+  let mediaData = {};
+  try {
+    const rec = await fetchBin();
+    mediaData = rec.media || {};
+  } catch(e) {}
+
+  const weeks = buildWeeksFromTasks(sc);
+  accordion.innerHTML = weeks.map((w, wi) => {
+    const wKey    = `${scenId}_w${w.weekNum}`;
+    const items   = mediaData[wKey] || [];
+    const count   = items.length;
+    return `
+    <div class="week-block" id="wb-${wKey}">
+      <div class="week-block-header" onclick="toggleWeekBlock('${wKey}')">
+        <span class="week-block-title">Week ${w.weekNum} — ${w.tasks.map(t=>t.title).join(' / ')}</span>
+        <div class="week-block-meta">
+          ${count ? `<span class="media-count-badge">${count} item${count!==1?'s':''}</span>` : ''}
+          <span>${w.tasks.length} task${w.tasks.length!==1?'s':''}</span>
+        </div>
+        <span class="week-chevron" id="wchev-${wKey}">▶</span>
+      </div>
+      <div class="week-block-body" id="wbody-${wKey}">
+        <div class="media-items" id="mitems-${wKey}">
+          ${renderMediaItems(items, wKey)}
+        </div>
+        <div class="add-media-form" id="addform-${wKey}">
+          <div class="media-type-tabs">
+            <button class="media-type-tab active" onclick="setMediaType('${wKey}','video')">▶ YouTube Video</button>
+            <button class="media-type-tab" onclick="setMediaType('${wKey}','image')">🖼 Image</button>
+            <button class="media-type-tab" onclick="setMediaType('${wKey}','link')">🔗 Resource Link</button>
+          </div>
+          <div class="add-media-form">
+            <div class="form-group" style="margin-bottom:10px">
+              <label>Label (shown to students)</label>
+              <input type="text" id="mlabel-${wKey}" placeholder="e.g. Introduction video, Key terms diagram">
+            </div>
+            <div class="form-group" style="margin-bottom:10px" id="murl-wrap-${wKey}">
+              <label id="murl-label-${wKey}">YouTube URL</label>
+              <input type="text" id="murl-${wKey}" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="addMediaItem('${wKey}','${scenId}',${w.weekNum})">
+              + Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderMediaItems(items, wKey) {
+  if (!items.length) return '<div style="color:var(--text3);font-size:0.82rem;margin-bottom:12px">No media added yet.</div>';
+  const icons = { video:'▶', image:'🖼', link:'🔗' };
+  const iconClass = { video:'media-icon-video', image:'media-icon-image', link:'media-icon-link' };
+  return items.map((item, i) => `
+    <div class="media-item" id="mitem-${wKey}-${i}">
+      <div class="media-item-icon ${iconClass[item.type]||'media-icon-link'}">${icons[item.type]||'🔗'}</div>
+      <div class="media-item-content">
+        <div class="media-item-label">${item.label || 'Untitled'}</div>
+        <div class="media-item-url">${item.url}</div>
+      </div>
+      <div class="media-item-actions">
+        <button class="btn btn-ghost btn-sm" onclick="removeMediaItem('${wKey}','${wKey.split('_')[0]}',${i})"
+          style="color:var(--red);font-size:0.75rem">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleWeekBlock(wKey) {
+  const body = document.getElementById(`wbody-${wKey}`);
+  const chev = document.getElementById(`wchev-${wKey}`);
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  if (chev) chev.classList.toggle('open', open);
+}
+
+function setMediaType(wKey, type) {
+  const form = document.getElementById(`addform-${wKey}`);
+  if (!form) return;
+  form.querySelectorAll('.media-type-tab').forEach((t,i) => {
+    t.classList.toggle('active', ['video','image','link'][i] === type);
+  });
+  const labelEl = document.getElementById(`murl-label-${wKey}`);
+  const urlEl   = document.getElementById(`murl-${wKey}`);
+  if (labelEl) labelEl.textContent = type === 'video' ? 'YouTube URL' : type === 'image' ? 'Image URL' : 'Link URL';
+  if (urlEl) urlEl.placeholder = type === 'video'
+    ? 'https://www.youtube.com/watch?v=...'
+    : type === 'image'
+      ? 'https://example.com/image.jpg'
+      : 'https://bbc.co.uk/bitesize/...';
+  form.dataset.type = type;
+}
+
+async function addMediaItem(wKey, scenId, weekNum) {
+  const form    = document.getElementById(`addform-${wKey}`);
+  const label   = document.getElementById(`mlabel-${wKey}`).value.trim();
+  const url     = document.getElementById(`murl-${wKey}`).value.trim();
+  const type    = form?.dataset.type || 'video';
+
+  if (!label) { alert('Please enter a label for this item.'); return; }
+  if (!url)   { alert('Please enter a URL.'); return; }
+  if (!url.startsWith('http')) { alert('URL must start with http:// or https://'); return; }
+
+  try {
+    const rec    = await fetchBin();
+    const media  = rec.media || {};
+    if (!media[wKey]) media[wKey] = [];
+
+    // For YouTube, extract video ID and store embed URL
+    let finalUrl = url;
+    if (type === 'video') {
+      const ytId = extractYouTubeId(url);
+      if (!ytId) { alert('Could not find a YouTube video ID in that URL. Please paste the full YouTube link.'); return; }
+      finalUrl = `https://www.youtube.com/embed/${ytId}`;
+    }
+
+    media[wKey].push({ type, label, url: finalUrl, addedAt: new Date().toISOString() });
+    await saveBin({ media });
+
+    // Refresh the items display
+    const itemsEl = document.getElementById(`mitems-${wKey}`);
+    if (itemsEl) itemsEl.innerHTML = renderMediaItems(media[wKey], wKey);
+
+    // Clear inputs
+    document.getElementById(`mlabel-${wKey}`).value = '';
+    document.getElementById(`murl-${wKey}`).value   = '';
+
+    // Update count badge
+    const wb = document.getElementById(`wb-${wKey}`);
+    if (wb) {
+      const badge = wb.querySelector('.media-count-badge');
+      const count = media[wKey].length;
+      if (badge) badge.textContent = `${count} item${count!==1?'s':''}`;
+    }
+
+  } catch(e) {
+    alert('Failed to save. Check your connection: ' + e.message);
+  }
+}
+
+async function removeMediaItem(wKey, scenId, idx) {
+  if (!confirm('Remove this media item?')) return;
+  try {
+    const rec   = await fetchBin();
+    const media = rec.media || {};
+    if (media[wKey]) media[wKey].splice(idx, 1);
+    await saveBin({ media });
+    const itemsEl = document.getElementById(`mitems-${wKey}`);
+    if (itemsEl) itemsEl.innerHTML = renderMediaItems(media[wKey] || [], wKey);
+  } catch(e) {
+    alert('Failed to remove item.');
+  }
+}
+
+function extractYouTubeId(url) {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/,
+    /youtube\.com\/shorts\/([\w-]{11})/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+/* ─── RENDER TASK MEDIA ─────────────────────────────────────────── */
+async function getTaskMedia(scenId, weekNum) {
+  try {
+    const rec   = await fetchBin();
+    const media = rec.media || {};
+    return media[`${scenId}_w${weekNum}`] || [];
+  } catch(e) { return []; }
+}
+
+function renderTaskMediaBar(items) {
+  if (!items.length) return '';
+  return `<div class="task-media-bar">` +
+    items.map(item => {
+      if (item.type === 'video') {
+        return `<div class="task-media-item">
+          <div class="task-media-label">▶ ${item.label}</div>
+          <div class="task-media-video-wrap">
+            <iframe src="${item.url}?rel=0" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>`;
+      }
+      if (item.type === 'image') {
+        return `<div class="task-media-item">
+          <div class="task-media-label">🖼 ${item.label}</div>
+          <div class="task-media-image"><img src="${item.url}" alt="${item.label}" loading="lazy"></div>
+        </div>`;
+      }
+      return `<div class="task-media-item">
+        <div class="task-media-label">🔗 Resource</div>
+        <div class="task-media-link">
+          <a href="${item.url}" target="_blank" rel="noopener">
+            <span>↗</span> ${item.label}
+          </a>
+        </div>
+      </div>`;
+    }).join('') + `</div>`;
+}
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
 
