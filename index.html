@@ -1922,6 +1922,158 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
 }
 .task-media-link a:hover { background: rgba(88,166,255,0.05); }
 
+
+/* ─── SPLIT SCREEN PRESENT ──────────────────────────────────────── */
+#view-present.active {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.present-split {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.present-left {
+  width: 42%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid var(--border2);
+  background: #0d1117;
+  min-height: 0;
+}
+
+.present-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.present-panel-label {
+  padding: 8px 16px;
+  font-size: 0.7rem;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border2);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.present-left .present-panel-label {
+  background: rgba(88,166,255,0.06);
+  color: var(--accent);
+}
+.present-right .present-panel-label {
+  background: rgba(63,185,80,0.06);
+  color: var(--green);
+}
+
+.present-left .present-stage {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.present-left .slide {
+  min-height: auto;
+  padding: 28px 32px;
+  width: 100%;
+}
+.present-left .slide-title { font-size: 1.4rem; margin-bottom: 16px; }
+.present-left .slide-body  { font-size: 0.9rem; }
+.present-left .slide-body.large { font-size: 1.1rem; }
+.present-left .kv-grid { grid-template-columns: 1fr; }
+.present-left .kv-item { padding: 10px 14px; }
+.present-left .kv-term { font-size: 0.75rem; }
+.present-left .kv-def  { font-size: 0.8rem; }
+.present-left .example-box { font-size: 0.78rem; padding: 14px; }
+.present-left .slide-week-badge { top: 16px; right: 16px; font-size: 0.65rem; }
+
+/* Right panel — student demo view */
+.present-right-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+/* Demo task view — slightly scaled down to fit */
+.demo-task-wrap {
+  max-width: 100%;
+}
+.demo-task-wrap .task-card-main {
+  margin-bottom: 14px;
+}
+.demo-task-wrap .task-question {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+.demo-task-wrap .mc-option {
+  padding: 10px 14px;
+  font-size: 0.82rem;
+}
+.demo-task-wrap .code-textarea {
+  min-height: 160px;
+  font-size: 0.78rem;
+}
+.demo-task-wrap textarea {
+  min-height: 80px;
+  font-size: 0.82rem;
+}
+
+/* Nav strip at bottom of present view */
+.present-nav-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(13,17,23,0.97);
+  border-top: 1px solid var(--border2);
+  flex-shrink: 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.present-nav-left  { display: flex; align-items: center; gap: 10px; }
+.present-nav-right { display: flex; align-items: center; gap: 10px; }
+
+.slide-dots-sm { display: flex; gap: 5px; align-items: center; }
+.slide-dot-sm {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--text3);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.slide-dot-sm.active { background: var(--accent); width: 16px; border-radius: 3px; }
+.slide-dot-sm.done   { background: var(--green); }
+
+.task-nav-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.task-pip-sm {
+  width: 20px; height: 5px;
+  border-radius: 3px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.task-pip-sm.done   { background: var(--green); border-color: var(--green); }
+.task-pip-sm.active { background: var(--accent); border-color: var(--accent); }
+
 /* ─── LOADING STATE ──────────────────────────────────────────────── */
 #global-loading { display: none !important; }
 
@@ -2442,25 +2594,71 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
 
   </div>
 
-  <!-- ══ VIEW: PRESENTATION (FULLSCREEN) ═══════════════════════════ -->
+  <!-- ══ VIEW: PRESENTATION — SPLIT SCREEN ═══════════════════════ -->
   <div id="view-present" class="view">
+
+    <!-- TOP BAR -->
     <div class="present-bar">
       <div class="pb-left">
         <span class="pb-title" id="present-bar-title">Lesson</span>
         <span class="pb-counter" id="present-bar-counter">Slide 1 of 5</span>
       </div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-secondary btn-sm" onclick="endPresentation()">✕ End Presentation</button>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:0.72rem;color:var(--text3);font-family:var(--mono)" id="present-scenario-label"></span>
+        <button class="btn btn-secondary btn-sm" onclick="endPresentation()">✕ End</button>
       </div>
     </div>
-    <div class="present-stage">
-      <div class="slide" id="slide-content"></div>
+
+    <!-- SPLIT BODY -->
+    <div class="present-split">
+
+      <!-- LEFT: SLIDES -->
+      <div class="present-left">
+        <div class="present-panel-label">
+          <span>📽 Lesson Slides</span>
+          <span id="slide-counter-label" style="color:var(--text3)">Slide 1 of 5</span>
+        </div>
+        <div class="present-stage">
+          <div class="slide" id="slide-content"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: STUDENT TASK DEMO -->
+      <div class="present-right">
+        <div class="present-panel-label">
+          <span>👩‍💻 Student View — Task Demo</span>
+          <span id="demo-task-label" style="color:var(--text3)">Task 1 of 10</span>
+        </div>
+        <div class="present-right-scroll">
+          <div class="demo-task-wrap" id="demo-task-content">
+            <div style="color:var(--text3);font-size:0.85rem;padding:20px 0">
+              Launch a presentation to see the student task view here.
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="present-nav">
-      <button class="btn btn-secondary" id="btn-prev-slide" onclick="prevSlide()">← Prev</button>
-      <div class="slide-dots" id="slide-dots"></div>
-      <button class="btn btn-primary" id="btn-next-slide" onclick="nextSlide()">Next →</button>
+
+    <!-- BOTTOM NAV STRIP -->
+    <div class="present-nav-strip">
+      <div class="present-nav-left">
+        <span style="font-size:0.72rem;color:var(--text2);font-family:var(--mono)">SLIDES</span>
+        <button class="btn btn-secondary btn-sm" id="btn-prev-slide" onclick="prevSlide()">← Prev</button>
+        <div class="slide-dots-sm" id="slide-dots"></div>
+        <button class="btn btn-primary btn-sm" id="btn-next-slide" onclick="nextSlide()">Next →</button>
+      </div>
+
+      <div style="width:1px;height:24px;background:var(--border2)"></div>
+
+      <div class="present-nav-right">
+        <span style="font-size:0.72rem;color:var(--text2);font-family:var(--mono)">TASK</span>
+        <button class="btn btn-secondary btn-sm" id="btn-prev-demo-task" onclick="prevDemoTask()">← Prev</button>
+        <div class="task-nav-strip" id="demo-task-pips"></div>
+        <button class="btn btn-secondary btn-sm" id="btn-next-demo-task" onclick="nextDemoTask()">Next →</button>
+      </div>
     </div>
+
   </div>
 
   <!-- ══ STUDENT LESSON BANNER ════════════════════════════════════ -->
@@ -2531,6 +2729,8 @@ let STATE = {
   presentation:    null,   // { scenarioId, week, slides, currentIdx }
   lessonPollTimer: null,
   lessonDismissed: false,
+  demoTaskIdx: 0,
+  demoScenario: null,
 };
 
 /* ─── UTILS ──────────────────────────────────────────────────────── */
@@ -3923,10 +4123,19 @@ async function launchPresentation() {
   document.getElementById('present-status').textContent = '✅ Lesson active — students will see slides on their screens';
   document.getElementById('btn-clear-lesson').style.display = 'inline-flex';
 
-  // Launch fullscreen presentation
+  // Set up demo task view
+  STATE.demoScenario = sc;
+  STATE.demoTaskIdx  = 0;
+
+  // Launch split screen
   showSlide(0);
   showView('view-present');
-  document.getElementById('present-bar-title').textContent = `${sc.title} — ${week.label || 'Week ' + (weekIdx+1)}`;
+  const titleEl = document.getElementById('present-bar-title');
+  if (titleEl) titleEl.textContent = `${sc.title} — ${week.label || 'Week ' + (weekIdx+1)}`;
+  const scenLabel = document.getElementById('present-scenario-label');
+  if (scenLabel) scenLabel.textContent = sc.yearGroups.join(', ');
+
+  renderDemoTask(0);
 }
 
 function showSlide(idx) {
@@ -3934,20 +4143,27 @@ function showSlide(idx) {
   if (!p || idx < 0 || idx >= p.slides.length) return;
   p.currentIdx = idx;
 
-  const slide  = p.slides[idx];
-  const total  = p.slides.length;
-  const el     = document.getElementById('slide-content');
+  const slide = p.slides[idx];
+  const total = p.slides.length;
+  const el    = document.getElementById('slide-content');
 
-  document.getElementById('present-bar-counter').textContent = `Slide ${idx+1} of ${total}`;
+  // Update counters
+  const counter = `Slide ${idx+1} of ${total}`;
+  document.getElementById('present-bar-counter').textContent = counter;
+  const scLabel = document.getElementById('slide-counter-label');
+  if (scLabel) scLabel.textContent = counter;
+
   document.getElementById('btn-prev-slide').disabled = (idx === 0);
-  document.getElementById('btn-next-slide').textContent = idx === total-1 ? '✓ Finish' : 'Next →';
+  const nextBtn = document.getElementById('btn-next-slide');
+  if (nextBtn) nextBtn.textContent = idx === total-1 ? '✓ Finish' : 'Next →';
 
-  // Dots
-  document.getElementById('slide-dots').innerHTML = p.slides.map((_,i) =>
-    `<div class="slide-dot ${i<idx?'done':i===idx?'active':''}" onclick="showSlide(${i})"></div>`
+  // Dots (small version)
+  const dotsEl = document.getElementById('slide-dots');
+  if (dotsEl) dotsEl.innerHTML = p.slides.map((_,i) =>
+    `<div class="slide-dot-sm ${i<idx?'done':i===idx?'active':''}" onclick="showSlide(${i})"></div>`
   ).join('');
 
-  el.innerHTML = renderSlide(slide);
+  if (el) el.innerHTML = renderSlide(slide);
 
   // Sync to students
   updateLessonSlide(idx);
@@ -4325,6 +4541,108 @@ function renderTaskMediaBar(items) {
       </div>`;
     }).join('') + `</div>`;
 }
+
+
+/* ─── DEMO TASK VIEW (RIGHT PANEL) ──────────────────────────────── */
+function renderDemoTask(idx) {
+  const sc = STATE.demoScenario;
+  if (!sc) return;
+
+  const tasks = sc.tasks;
+  if (!tasks || !tasks.length) return;
+
+  // Clamp idx
+  idx = Math.max(0, Math.min(idx, tasks.length - 1));
+  STATE.demoTaskIdx = idx;
+
+  const t = tasks[idx];
+  const letters = ['A','B','C','D','E','F'];
+
+  // Update labels
+  const taskLabel = document.getElementById('demo-task-label');
+  if (taskLabel) taskLabel.textContent = `Task ${idx+1} of ${tasks.length}`;
+
+  // Update pips
+  const pipsEl = document.getElementById('demo-task-pips');
+  if (pipsEl) pipsEl.innerHTML = tasks.map((_,i) =>
+    `<div class="task-pip-sm ${i===idx?'active':''}" onclick="renderDemoTask(${i})" title="Task ${i+1}"></div>`
+  ).join('');
+
+  // Prev/Next buttons
+  const prevBtn = document.getElementById('btn-prev-demo-task');
+  const nextBtn = document.getElementById('btn-next-demo-task');
+  if (prevBtn) prevBtn.disabled = (idx === 0);
+  if (nextBtn) nextBtn.disabled = (idx === tasks.length - 1);
+
+  // Replace {subject} placeholder with example text
+  const qText = (t.question || '').replace(/\{subject\}/g, '[ student topic ]');
+
+  // Build answer area HTML
+  let answerHtml = '';
+  const multiPick = (t.correctAnswers || []).length > 1;
+  const inputType = multiPick ? 'checkbox' : 'radio';
+
+  if (t.type === 'multichoice') {
+    const hint = multiPick
+      ? '<div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;font-family:var(--mono)">✏️ SELECT ALL THAT APPLY</div>'
+      : '<div style="font-size:0.72rem;color:var(--text3);margin-bottom:8px;font-family:var(--mono)">✏️ SELECT ONE ANSWER</div>';
+    answerHtml = hint + '<div class="mc-options">' +
+      (t.options || []).map((opt, i) =>
+        `<div class="mc-option" style="cursor:default;pointer-events:none">
+          <div class="mc-letter">${letters[i] || i+1}</div>
+          <span style="flex:1">${escHtml(opt)}</span>
+          <span class="mc-tick" style="opacity:0">✓</span>
+        </div>`
+      ).join('') + '</div>';
+  } else if (t.type === 'code') {
+    answerHtml = `<div class="code-editor-wrap">
+      <div class="code-editor-bar">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="code-lang-dot ${t.language || ''}"></div>
+          <span>${(t.language || 'code').toUpperCase()}</span>
+        </div>
+        <span>Students type their code here</span>
+      </div>
+      <textarea class="code-textarea" style="pointer-events:none;opacity:0.6" rows="6">${escHtml(t.starterCode || '')}</textarea>
+    </div>`;
+  } else {
+    answerHtml = `<textarea rows="5" placeholder="Students type their answer here..."
+      style="pointer-events:none;opacity:0.6;resize:none;width:100%;background:var(--surface2);
+      border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;
+      font-family:var(--sans);color:var(--text);font-size:0.85rem"></textarea>`;
+  }
+
+  // Difficulty + type badges
+  const diffColour = { foundation:'badge-green', core:'badge-amber', extension:'badge-purple' };
+  const typeLabel  = { multichoice:'Multiple Choice', text:'Written Answer', code:`Code (${t.language || ''})` };
+
+  const html = `
+    <div class="task-card-main">
+      <div class="task-card-header">
+        <div>
+          <h3 style="font-size:0.9rem;font-weight:600">${escHtml(t.title)}</h3>
+          <div style="display:flex;gap:6px;margin-top:5px">
+            <span class="badge ${diffColour[t.difficulty] || 'badge-blue'}" style="font-size:0.65rem">${t.difficulty}</span>
+            <span class="badge badge-blue" style="font-size:0.65rem">${typeLabel[t.type] || t.type}</span>
+          </div>
+        </div>
+        <span class="badge badge-blue" style="font-size:0.65rem">${t.maxMarks} mark${t.maxMarks !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="task-card-body">
+        <div class="task-question" style="font-size:0.82rem;line-height:1.65;margin-bottom:14px">${escHtml(qText)}</div>
+        ${answerHtml}
+      </div>
+    </div>
+    <div style="font-size:0.72rem;color:var(--text3);text-align:center;padding:8px;font-family:var(--mono)">
+      📖 DEMO VIEW — no answers saved here
+    </div>`;
+
+  const container = document.getElementById('demo-task-content');
+  if (container) container.innerHTML = html;
+}
+
+function prevDemoTask() { renderDemoTask(STATE.demoTaskIdx - 1); }
+function nextDemoTask() { renderDemoTask(STATE.demoTaskIdx + 1); }
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
 
