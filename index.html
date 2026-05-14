@@ -1310,10 +1310,10 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 .present-stage {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 40px;
-  overflow: hidden;
+  padding: 24px;
+  overflow-y: auto;
 }
 
 .slide {
@@ -1322,13 +1322,13 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   background: var(--surface);
   border: 1px solid var(--border2);
   border-radius: 16px;
-  padding: 52px 64px;
-  min-height: 500px;
+  padding: 44px 56px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 .slide::before {
   content: '';
@@ -1406,7 +1406,7 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 .tasks-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin-top: 8px;
 }
 .task-slide-item {
@@ -1987,13 +1987,17 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
 }
 .present-left .slide {
   min-height: auto;
-  padding: 28px 32px;
+  max-width: 100%;
+  padding: 20px 24px;
   width: 100%;
+  overflow: visible;
+  justify-content: flex-start;
 }
+.present-left .slide-title { font-size: 1.2rem; margin-bottom: 12px; }
 .present-left .slide-title { font-size: 1.4rem; margin-bottom: 16px; }
 .present-left .slide-body  { font-size: 0.9rem; }
 .present-left .slide-body.large { font-size: 1.1rem; }
-.present-left .kv-grid { grid-template-columns: 1fr; }
+.present-left .kv-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
 .present-left .kv-item { padding: 10px 14px; }
 .present-left .kv-term { font-size: 0.75rem; }
 .present-left .kv-def  { font-size: 0.8rem; }
