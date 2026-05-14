@@ -3800,7 +3800,14 @@ function switchDashTab(tab) {
   document.getElementById(`panel-${tab}`).classList.add('active');
 
   if (tab === 'classes')  loadClassCodes();
-  if (tab === 'present')  loadPresentOptions();
+  if (tab === 'present')  {
+    // Reload scenarios first in case they haven't loaded yet
+    if (!STATE.scenarios.length) {
+      loadScenarios().then(() => loadPresentOptions()).catch(() => loadPresentOptions());
+    } else {
+      loadPresentOptions();
+    }
+  }
   if (tab === 'settings') loadSettingsInfo();
 }
 
@@ -3947,66 +3954,43 @@ document.getElementById('present-week').addEventListener('change', checkPresentR
 
 /* ─── BUILD SLIDES ───────────────────────────────────────────────── */
 function buildSlides(sc, weekIdx, teacherNote) {
-  const weeks  = sc.weeks || buildWeeksFromTasks(sc);
-  const week   = weeks[weekIdx];
+  const weeks = sc.weeks || buildWeeksFromTasks(sc);
+  const week  = weeks[weekIdx];
   if (!week) return [];
-  const wNum   = week.weekNum || (weekIdx + 1);
-  const badge  = `Week ${wNum}`;
-  const tasks  = week.tasks || [];
 
-  // Pull week data from scenario if pre-written, else auto-generate
-  const wd = (sc.weekData && sc.weekData[wNum]) || {};
+  const wNum  = week.weekNum || (weekIdx + 1);
+  const badge = `Week ${wNum}`;
+  const tasks = week.tasks || [];
 
-  const slides = [];
+  // weekData from scenarios.json takes priority over auto-generate functions
+  const wd = (sc.weekData && (sc.weekData[wNum] || sc.weekData[String(wNum)])) || {};
 
-  // Slide 1: Starter Question
-  slides.push({
-    type: 'starter',
-    typeLabel: '🧠 Starter Question',
-    title: wd.starterTitle || `Week ${wNum} Starter`,
-    body: wd.starterQuestion || generateStarterQuestion(sc, wNum),
-    badge,
-    large: true,
-  });
+  // Slide 1: Starter
+  const starterTitle = wd.starterTitle || `Week ${wNum} Starter`;
+  const starterBody  = wd.starterQuestion || generateStarterQuestion(sc, wNum);
 
   // Slide 2: Key Terms
-  slides.push({
-    type: 'keyterms',
-    typeLabel: '📖 Key Terms',
-    title: "This Week's Vocabulary",
-    terms: wd.keyTerms || generateKeyTerms(sc, wNum),
-    badge,
-  });
+  const keyTerms = (wd.keyTerms && wd.keyTerms.length) ? wd.keyTerms : generateKeyTerms(sc, wNum);
 
-  // Slide 3: Tasks for Today
-  slides.push({
-    type: 'tasks',
-    typeLabel: '✅ Tasks for Today',
-    title: `Week ${wNum} — What We're Doing`,
-    tasks: tasks.map(t => ({ num: t.id, title: t.title, type: t.type, marks: t.maxMarks })),
-    badge,
-  });
+  // Slide 3: Tasks
+  const taskItems = tasks.map(t => ({ num: t.id, title: t.title, type: t.type, marks: t.maxMarks }));
 
   // Slide 4: Example
-  slides.push({
-    type: 'example',
-    typeLabel: '💡 Example',
-    title: wd.exampleTitle || 'Worked Example',
-    body: wd.exampleBody || generateExample(sc, wNum),
-    code: wd.exampleCode || null,
-    badge,
-  });
+  const exTitle = wd.exampleTitle || 'Worked Example';
+  const exBody  = wd.exampleBody  || (generateExample(sc, wNum).body);
+  const exCode  = wd.exampleCode  || (generateExample(sc, wNum).code) || null;
 
-  // Slide 5: Teacher Note
-  slides.push({
-    type: 'note',
-    typeLabel: '📌 Teacher Note',
-    title: "Before You Start...",
-    body: teacherNote || wd.defaultNote || `Good luck with Week ${wNum}! Complete both tasks before the end of the lesson. Ask if you're stuck.`,
-    badge,
-  });
+  // Slide 5: Note
+  const noteBody = teacherNote || wd.defaultNote ||
+    `Good luck with Week ${wNum}! Work through the tasks and ask if you get stuck.`;
 
-  return slides;
+  return [
+    { type:'starter',  typeLabel:'🧠 Starter Question', title:starterTitle, body:starterBody, badge, large:true },
+    { type:'keyterms', typeLabel:'📖 Key Terms',         title:'Key Vocabulary', terms:keyTerms, badge },
+    { type:'tasks',    typeLabel:'✅ Tasks for Today',   title:`Week ${wNum} Tasks`, tasks:taskItems, badge },
+    { type:'example',  typeLabel:'💡 Example',           title:exTitle, body:exBody, code:exCode, videoEmbed:week._videoEmbed||null, badge },
+    { type:'note',     typeLabel:'📌 Teacher Note',      title:'Before You Start...', body:noteBody, badge },
+  ];
 }
 
 function generateStarterQuestion(sc, wNum) {
@@ -4175,7 +4159,8 @@ function renderSlide(slide) {
   const title = `<div class="slide-title">${slide.title}</div>`;
 
   if (slide.type === 'starter') {
-    return `${badge}${type}${title}<div class="slide-body large">${slide.body}</div>`;
+    const safeBody = (slide.body || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `${badge}${type}${title}<div class="slide-body large" style="white-space:pre-wrap">${safeBody}</div>`;
   }
   if (slide.type === 'keyterms') {
     const terms = (slide.terms||[]).map(t =>
@@ -4195,17 +4180,20 @@ function renderSlide(slide) {
     return `${badge}${type}${title}<div class="tasks-list">${items}</div>`;
   }
   if (slide.type === 'example') {
-    const codeBlock  = slide.code ? `<div class="example-box">${slide.code}</div>` : '';
+    const safeExBody = (slide.body || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const safeCode   = (slide.code || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const codeBlock  = slide.code ? `<div class="example-box">${safeCode}</div>` : '';
     const videoBlock = slide.videoEmbed
       ? `<div style="margin-top:16px;border-radius:8px;overflow:hidden;max-width:640px">
           <div style="position:relative;padding-bottom:56.25%;height:0;background:#000">
             <iframe src="${slide.videoEmbed}?rel=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
           </div>
         </div>` : '';
-    return `${badge}${type}${title}<div class="slide-body">${slide.body}</div>${codeBlock}${videoBlock}`;
+    return `${badge}${type}${title}<div class="slide-body" style="white-space:pre-wrap">${safeExBody}</div>${codeBlock}${videoBlock}`;
   }
   if (slide.type === 'note') {
-    return `${badge}${type}${title}<div class="slide-body large" style="color:var(--amber)">${slide.body}</div>`;
+    const safeNote = (slide.body || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `${badge}${type}${title}<div class="slide-body large" style="color:var(--amber);white-space:pre-wrap">${safeNote}</div>`;
   }
   return `${badge}${type}${title}<div class="slide-body">${slide.body||''}</div>`;
 }
