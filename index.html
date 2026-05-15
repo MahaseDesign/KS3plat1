@@ -4334,8 +4334,9 @@ function stopLessonPoll() {
 }
 
 // Banner slide index tracked separately
-let bannerSlideIdx = 0;
-let bannerSlides   = [];
+let bannerSlideIdx       = 0;
+let bannerSlides         = [];
+let bannerLastTeacherIdx = 0;
 
 function moveBannerSlide(dir) {
   if (!bannerSlides.length) return;
@@ -4384,15 +4385,22 @@ async function pollLesson() {
     document.getElementById('banner-title').textContent =
       `${lesson.scenarioTitle} — ${lesson.weekLabel}`;
 
-    // Update slide array if changed (new lesson launched)
-    if (JSON.stringify(bannerSlides) !== JSON.stringify(lesson.slides)) {
-      bannerSlides    = lesson.slides || [];
-      bannerSlideIdx  = lesson.currentSlide || 0;
-    } else {
-      // Sync to teacher's position (teacher advances = student follows)
-      bannerSlideIdx = lesson.currentSlide || 0;
+    const newSlides       = lesson.slides || [];
+    const teacherSlideIdx = lesson.currentSlide || 0;
+    const isNewLesson     = JSON.stringify(bannerSlides) !== JSON.stringify(newSlides);
+
+    if (isNewLesson) {
+      // New lesson launched — reset student to teacher's current slide
+      bannerSlides   = newSlides;
+      bannerSlideIdx = teacherSlideIdx;
+      renderBannerSlide();
+    } else if (teacherSlideIdx !== bannerLastTeacherIdx) {
+      // Teacher moved slide — follow them
+      bannerSlideIdx      = teacherSlideIdx;
+      bannerLastTeacherIdx = teacherSlideIdx;
+      renderBannerSlide();
     }
-    renderBannerSlide();
+    // else: teacher hasn't moved, student is browsing freely — do nothing
   } catch(e) { /* silent */ }
 }
 
