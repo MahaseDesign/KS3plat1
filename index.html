@@ -3303,9 +3303,6 @@ function renderTask(idx) {
     idx === s.tasks.length - 1 ? 'Review & Submit →' : 'Save & Next →';
 
   setSaveState('saved');
-
-  // Always ensure task view is visible — lesson banner may be covering it
-  showView('view-task');
 }
 
 function escHtml(str) {
@@ -3339,17 +3336,30 @@ function selectOption(label, type) {
   if (input) { input.checked = !input.checked; handleMcChange(input, type); }
 }
 
-function jumpToTask(idx) { saveCurrentAnswer(false); renderTask(idx); }
-function prevTask()       { saveCurrentAnswer(false); renderTask(STATE.currentTaskIdx - 1); }
+function jumpToTask(idx) { saveCurrentAnswer(false); renderTask(idx); showView('view-task'); }
+function prevTask()       { saveCurrentAnswer(false); renderTask(STATE.currentTaskIdx - 1); showView('view-task'); }
 
 async function saveAndNext() {
-  await saveCurrentAnswer(true);
-  const s = STATE.currentScenario;
-  if (STATE.currentTaskIdx >= s.tasks.length - 1) {
-    renderReview();
-    showView('view-review');
-  } else {
-    renderTask(STATE.currentTaskIdx + 1);
+  try {
+    saveCurrentAnswer(true);
+    const s = STATE.currentScenario;
+    if (!s) { console.error('saveAndNext: no current scenario'); return; }
+    const nextIdx = STATE.currentTaskIdx + 1;
+    if (nextIdx >= s.tasks.length) {
+      renderReview();
+      showView('view-review');
+    } else {
+      STATE.currentTaskIdx = nextIdx;
+      renderTask(nextIdx);
+    }
+  } catch(e) {
+    console.error('saveAndNext error:', e);
+    // Force advance anyway
+    const s = STATE.currentScenario;
+    if (s && STATE.currentTaskIdx < s.tasks.length - 1) {
+      STATE.currentTaskIdx++;
+      renderTask(STATE.currentTaskIdx);
+    }
   }
 }
 
