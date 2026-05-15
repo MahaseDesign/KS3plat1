@@ -3966,34 +3966,56 @@ function buildSlides(sc, weekIdx, teacherNote) {
   const badge = `Week ${wNum}`;
   const tasks = week.tasks || [];
 
-  // weekData from scenarios.json takes priority over auto-generate functions
+  // weekData takes priority over auto-generated content
   const wd = (sc.weekData && (sc.weekData[wNum] || sc.weekData[String(wNum)])) || {};
 
-  // Slide 1: Starter
-  const starterTitle = wd.starterTitle || `Week ${wNum} Starter`;
-  const starterBody  = wd.starterQuestion || generateStarterQuestion(sc, wNum);
-
-  // Slide 2: Key Terms
+  // ── Slide 1: Intro + Keywords ─────────────────────────────────────
+  // New format: starterTitle, starterQuestion, keyTerms
+  const s1Title = wd.starterTitle || `Week ${wNum} — Introduction`;
+  const s1Body  = wd.starterQuestion || generateStarterQuestion(sc, wNum);
   const keyTerms = (wd.keyTerms && wd.keyTerms.length) ? wd.keyTerms : generateKeyTerms(sc, wNum);
 
-  // Slide 3: Tasks
-  const taskItems = tasks.map(t => ({ num: t.id, title: t.title, type: t.type, marks: t.maxMarks }));
+  // ── Slide 2: Topic deep-dive ──────────────────────────────────────
+  const s2Title = wd.exampleTitle || 'Topic Deep-Dive';
+  const s2Body  = wd.exampleBody  || (generateExample(sc, wNum).body);
+  const s2Code  = wd.exampleCode  || null;
 
-  // Slide 4: Example
-  const exTitle = wd.exampleTitle || 'Worked Example';
-  const exBody  = wd.exampleBody  || (generateExample(sc, wNum).body);
-  const exCode  = wd.exampleCode  || (generateExample(sc, wNum).code) || null;
+  // ── Slide 3: Practical steps ─────────────────────────────────────
+  // exampleCode stores the practical/worked example steps
+  const s3Title = wd.slide3Title || 'Practical Steps';
+  const s3Body  = wd.exampleCode || 'Work through the practical steps below.';
+  const s3Code  = null;
 
-  // Slide 5: Note
-  const noteBody = teacherNote || wd.defaultNote ||
-    `Good luck with Week ${wNum}! Work through the tasks and ask if you get stuck.`;
+  // ── Slide 4: Next steps / deeper context ──────────────────────────
+  // defaultNote stores teacher note — slide 4 gets deeper topic content
+  const s4Title = wd.slide4Title || 'Going Further';
+  const s4Body  = wd.slide4Body  || wd.deeperContent || 'Continue practising and extend your understanding.';
+
+  // ── Slide 5: Teacher note ─────────────────────────────────────────
+  const s5Body  = teacherNote || wd.defaultNote ||
+    `Good luck with Week ${wNum}. Work carefully through each task.`;
 
   return [
-    { type:'starter',  typeLabel:'🧠 Starter Question', title:starterTitle, body:starterBody, badge, large:true },
-    { type:'keyterms', typeLabel:'📖 Key Terms',         title:'Key Vocabulary', terms:keyTerms, badge },
-    { type:'tasks',    typeLabel:'✅ Tasks for Today',   title:`Week ${wNum} Tasks`, tasks:taskItems, badge },
-    { type:'example',  typeLabel:'💡 Example',           title:exTitle, body:exBody, code:exCode, videoEmbed:week._videoEmbed||null, badge },
-    { type:'note',     typeLabel:'📌 Teacher Note',      title:'Before You Start...', body:noteBody, badge },
+    {
+      type: 'intro', typeLabel: '📌 Introduction',
+      title: s1Title, body: s1Body, terms: keyTerms, badge,
+    },
+    {
+      type: 'deepdive', typeLabel: '🔍 Topic',
+      title: s2Title, body: s2Body, code: s2Code, badge,
+    },
+    {
+      type: 'practical', typeLabel: '🛠 Practical',
+      title: s3Title, body: s3Body, code: s3Code, badge,
+    },
+    {
+      type: 'nextsteps', typeLabel: '🚀 Next Steps',
+      title: s4Title, body: s4Body, badge,
+    },
+    {
+      type: 'note', typeLabel: '📋 Teacher Note',
+      title: 'Teacher Notes', body: s5Body, badge,
+    },
   ];
 }
 
@@ -4158,14 +4180,63 @@ function showSlide(idx) {
 }
 
 function renderSlide(slide) {
-  const badge = `<span class="slide-week-badge">${slide.badge}</span>`;
-  const type  = `<div class="slide-type">${slide.typeLabel}</div>`;
-  const title = `<div class="slide-title">${slide.title}</div>`;
+  const badge = slide.badge ? `<span class="slide-week-badge">${slide.badge}</span>` : '';
+  const type  = `<div class="slide-type">${slide.typeLabel || ''}</div>`;
+  const title = `<div class="slide-title">${slide.title || ''}</div>`;
 
-  if (slide.type === 'starter') {
-    const safeBody = (slide.body || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `${badge}${type}${title}<div class="slide-body large" style="white-space:pre-wrap">${safeBody}</div>`;
+  function safe(text) {
+    return (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
+  function codeBlock(code) {
+    return code ? `<div class="example-box" style="white-space:pre-wrap;font-size:0.82rem">${safe(code)}</div>` : '';
+  }
+  function bodyDiv(text, extra) {
+    return `<div class="slide-body" style="white-space:pre-wrap${extra ? ';' + extra : ''}">${safe(text)}</div>`;
+  }
+
+  // ── Slide 1: Intro + Keywords ───────────────────────────────────
+  if (slide.type === 'intro' || slide.type === 'starter') {
+    const terms = (slide.terms||[]).map(t =>
+      `<div class="kv-item">
+        <div class="kv-term">${t.term}</div>
+        <div class="kv-def">${t.def}</div>
+      </div>`
+    ).join('');
+    const termsBlock = terms
+      ? `<div style="margin-top:16px"><div style="font-size:0.7rem;font-family:var(--mono);color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Key Vocabulary</div><div class="kv-grid">${terms}</div></div>`
+      : '';
+    return `${badge}${type}${title}${bodyDiv(slide.body)}${termsBlock}`;
+  }
+
+  // ── Slide 2: Topic deep-dive ────────────────────────────────────
+  if (slide.type === 'deepdive' || slide.type === 'example') {
+    const videoBlock = slide.videoEmbed
+      ? `<div style="margin-top:16px;border-radius:8px;overflow:hidden;max-width:100%">
+          <div style="position:relative;padding-bottom:56.25%;height:0;background:#000">
+            <iframe src="${slide.videoEmbed}?rel=0"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
+              allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>` : '';
+    return `${badge}${type}${title}${bodyDiv(slide.body)}${codeBlock(slide.code)}${videoBlock}`;
+  }
+
+  // ── Slide 3: Practical steps ────────────────────────────────────
+  if (slide.type === 'practical') {
+    return `${badge}${type}${title}${bodyDiv(slide.body)}${codeBlock(slide.code)}`;
+  }
+
+  // ── Slide 4: Next steps ─────────────────────────────────────────
+  if (slide.type === 'nextsteps') {
+    return `${badge}${type}${title}${bodyDiv(slide.body)}`;
+  }
+
+  // ── Slide 5: Teacher note ───────────────────────────────────────
+  if (slide.type === 'note') {
+    return `${badge}${type}${title}${bodyDiv(slide.body, 'color:var(--amber)')}`;
+  }
+
+  // ── Legacy types (keyterms, tasks) still supported ─────────────
   if (slide.type === 'keyterms') {
     const terms = (slide.terms||[]).map(t =>
       `<div class="kv-item"><div class="kv-term">${t.term}</div><div class="kv-def">${t.def}</div></div>`
@@ -4183,24 +4254,11 @@ function renderSlide(slide) {
     ).join('');
     return `${badge}${type}${title}<div class="tasks-list">${items}</div>`;
   }
-  if (slide.type === 'example') {
-    const safeExBody = (slide.body || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const safeCode   = (slide.code || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    const codeBlock  = slide.code ? `<div class="example-box">${safeCode}</div>` : '';
-    const videoBlock = slide.videoEmbed
-      ? `<div style="margin-top:16px;border-radius:8px;overflow:hidden;max-width:640px">
-          <div style="position:relative;padding-bottom:56.25%;height:0;background:#000">
-            <iframe src="${slide.videoEmbed}?rel=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
-          </div>
-        </div>` : '';
-    return `${badge}${type}${title}<div class="slide-body" style="white-space:pre-wrap">${safeExBody}</div>${codeBlock}${videoBlock}`;
-  }
-  if (slide.type === 'note') {
-    const safeNote = (slide.body || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `${badge}${type}${title}<div class="slide-body large" style="color:var(--amber);white-space:pre-wrap">${safeNote}</div>`;
-  }
-  return `${badge}${type}${title}<div class="slide-body">${slide.body||''}</div>`;
+
+  // Fallback
+  return `${badge}${type}${title}${bodyDiv(slide.body || '')}`;
 }
+
 
 async function updateLessonSlide(idx) {
   try {
