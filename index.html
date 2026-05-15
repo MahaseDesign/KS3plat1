@@ -3143,6 +3143,7 @@ function openScenarioIntro(scenarioId) {
   const s = STATE.scenarios.find(x => x.id === scenarioId);
   if (!s) return;
   STATE.currentScenario = s;
+  hideBannerForWork();
 
   document.getElementById('intro-title').textContent = s.title;
   document.getElementById('intro-context').textContent = s.context;
@@ -4395,6 +4396,15 @@ async function pollLesson() {
       return;
     }
 
+    // Don't interrupt student mid-task — only show banner on hub/intro views
+    const activeView = document.querySelector('.view.active');
+    const activeViewId = activeView ? activeView.id : '';
+    const studentWorking = ['view-task','view-review','view-grading','view-results','view-intro'].includes(activeViewId);
+    if (studentWorking) {
+      banner.classList.remove('active');
+      return;
+    }
+
     // Show banner — sync to teacher's current slide
     banner.classList.add('active');
     document.getElementById('banner-title').textContent =
@@ -4421,6 +4431,11 @@ async function pollLesson() {
 
 function dismissLessonBanner() {
   STATE.lessonDismissed = true;
+  document.getElementById('lesson-banner').classList.remove('active');
+}
+
+function hideBannerForWork() {
+  // Hide banner while student works — it will reappear on hub
   document.getElementById('lesson-banner').classList.remove('active');
 }
 
