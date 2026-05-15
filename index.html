@@ -3044,6 +3044,18 @@ function renderHub() {
 
   nameEl.textContent = `Welcome back, ${u.username}`;
 
+  // Always re-fetch activeScenarios from JSONBin so teacher changes take effect
+  fetchBin().then(rec => {
+    STATE.activeScenarios = rec.activeScenarios || [];
+    _renderHubGrid();
+  }).catch(() => _renderHubGrid());
+}
+
+function _renderHubGrid() {
+  const grid    = document.getElementById('scenario-grid');
+  const statsEl = document.getElementById('hub-stats');
+  const u       = STATE.user;
+
   // Filter by year group AND teacher-enabled scenarios
   // If no activeScenarios set, show all for the year group
   const activeIds  = STATE.activeScenarios || [];
@@ -3290,6 +3302,9 @@ function renderTask(idx) {
     idx === s.tasks.length - 1 ? 'Review & Submit →' : 'Save & Next →';
 
   setSaveState('saved');
+
+  // Always ensure task view is visible — lesson banner may be covering it
+  showView('view-task');
 }
 
 function escHtml(str) {
