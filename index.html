@@ -2078,6 +2078,47 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
 .task-pip-sm.done   { background: var(--green); border-color: var(--green); }
 .task-pip-sm.active { background: var(--accent); border-color: var(--accent); }
 
+
+/* ─── SPLIT SLIDER ───────────────────────────────────────────────── */
+.split-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+.split-slider-wrap input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--accent) 0%, var(--accent) 42%, var(--border2) 42%, var(--border2) 100%);
+  outline: none;
+  cursor: pointer;
+}
+.split-slider-wrap input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid #0d1117;
+  box-shadow: 0 0 4px rgba(88,166,255,0.5);
+}
+.split-slider-wrap input[type=range]::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid #0d1117;
+}
+.split-label {
+  font-size: 0.68rem;
+  font-family: var(--mono);
+  color: var(--text3);
+  white-space: nowrap;
+}
+
 /* ─── LOADING STATE ──────────────────────────────────────────────── */
 #global-loading { display: none !important; }
 
@@ -2622,7 +2663,15 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
         <span class="pb-title" id="present-bar-title">Lesson</span>
         <span class="pb-counter" id="present-bar-counter">Slide 1 of 5</span>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="split-slider-wrap" title="Drag to resize panels">
+          <span class="split-label">📽</span>
+          <input type="range" id="split-slider" min="20" max="80" value="42" step="1"
+            oninput="adjustSplit(this.value)">
+          <span class="split-label">👩‍💻</span>
+          <span class="split-label" id="split-pct" style="color:var(--accent);min-width:32px">42%</span>
+        </div>
+        <div style="width:1px;height:18px;background:var(--border2)"></div>
         <span style="font-size:0.72rem;color:var(--text3);font-family:var(--mono)" id="present-scenario-label"></span>
         <button class="btn btn-secondary btn-sm" onclick="endPresentation()">✕ End</button>
       </div>
@@ -4203,6 +4252,8 @@ async function launchPresentation() {
   if (scenLabel) scenLabel.textContent = sc.yearGroups.join(', ');
 
   renderDemoTask(0);
+  // Restore saved split ratio
+  setTimeout(restoreSplit, 50);
 }
 
 function showSlide(idx) {
@@ -4847,6 +4898,47 @@ async function showAllScenarios() {
     if (cb) cb.checked = true;
   });
   await saveVisibleScenarios();
+}
+
+
+/* ─── SPLIT SLIDER ───────────────────────────────────────────────── */
+function adjustSplit(pct) {
+  pct = parseInt(pct);
+  const left  = document.querySelector('.present-left');
+  const right = document.querySelector('.present-right');
+  const label = document.getElementById('split-pct');
+  const slider = document.getElementById('split-slider');
+
+  if (left)  left.style.width   = pct + '%';
+  if (right) right.style.flex   = 'none';
+  if (right) right.style.width  = (100 - pct) + '%';
+  if (label) label.textContent  = pct + '%';
+
+  // Update slider track fill
+  if (slider) {
+    const min = parseInt(slider.min), max = parseInt(slider.max);
+    const fillPct = ((pct - min) / (max - min)) * 100;
+    slider.style.background =
+      `linear-gradient(to right, var(--accent) 0%, var(--accent) ${fillPct}%, var(--border2) ${fillPct}%, var(--border2) 100%)`;
+  }
+
+  // Persist preference
+  localStorage.setItem('ks3cs_split', pct);
+
+  // Hide student panel label if too small, show if large enough
+  const rightLabel = document.querySelector('.present-right .present-panel-label');
+  if (rightLabel) rightLabel.style.display = pct > 75 ? 'none' : 'flex';
+
+  // Hide right panel entirely if slid fully left
+  const rightPanel = document.querySelector('.present-right');
+  if (rightPanel) rightPanel.style.display = pct >= 95 ? 'none' : 'flex';
+}
+
+function restoreSplit() {
+  const saved = localStorage.getItem('ks3cs_split');
+  const pct   = saved ? parseInt(saved) : 42;
+  const slider = document.getElementById('split-slider');
+  if (slider) { slider.value = pct; adjustSplit(pct); }
 }
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
