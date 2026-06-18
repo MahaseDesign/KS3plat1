@@ -8,92 +8,44 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ─── DESIGN TOKENS ─────────────────────────────────────────────── */
-/*
-  CLASSROOM COLOUR RATIONALE
-  bg #0f1923      — deep navy not pure black; projectors wash pure black
-  surface #162030 — clear step lighter; cards visible from 6m
-  accent #60aaff  — AAA 7:1+ on all surfaces at 24px+; survives wash-out
-  green #3ecf6a   — BDA blue-green for correct; CB-safe; 6.5:1 on bg
-  amber #f0b429   — replaces red-only for errors; 8:1 on bg; CB-safe
-  text #eef2f7    — warm white not pure white; cuts halation on projectors
-  text2 #9baebf   — 5.5:1 on bg, above AA large-text threshold
-  text3 #607080   — raised from #484f58 (was 2.8:1); decorative use only
-*/
 :root {
-  --bg:        #0f1923;
-  --surface:   #162030;
-  --surface2:  #1e2d3e;
-  --border:    #2d3f52;
-  --border2:   #243242;
-  --accent:    #60aaff;
-  --accent2:   #2070d0;
-  --green:     #3ecf6a;
-  --amber:     #f0b429;
-  --red:       #ff6b6b;
-  --purple:    #c49eff;
-  --text:      #eef2f7;
-  --text2:     #9baebf;
-  --text3:     #607080;
+  --bg:        #0d1117;
+  --surface:   #161b22;
+  --surface2:  #1e2530;
+  --border:    #30363d;
+  --border2:   #21262d;
+  --accent:    #58a6ff;
+  --accent2:   #1f6feb;
+  --green:     #3fb950;
+  --amber:     #d29922;
+  --red:       #f85149;
+  --purple:    #bc8cff;
+  --text:      #e6edf3;
+  --text2:     #8b949e;
+  --text3:     #484f58;
   --mono:      'JetBrains Mono', monospace;
   --sans:      'DM Sans', sans-serif;
   --radius:    8px;
   --radius-lg: 14px;
-  --shadow:    0 8px 32px rgba(0,0,0,0.45);
-  --glow:      0 0 24px rgba(96,170,255,0.18);
+  --shadow:    0 8px 32px rgba(0,0,0,0.4);
+  --glow:      0 0 20px rgba(88,166,255,0.15);
 }
 
-/* Superpower Mode — BDA cream palette, 11:1 contrast */
+/* Superpower Mode */
 body.superpower {
-  --text:    #1a1200;
-  --bg:      #fdf6e3;
-  --surface: #fff9ee;
-  --surface2:#fff2cc;
-  --border:  #d4c48a;
-  --border2: #e4d8a8;
-  --text2:   #4a3e20;
-  --text3:   #7a6a3a;
-  --accent:  #0057b8;
-  --green:   #1a6e2e;
-  --amber:   #8a5000;
-  --red:     #9a1a00;
+  --text: #1a1a1a;
+  --bg: #fdf6e3;
+  --surface: #fff8ea;
+  --surface2: #ffefc8;
+  --border: #ddd0aa;
+  --border2: #e8dfc0;
+  --text2: #5a4e30;
   font-family: 'OpenDyslexic', 'Comic Sans MS', cursive !important;
   letter-spacing: 0.08em;
   line-height: 1.9 !important;
   word-spacing: 0.2em;
 }
 body.superpower * { font-family: 'OpenDyslexic', 'Comic Sans MS', cursive !important; }
-
-/* ─── BOARD MODE — maximum contrast for projection / display from 6m ── */
-/* Toggle via body.board-mode — controlled by teacher from topbar        */
-body.board-mode {
-  --bg:      #03080f;
-  --surface: #091525;
-  --surface2:#0d1e30;
-  --border:  #1e3a52;
-  --border2: #162840;
-  --text:    #ffffff;
-  --text2:   #c8ddf0;
-  --text3:   #7eaacc;
-  --accent:  #70baff;
-  --green:   #4adf7a;
-  --amber:   #ffc444;
-  --red:     #ff7070;
-}
-/* Board mode: larger base font for distant readability */
-body.board-mode,
-body.board-mode .task-question,
-body.board-mode .sc-context,
-body.board-mode .slide-body {
-  font-size: 1.05rem;
-  line-height: 1.85;
-}
-body.board-mode .slide-title  { font-size: 2.4rem; }
-body.board-mode .slide-body   { font-size: 1.3rem; }
-body.board-mode .mc-option    { font-size: 1.1rem; padding: 18px 22px; }
-body.board-mode .task-question{ font-size: 1rem; line-height: 1.9; }
-/* Boost progress bar visibility */
-body.board-mode .progress-bar { height: 7px; }
-body.board-mode .task-pip     { height: 9px; width: 32px; }
 
 /* Colour overlays */
 .overlay {
@@ -116,8 +68,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  line-height: 1.7;
-  font-size: 1rem;
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
@@ -159,11 +110,11 @@ body::before {
 /* ─── TOP BAR ────────────────────────────────────────────────────── */
 #topbar {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(10,18,28,0.97);
+  background: rgba(13,17,23,0.92);
   backdrop-filter: blur(12px);
-  border-bottom: 2px solid var(--border);
+  border-bottom: 1px solid var(--border2);
   padding: 0 24px;
-  height: 58px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -173,13 +124,13 @@ body::before {
   display: flex; align-items: center; gap: 10px;
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--accent);
   letter-spacing: 0.02em;
 }
 
 .topbar-logo .dot {
-  width: 9px; height: 9px;
+  width: 8px; height: 8px;
   border-radius: 50%;
   background: var(--green);
   animation: pulse 2s infinite;
@@ -195,7 +146,7 @@ body::before {
 }
 
 .topbar-user {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text2);
   font-family: var(--mono);
 }
@@ -229,27 +180,27 @@ body::before {
 /* ─── BUTTONS ────────────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 10px 22px;
+  padding: 9px 20px;
   border-radius: var(--radius);
   border: none;
   font-family: var(--sans);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
   text-decoration: none;
   white-space: nowrap;
 }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .btn-primary {
   background: var(--accent);
-  color: #030810;
-  font-weight: 700;
+  color: #0d1117;
+  font-weight: 600;
 }
 .btn-primary:hover:not(:disabled) {
-  background: #82c0ff;
-  box-shadow: 0 0 18px rgba(96,170,255,0.35);
+  background: #79c0ff;
+  box-shadow: 0 0 16px rgba(88,166,255,0.3);
 }
 
 .btn-secondary {
@@ -288,8 +239,8 @@ body::before {
 }
 
 label {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--text2);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -300,9 +251,9 @@ input, select, textarea {
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 11px 14px;
+  padding: 10px 14px;
   font-family: var(--sans);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text);
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
@@ -310,7 +261,7 @@ input, select, textarea {
 }
 input:focus, select:focus, textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(96,170,255,0.2);
+  box-shadow: 0 0 0 3px rgba(88,166,255,0.15);
 }
 input::placeholder, textarea::placeholder { color: var(--text3); }
 select option { background: var(--surface2); }
@@ -346,18 +297,18 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 /* ─── BADGES ─────────────────────────────────────────────────────── */
 .badge {
   display: inline-flex; align-items: center;
-  padding: 3px 11px;
+  padding: 2px 10px;
   border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 600;
   font-family: var(--mono);
   letter-spacing: 0.04em;
 }
-.badge-blue   { background: rgba(96,170,255,0.18); color: #82c8ff; border: 1px solid rgba(96,170,255,0.25); }
-.badge-green  { background: rgba(62,207,106,0.18); color: #5ae88a; border: 1px solid rgba(62,207,106,0.25); }
-.badge-amber  { background: rgba(240,180,41,0.18); color: #ffd060; border: 1px solid rgba(240,180,41,0.25); }
-.badge-purple { background: rgba(196,158,255,0.18); color: #d4b8ff; border: 1px solid rgba(196,158,255,0.25); }
-.badge-red    { background: rgba(255,107,107,0.18); color: #ff9898; border: 1px solid rgba(255,107,107,0.25); }
+.badge-blue   { background: rgba(88,166,255,0.15); color: var(--accent); }
+.badge-green  { background: rgba(63,185,80,0.15);  color: var(--green); }
+.badge-amber  { background: rgba(210,153,34,0.15); color: var(--amber); }
+.badge-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
+.badge-red    { background: rgba(248,81,73,0.15);  color: var(--red); }
 
 /* ─── ALERTS ─────────────────────────────────────────────────────── */
 .alert {
@@ -368,9 +319,9 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   display: none;
 }
 .alert.show { display: flex; align-items: flex-start; gap: 8px; }
-.alert-error  { background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.35); color: #ffb0b0; }
-.alert-success { background: rgba(62,207,106,0.12); border: 1px solid rgba(62,207,106,0.35); color: #80eeaa; }
-.alert-info   { background: rgba(96,170,255,0.12); border: 1px solid rgba(96,170,255,0.35); color: #90ccff; }
+.alert-error  { background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); color: #ffa198; }
+.alert-success { background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.3); color: #7ee787; }
+.alert-info   { background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.3); color: #79c0ff; }
 
 /* ─── DIVIDER ────────────────────────────────────────────────────── */
 .divider {
@@ -552,9 +503,9 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 }
 
 .sc-context {
-  font-size: 0.88rem;
+  font-size: 0.83rem;
   color: var(--text2);
-  line-height: 1.65;
+  line-height: 1.6;
   margin-bottom: 16px;
 }
 
@@ -568,8 +519,8 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 
 .sc-stats {
   display: flex; gap: 16px;
-  font-size: 0.78rem;
-  color: var(--text2);
+  font-size: 0.75rem;
+  color: var(--text3);
   font-family: var(--mono);
 }
 
@@ -581,15 +532,15 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 }
 .progress-label {
   display: flex; justify-content: space-between;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text2);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   font-family: var(--mono);
 }
 .progress-bar {
-  height: 6px;
+  height: 4px;
   background: var(--surface2);
-  border-radius: 3px;
+  border-radius: 2px;
   overflow: hidden;
 }
 .progress-fill {
@@ -663,8 +614,8 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   display: block;
 }
 .intro-stat .lbl {
-  font-size: 0.74rem;
-  color: var(--text2);
+  font-size: 0.72rem;
+  color: var(--text3);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -716,16 +667,16 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 
 .tlp-num {
   font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--text2);
+  font-size: 0.72rem;
+  color: var(--text3);
   width: 24px;
   flex-shrink: 0;
 }
 .tlp-title { flex: 1; color: var(--text); }
 .tlp-week {
   font-family: var(--mono);
-  font-size: 0.72rem;
-  color: var(--text2);
+  font-size: 0.7rem;
+  color: var(--text3);
 }
 
 .diff-dot {
@@ -763,10 +714,10 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   gap: 6px;
 }
 .task-pip {
-  width: 30px; height: 8px;
-  border-radius: 4px;
+  width: 28px; height: 6px;
+  border-radius: 3px;
   background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border2);
   transition: all 0.2s;
   cursor: pointer;
 }
@@ -834,24 +785,23 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   cursor: pointer;
   transition: all 0.15s;
   font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.55;
+  line-height: 1.5;
   user-select: none;
   position: relative;
 }
 .mc-option:hover {
   border-color: var(--accent);
-  background: rgba(96,170,255,0.09);
+  background: rgba(88,166,255,0.07);
   transform: translateX(3px);
 }
 .mc-option.selected {
   border-color: var(--accent);
-  background: rgba(96,170,255,0.18);
+  background: rgba(88,166,255,0.15);
   color: var(--text);
 }
 .mc-option.selected .mc-letter {
   background: var(--accent);
-  color: #030810;
+  color: #0d1117;
   border-color: var(--accent);
 }
 
@@ -1151,10 +1101,10 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   gap: 12px;
   font-size: 0.83rem;
 }
-.rb-item .rb-num { font-family: var(--mono); color: var(--text2); width: 28px; flex-shrink: 0; }
-.rb-item .rb-title { flex: 1; font-weight: 600; }
-.rb-item .rb-score { font-family: var(--mono); font-size: 0.82rem; color: var(--accent); flex-shrink: 0; }
-.rb-feedback { font-size: 0.82rem; color: var(--text2); margin-top: 4px; }
+.rb-item .rb-num { font-family: var(--mono); color: var(--text3); width: 28px; flex-shrink: 0; }
+.rb-item .rb-title { flex: 1; font-weight: 500; }
+.rb-item .rb-score { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); flex-shrink: 0; }
+.rb-feedback { font-size: 0.78rem; color: var(--text2); margin-top: 4px; }
 
 /* ════════════════════════════════════════════════════════════════════
    VIEW: TEACHER DASHBOARD
@@ -1220,15 +1170,15 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 
 .data-table th {
   background: var(--surface2);
-  padding: 11px 14px;
+  padding: 10px 14px;
   text-align: left;
   font-family: var(--mono);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text2);
-  border-bottom: 2px solid var(--border);
+  border-bottom: 1px solid var(--border2);
   white-space: nowrap;
 }
 
@@ -1390,14 +1340,14 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 
 .slide-type {
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent);
   margin-bottom: 20px;
 }
 .slide-title {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 28px;
@@ -1405,13 +1355,13 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
   line-height: 1.2;
 }
 .slide-body {
-  font-size: 1.15rem;
-  line-height: 1.8;
+  font-size: 1.1rem;
+  line-height: 1.75;
   color: var(--text2);
   white-space: pre-wrap;
 }
 .slide-body.large {
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   color: var(--text);
   font-weight: 500;
 }
@@ -1699,8 +1649,8 @@ textarea { resize: vertical; min-height: 80px; font-family: var(--mono); font-si
 .hw-stats {
   display: flex; gap: 20px;
   font-family: var(--mono);
-  font-size: 0.78rem;
-  color: var(--text2);
+  font-size: 0.75rem;
+  color: var(--text3);
 }
 
 .scenario-card {
@@ -2169,6 +2119,94 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
   white-space: nowrap;
 }
 
+
+/* ─── END OF LESSON QUIZ ─────────────────────────────────────────── */
+.quiz-lesson-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: var(--sans);
+}
+.quiz-lesson-btn:hover { border-color: var(--accent); color: var(--accent); }
+.quiz-lesson-btn.active { background: var(--accent); color: #0d1117; border-color: var(--accent); }
+.quiz-lesson-btn.done { border-color: var(--green); color: var(--green); }
+.quiz-lesson-btn.done::after { content: ' ✓'; }
+
+.qz-opt {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text);
+  transition: border-color 0.1s, background 0.1s;
+  text-align: left;
+}
+.qz-opt:hover:not(.locked) { border-color: var(--accent); background: rgba(88,166,255,0.06); }
+.qz-opt .qz-letter {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 600; flex-shrink: 0; color: var(--text3);
+}
+.qz-opt.correct { background: rgba(63,185,80,0.1); border-color: var(--green); color: var(--green); }
+.qz-opt.correct .qz-letter { border-color: var(--green); color: var(--green); }
+.qz-opt.wrong { background: rgba(248,81,73,0.1); border-color: var(--red); color: var(--red); }
+.qz-opt.wrong .qz-letter { border-color: var(--red); color: var(--red); }
+
+.qz-lb-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 12px;
+  background: var(--surface2); border-radius: var(--radius);
+  font-size: 0.8rem;
+}
+.qz-lb-row.gold { background: rgba(210,153,34,0.1); }
+
+
+/* ─── WEEK LOCK ──────────────────────────────────────────────────── */
+.task-pip-sm.locked-pip {
+  background: var(--surface);
+  border-color: var(--border2);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.week-locked-banner {
+  background: rgba(248,81,73,0.08);
+  border: 1px solid rgba(248,81,73,0.25);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: var(--red);
+  text-align: center;
+  margin: 16px 0;
+}
+/* Teacher week control */
+.week-stepper {
+  display: flex; align-items: center; gap: 10px;
+}
+.week-stepper button {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--text); font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.1s;
+}
+.week-stepper button:hover { background: var(--surface); }
+.week-stepper button:disabled { opacity: 0.3; cursor: not-allowed; }
+.week-num-display {
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--accent); font-family: var(--mono);
+  min-width: 32px; text-align: center;
+}
+
 /* ─── LOADING STATE ──────────────────────────────────────────────── */
 #global-loading { display: none !important; }
 
@@ -2251,10 +2289,6 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
     </div>
     <div class="topbar-right">
       <span class="topbar-user" id="topbar-username"></span>
-      <button class="btn btn-ghost btn-sm" id="btn-board-mode" onclick="toggleBoardMode()"
-        title="Board Mode: maximum contrast for projector/display" style="font-size:0.78rem">
-        📺 Board Mode
-      </button>
       <button class="btn btn-ghost btn-sm" id="btn-logout">logout</button>
     </div>
   </nav>
@@ -2262,8 +2296,8 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
   <!-- ACCESSIBILITY BAR -->
   <div id="access-bar" style="display:none">
     <span>Accessibility:</span>
-    <button class="btn btn-ghost btn-sm" id="btn-superpower" style="padding:4px 10px;font-size:0.78rem">⚡ Superpower Mode</button>
-    <span style="margin-left:8px">Colour overlay:</span>
+    <button class="btn btn-ghost btn-sm" id="btn-superpower" style="padding:3px 10px;font-size:0.72rem">⚡ Superpower Mode</button>
+    <span style="margin-left:8px">Overlay:</span>
     <button class="overlay-btn" id="ov-none" title="No overlay" style="background:var(--surface2)" onclick="setOverlay('none')">✕</button>
     <button class="overlay-btn" id="ov-el" title="Warm/cream" style="background:#ffe0b2" onclick="setOverlay('el')"></button>
     <button class="overlay-btn" id="ov-blue" title="Blue" style="background:#b3d9ff" onclick="setOverlay('blue')"></button>
@@ -2382,6 +2416,90 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
           <div class="es-icon">⏳</div>
           <h3>Loading your scenarios...</h3>
           <p>Just a moment</p>
+        </div>
+      </div>
+
+      <!-- ── END OF LESSON QUIZ ────────────────────────────── -->
+      <div id="hub-quiz-section" style="margin-top:40px;display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <div>
+            <h3 style="font-size:1rem;font-weight:600;margin-bottom:2px">⚡ End of Lesson Quiz</h3>
+            <p style="font-size:0.8rem;color:var(--text3)">10 questions · timed · score = speed + accuracy</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="quiz-lesson-btns"></div>
+        </div>
+
+        <!-- Quiz panel -->
+        <div id="hub-quiz-panel" class="card" style="padding:0;overflow:hidden">
+
+          <!-- Idle state -->
+          <div id="qp-idle" style="padding:28px;text-align:center;color:var(--text3);font-size:0.88rem">
+            Select a lesson above to start the quiz.
+          </div>
+
+          <!-- Active quiz -->
+          <div id="qp-active" style="display:none;padding:24px">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+              <!-- Timer ring -->
+              <div style="position:relative;width:48px;height:48px;flex-shrink:0">
+                <svg width="48" height="48" viewBox="0 0 48 48" style="transform:rotate(-90deg)">
+                  <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border2)" stroke-width="3"/>
+                  <circle id="qz-ring" cx="24" cy="24" r="20" fill="none" stroke-width="3"
+                    stroke-linecap="round" stroke-dasharray="125.6" stroke-dashoffset="0"
+                    style="transition:stroke-dashoffset 0.1s linear,stroke 0.3s"/>
+                </svg>
+                <div id="qz-timer-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;font-family:var(--mono)">15</div>
+              </div>
+              <!-- Progress -->
+              <div style="flex:1">
+                <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text3);margin-bottom:5px">
+                  <span id="qz-lesson-label">Lesson 1</span>
+                  <span id="qz-counter">1 / 10</span>
+                </div>
+                <div style="height:4px;background:var(--border2);border-radius:2px;overflow:hidden">
+                  <div id="qz-bar" style="height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width 0.2s"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size:0.95rem;font-weight:600;line-height:1.5;margin-bottom:16px;color:var(--text)" id="qz-question"></div>
+            <div id="qz-options" style="display:flex;flex-direction:column;gap:7px"></div>
+            <div id="qz-feedback" style="display:none;margin-top:10px;padding:10px 14px;border-radius:var(--radius);font-size:0.82rem;line-height:1.5"></div>
+          </div>
+
+          <!-- Results -->
+          <div id="qp-results" style="display:none;padding:24px">
+            <div style="text-align:center;padding:20px;background:var(--surface2);border-radius:var(--radius);margin-bottom:16px">
+              <div id="qr-points" style="font-size:48px;font-weight:700;color:var(--accent);line-height:1">0</div>
+              <div style="font-size:0.75rem;color:var(--text3);margin-top:2px">points</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px">
+                <div style="background:var(--surface);border-radius:var(--radius);padding:10px;text-align:center">
+                  <div id="qr-correct" style="font-size:1.2rem;font-weight:600;color:var(--green)">0/10</div>
+                  <div style="font-size:0.7rem;color:var(--text3);margin-top:2px">correct</div>
+                </div>
+                <div style="background:var(--surface);border-radius:var(--radius);padding:10px;text-align:center">
+                  <div id="qr-speed" style="font-size:1.2rem;font-weight:600">0s</div>
+                  <div style="font-size:0.7rem;color:var(--text3);margin-top:2px">avg speed</div>
+                </div>
+                <div style="background:var(--surface);border-radius:var(--radius);padding:10px;text-align:center">
+                  <div id="qr-streak" style="font-size:1.2rem;font-weight:600;color:var(--amber)">0</div>
+                  <div style="font-size:0.7rem;color:var(--text3);margin-top:2px">best streak</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Leaderboard for this lesson -->
+            <div style="margin-bottom:14px">
+              <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Best scores — <span id="qr-lesson-name"></span></div>
+              <div id="qr-leaderboard" style="display:flex;flex-direction:column;gap:4px"></div>
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-primary btn-sm" onclick="quizRetry()">Try again</button>
+              <button class="btn btn-secondary btn-sm" onclick="quizBack()">All lessons</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -2661,9 +2779,9 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
           <div class="card-title" style="margin-bottom:4px">👁 Visible Scenarios</div>
           <div class="card-sub">Control which scenarios students can see. Unticked scenarios are hidden from the student hub. By default all scenarios for a year group are visible.</div>
         </div>
-        <div id="visible-scenarios-list" style="display:flex;flex-direction:column;gap:8px;max-width:600px"></div>
+        <div id="visible-scenarios-list" style="display:flex;flex-direction:column;gap:10px;max-width:640px"></div>
         <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="saveVisibleScenarios()">💾 Save</button>
+          <button class="btn btn-primary" onclick="saveVisibleScenarios()">💾 Save all</button>
           <button class="btn btn-secondary" onclick="showAllScenarios()">Show All</button>
         </div>
         <div id="visible-save-msg" style="margin-top:10px;font-size:0.82rem;color:var(--green)"></div>
@@ -2859,6 +2977,7 @@ let STATE = {
   demoTaskIdx: 0,
   demoScenario: null,
   activeScenarios: [],  // teacher-controlled visible scenarios
+  currentWeeks: {},     // scenarioId -> unlocked week number (teacher-set)
 };
 
 /* ─── UTILS ──────────────────────────────────────────────────────── */
@@ -3150,6 +3269,7 @@ function renderHub() {
   // Always re-fetch activeScenarios from JSONBin so teacher changes take effect
   fetchBin().then(rec => {
     STATE.activeScenarios = rec.activeScenarios || [];
+    STATE.currentWeeks    = rec.currentWeeks    || {};
     _renderHubGrid();
   }).catch(() => _renderHubGrid());
 }
@@ -3217,6 +3337,12 @@ function _renderHubGrid() {
       status === 'submitted'   ? 'View Results' :
       status === 'in_progress' ? `Resume — Task ${done+1 > total ? total : done+1} of ${total}` :
                                   'Start Project';
+
+    const unlockedWk  = getUnlockedWeek(s.id);
+    const maxWk       = Math.max(...s.tasks.map(t => t.week || 1));
+    const weekBadge   = unlockedWk < maxWk
+      ? `<span style="font-size:0.68rem;background:rgba(248,81,73,0.1);color:var(--red);border-radius:10px;padding:2px 8px;font-family:var(--mono)">Week ${unlockedWk} of ${maxWk} unlocked</span>`
+      : `<span style="font-size:0.68rem;background:rgba(63,185,80,0.1);color:var(--green);border-radius:10px;padding:2px 8px;font-family:var(--mono)">All ${maxWk} weeks unlocked</span>`;
 
     return `<div class="scenario-card" onclick="openScenarioIntro('${s.id}')" tabindex="0"
       onkeydown="if(event.key==='Enter') openScenarioIntro('${s.id}')">
@@ -3320,6 +3446,14 @@ function renderTask(idx) {
   const s = STATE.currentScenario;
   const t = s.tasks[idx];
   if (!t) return;
+
+  // Enforce week lock — redirect to last unlocked task if needed
+  if (!isTaskUnlocked(s.id, t.week || 1)) {
+    const unlockedWeek = getUnlockedWeek(s.id);
+    const lastUnlocked = s.tasks.reduce((best, pt, i) =>
+      (pt.week || 1) <= unlockedWeek ? i : best, 0);
+    if (lastUnlocked !== idx) { renderTask(lastUnlocked); return; }
+  }
 
   STATE.currentTaskIdx = idx;
 
@@ -3452,6 +3586,14 @@ async function saveAndNext() {
       renderReview();
       showView('view-review');
     } else {
+      const nextTask = s.tasks[nextIdx];
+      if (nextTask && !isTaskUnlocked(s.id, nextTask.week || 1)) {
+        // Show locked message instead of advancing
+        const wk = nextTask.week || 1;
+        const unlockedWk = getUnlockedWeek(s.id);
+        alert(`Week ${wk} is not yet unlocked. Your teacher has unlocked up to Week ${unlockedWk}. Come back when your teacher opens the next week!`);
+        return;
+      }
       STATE.currentTaskIdx = nextIdx;
       renderTask(nextIdx);
     }
@@ -4913,19 +5055,35 @@ function renderVisibleScenariosList() {
   const el = document.getElementById('visible-scenarios-list');
   if (!el) return;
   const active = STATE.activeScenarios || [];
+
+  // Calculate max weeks per scenario
   el.innerHTML = STATE.scenarios.map(s => {
     const checked = !active.length || active.includes(s.id);
     const yearLabel = s.yearGroups.join(', ');
-    return `<label style="display:flex;align-items:center;gap:12px;padding:12px 16px;
-      background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);
-      cursor:pointer">
-      <input type="checkbox" id="vis-${s.id}" ${checked ? 'checked' : ''}
-        style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent)">
-      <div style="flex:1">
-        <div style="font-weight:600;font-size:0.88rem">${s.title}</div>
-        <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono)">${yearLabel} · ${s.tasks.length} tasks</div>
+    const maxWeek = Math.max(...s.tasks.map(t => t.week || 1));
+    const curWeek = getUnlockedWeek(s.id);
+
+    return `<div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 16px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;flex:1;min-width:200px">
+          <input type="checkbox" id="vis-${s.id}" ${checked ? 'checked' : ''}
+            style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent)">
+          <div>
+            <div style="font-weight:600;font-size:0.88rem">${s.title}</div>
+            <div style="font-size:0.72rem;color:var(--text3);font-family:var(--mono)">${yearLabel} · ${s.tasks.length} tasks · ${maxWeek} weeks</div>
+          </div>
+        </label>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+          <span style="font-size:0.75rem;color:var(--text2)">🔓 Unlocked up to week:</span>
+          <div class="week-stepper">
+            <button onclick="changeWeek('${s.id}',-1,${maxWeek})" id="wk-dn-${s.id}">−</button>
+            <span class="week-num-display" id="wk-num-${s.id}">${curWeek}</span>
+            <button onclick="changeWeek('${s.id}',1,${maxWeek})" id="wk-up-${s.id}">+</button>
+          </div>
+          <span style="font-size:0.72rem;color:var(--text3)">of ${maxWeek}</span>
+        </div>
       </div>
-    </label>`;
+    </div>`;
   }).join('');
 }
 
@@ -4934,11 +5092,11 @@ async function saveVisibleScenarios() {
     .filter(s => document.getElementById(`vis-${s.id}`)?.checked)
     .map(s => s.id);
   try {
-    await saveBin({ activeScenarios: active });
+    await saveBin({ activeScenarios: active, currentWeeks: STATE.currentWeeks });
     STATE.activeScenarios = active;
     const msg = document.getElementById('visible-save-msg');
     if (msg) {
-      msg.textContent = `✅ Saved — ${active.length} scenario${active.length !== 1 ? 's' : ''} visible to students`;
+      msg.textContent = `✅ Saved — ${active.length} scenario${active.length !== 1 ? 's' : ''} visible · week settings updated`;
       setTimeout(() => msg.textContent = '', 3000);
     }
   } catch(e) {
@@ -4995,27 +5153,42 @@ function restoreSplit() {
   if (slider) { slider.value = pct; adjustSplit(pct); }
 }
 
-/* ─── BOARD MODE ─────────────────────────────────────────────────── */
-// Maximises contrast and font size for projector / interactive whiteboard.
-// Toggle persists in localStorage so it survives page reload.
-function toggleBoardMode() {
-  const on = document.body.classList.toggle('board-mode');
-  localStorage.setItem('ks3cs_board', on ? '1' : '0');
-  const btn = document.getElementById('btn-board-mode');
-  if (btn) {
-    btn.textContent = on ? '📺 Board: ON' : '📺 Board Mode';
-    btn.style.color = on ? 'var(--amber)' : '';
-    btn.style.fontWeight = on ? '700' : '';
+
+/* ─── WEEK LOCK HELPERS ──────────────────────────────────────────── */
+function getUnlockedWeek(scenarioId) {
+  // Returns the highest week number students can access (1-based)
+  // If teacher hasn't set it, default to week 1 only
+  const val = STATE.currentWeeks[scenarioId];
+  return val !== undefined ? parseInt(val) : 1;
+}
+
+function isTaskUnlocked(scenarioId, taskWeek) {
+  return taskWeek <= getUnlockedWeek(scenarioId);
+}
+
+async function setScenarioWeek(scenarioId, week) {
+  STATE.currentWeeks[scenarioId] = week;
+  try {
+    await saveBin({ currentWeeks: STATE.currentWeeks });
+  } catch(e) {
+    console.warn('Failed to save week setting:', e);
   }
 }
 
-(function restoreBoardMode() {
-  if (localStorage.getItem('ks3cs_board') === '1') {
-    document.body.classList.add('board-mode');
-    const btn = document.getElementById('btn-board-mode');
-    if (btn) { btn.textContent = '📺 Board: ON'; btn.style.color = 'var(--amber)'; btn.style.fontWeight = '700'; }
-  }
-})();
+
+async function changeWeek(scenarioId, dir, maxWeek) {
+  const cur = getUnlockedWeek(scenarioId);
+  const next = Math.max(1, Math.min(maxWeek, cur + dir));
+  STATE.currentWeeks[scenarioId] = next;
+
+  // Update display immediately
+  const numEl = document.getElementById(`wk-num-${scenarioId}`);
+  if (numEl) numEl.textContent = next;
+  const downBtn = document.getElementById(`wk-dn-${scenarioId}`);
+  const upBtn   = document.getElementById(`wk-up-${scenarioId}`);
+  if (downBtn) downBtn.disabled = next <= 1;
+  if (upBtn)   upBtn.disabled   = next >= maxWeek;
+}
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
 
