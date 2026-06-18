@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2546,6 +2547,8 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
       <button class="btn btn-ghost btn-sm" onclick="showView('view-intro')">← Back</button>
       <div class="task-progress" id="task-pips"><!-- pips --></div>
       <div class="task-counter" id="task-counter">Task 1 of 10</div>
+      <button class="btn btn-ghost btn-sm" id="btn-task-quiz" onclick="openWeekQuiz()"
+        title="Take the end of lesson quiz" style="display:none;color:var(--amber)">⚡ Quiz</button>
     </div>
 
     <div class="task-card-main">
@@ -2573,6 +2576,94 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
     </div>
   </div>
 
+  <!-- ══ VIEW: END OF LESSON QUIZ ══════════════════════════════════ -->
+  <div id="view-quiz" class="view">
+    <div style="max-width:680px;margin:0 auto;padding:24px">
+
+      <!-- Quiz header -->
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <button class="btn btn-ghost btn-sm" onclick="exitQuiz()">← Back</button>
+        <div style="flex:1">
+          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em" id="qv-lesson-label">Week 1 Quiz</div>
+        </div>
+        <span id="qv-score-live" style="font-size:0.82rem;font-family:var(--mono);color:var(--accent)"></span>
+      </div>
+
+      <!-- Idle / lesson select -->
+      <div id="qv-select">
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title" style="margin-bottom:4px">⚡ End of Lesson Quiz</div>
+          <div class="card-sub">10 questions · 15 seconds each · score = speed + accuracy</div>
+          <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap" id="qv-week-btns"></div>
+        </div>
+        <div id="qv-leaderboard-wrap" style="display:none">
+          <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px" id="qv-lb-title">Best scores</div>
+          <div id="qv-lb-list" style="display:flex;flex-direction:column;gap:4px"></div>
+        </div>
+      </div>
+
+      <!-- Active question -->
+      <div id="qv-active" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="position:relative;width:48px;height:48px;flex-shrink:0">
+            <svg width="48" height="48" viewBox="0 0 48 48" style="transform:rotate(-90deg)">
+              <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border2)" stroke-width="3"/>
+              <circle id="qv-ring" cx="24" cy="24" r="20" fill="none" stroke-width="3"
+                stroke-linecap="round" stroke-dasharray="125.6" stroke-dashoffset="0"
+                style="transition:stroke-dashoffset 0.1s linear,stroke 0.3s;stroke:var(--green)"/>
+            </svg>
+            <div id="qv-timer-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;font-family:var(--mono);color:var(--text)">15</div>
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text3);margin-bottom:5px">
+              <span id="qv-counter">Question 1 of 10</span>
+              <span id="qv-streak-label" style="color:var(--amber)"></span>
+            </div>
+            <div style="height:5px;background:var(--surface2);border-radius:3px;overflow:hidden">
+              <div id="qv-progress" style="height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width 0.3s"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:12px">
+          <div id="qv-question" style="font-size:1rem;font-weight:600;line-height:1.5;margin-bottom:16px;color:var(--text)"></div>
+          <div id="qv-options" style="display:flex;flex-direction:column;gap:7px"></div>
+          <div id="qv-feedback" style="display:none;margin-top:12px;padding:10px 14px;border-radius:var(--radius);font-size:0.82rem;line-height:1.5"></div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="qv-results" style="display:none">
+        <div class="card" style="text-align:center;margin-bottom:16px;padding:28px">
+          <div id="qv-result-emoji" style="font-size:2.5rem;margin-bottom:8px"></div>
+          <div id="qv-result-points" style="font-size:3rem;font-weight:700;color:var(--accent);line-height:1;font-family:var(--mono)">0</div>
+          <div style="font-size:0.75rem;color:var(--text3);margin-top:4px">points</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px">
+            <div style="background:var(--surface2);border-radius:var(--radius);padding:10px">
+              <div id="qv-r-correct" style="font-size:1.3rem;font-weight:700;color:var(--green)">0/10</div>
+              <div style="font-size:0.7rem;color:var(--text3);margin-top:2px">correct</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:var(--radius);padding:10px">
+              <div id="qv-r-speed" style="font-size:1.3rem;font-weight:700">0s</div>
+              <div style="font-size:0.7rem;color:var(--text3);margin-top:2px">avg speed</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:var(--radius);padding:10px">
+              <div id="qv-r-streak" style="font-size:1.3rem;font-weight:700;color:var(--amber)">0</div>
+              <div style="font-size:0.7rem;color:var(--text3);margin-top:2px">best streak</div>
+            </div>
+          </div>
+        </div>
+        <div id="qv-lb-results" style="margin-bottom:16px"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="quizRetry()">Try again</button>
+          <button class="btn btn-secondary" onclick="quizBack()">Choose lesson</button>
+          <button class="btn btn-secondary" onclick="exitQuiz()">Back to hub</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ══ VIEW: REVIEW ══════════════════════════════════════════════ -->
   <div id="view-review" class="view">
     <div class="review-header">
@@ -2581,6 +2672,15 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
     </div>
     <div class="review-list" id="review-list"><!-- populated --></div>
     <div class="submit-section">
+      <!-- End of lesson quiz button -->
+      <div id="review-quiz-btn-wrap" style="margin-bottom:16px;display:none">
+        <div style="font-size:0.82rem;color:var(--text3);margin-bottom:8px">
+          You have completed all tasks for this week. Test your knowledge before submitting:
+        </div>
+        <button class="btn btn-secondary" onclick="openWeekQuiz()" id="review-quiz-btn">
+          ⚡ Take the Week Quiz
+        </button>
+      </div>
       <p>Once you submit, your work will be marked by AI and you will receive a score and written feedback. You cannot resubmit after this.</p>
       <button class="btn btn-primary btn-lg" id="btn-submit" onclick="confirmSubmit()">
         Submit for Grading ✓
@@ -3460,6 +3560,13 @@ function renderTask(idx) {
   // Counter
   document.getElementById('task-counter').textContent = `Task ${idx+1} of ${s.tasks.length}`;
 
+  // Show ⚡ Quiz button if a quiz exists for this week
+  const quizBtn = document.getElementById('btn-task-quiz');
+  if (quizBtn) {
+    const tWeek = t.week || 1;
+    quizBtn.style.display = !!(QUIZ_BANK[s.id] || {})[String(tWeek)] ? 'inline-flex' : 'none';
+  }
+
   // Load media for this week in background
   const taskWeek = t.week || 1;
   getTaskMedia(s.id, taskWeek).then(mediaItems => {
@@ -3664,6 +3771,15 @@ function setSaveState(s) {
 /* ─── REVIEW ─────────────────────────────────────────────────────── */
 function renderReview() {
   const s  = STATE.currentScenario;
+  // Show quiz button if a quiz exists for the current week
+  const qBtnWrap = document.getElementById('review-quiz-btn-wrap');
+  if (s && qBtnWrap) {
+    const maxWeek  = Math.max(...s.tasks.map(t => t.week || 1));
+    const unlocked = getUnlockedWeek(s.id);
+    const week     = Math.min(maxWeek, unlocked);
+    const hasQuiz  = !!(QUIZ_BANK[s.id] || {})[String(week)];
+    qBtnWrap.style.display = hasQuiz ? 'block' : 'none';
+  }
   const sd = STATE.user.scenarios?.[s.id] || {};
   const allDone = s.tasks.every(t => sd.taskStatuses?.[t.id] === 'complete');
 
@@ -5188,6 +5304,273 @@ async function changeWeek(scenarioId, dir, maxWeek) {
   const upBtn   = document.getElementById(`wk-up-${scenarioId}`);
   if (downBtn) downBtn.disabled = next <= 1;
   if (upBtn)   upBtn.disabled   = next >= maxWeek;
+}
+
+const QUIZ_BANK = {"scenario_y7_binary": {"1": [{"q": "What does binary mean?", "opts": ["A system using only 0 and 1", "A system using digits 0 to 9", "A system using letters A to F", "A system using 16 symbols"], "a": 0, "exp": "Binary is base-2 — it uses only the digits 0 and 1."}, {"q": "Why do computers use binary instead of denary?", "opts": ["Binary is easier for humans", "Electrical switches are only ON or OFF", "Computers prefer smaller numbers", "Binary was invented first"], "a": 1, "exp": "Computer circuits use electrical switches that can only be fully ON (1) or fully OFF (0)."}, {"q": "What does the digit 1 represent in binary?", "opts": ["Zero", "The switch is OFF", "The switch is ON", "The number ten"], "a": 2, "exp": "1 = ON — the electrical switch is conducting current."}, {"q": "What does the digit 0 represent in binary?", "opts": ["The switch is ON", "The number zero", "The switch is OFF", "Nothing at all"], "a": 2, "exp": "0 = OFF — the electrical switch is not conducting current."}, {"q": "What is a bit?", "opts": ["8 binary digits", "A single binary digit — 0 or 1", "A unit of speed", "A type of computer"], "a": 1, "exp": "A bit (binary digit) is the smallest unit of data — a single 0 or 1."}, {"q": "How many bits are in a byte?", "opts": ["2", "4", "8", "16"], "a": 2, "exp": "1 byte = 8 bits. This is the standard unit for storing a single character."}, {"q": "Which of these is a valid binary number?", "opts": ["10203", "FFFX", "1101", "9901"], "a": 2, "exp": "Binary only uses 0 and 1. 1101 is valid — the others contain invalid digits."}, {"q": "What is 101 shown as ON/OFF switches?", "opts": ["OFF ON OFF", "ON OFF ON", "ON ON OFF", "OFF OFF ON"], "a": 1, "exp": "1=ON, 0=OFF, 1=ON — reading left to right: ON OFF ON."}, {"q": "Which device is a computer?", "opts": ["A wooden table", "A pencil", "A smartphone", "A glass of water"], "a": 2, "exp": "A smartphone has a processor, follows programs, and processes data — it is a computer."}, {"q": "What is data?", "opts": ["A type of switch", "Raw facts and figures processed by a computer", "Only numbers", "The physical parts of a computer"], "a": 1, "exp": "Data is raw facts and figures. Computers process data to produce useful information."}], "2": [{"q": "What are the 4-bit binary place values (left to right)?", "opts": ["1, 2, 4, 8", "8, 4, 2, 1", "4, 3, 2, 1", "16, 8, 4, 2"], "a": 1, "exp": "4-bit place values are 8, 4, 2, 1 — each column doubles going left."}, {"q": "What is 0101 in denary?", "opts": ["3", "5", "6", "10"], "a": 1, "exp": "0101: 0x8 + 1x4 + 0x2 + 1x1 = 4+1 = 5."}, {"q": "What is 1010 in denary?", "opts": ["8", "10", "12", "15"], "a": 1, "exp": "1010: 1x8 + 0x4 + 1x2 + 0x1 = 8+2 = 10."}, {"q": "What is 1111 in denary?", "opts": ["7", "10", "14", "15"], "a": 3, "exp": "1111: 8+4+2+1 = 15. This is the largest 4-bit number."}, {"q": "What is 5 in 4-bit binary?", "opts": ["0100", "0101", "0110", "1000"], "a": 1, "exp": "5 = 4+1 so put 1s in the 4 and 1 columns: 0101."}, {"q": "What is 9 in 4-bit binary?", "opts": ["0110", "0111", "1001", "1010"], "a": 2, "exp": "9 = 8+1 so put 1s in the 8 and 1 columns: 1001."}, {"q": "What is the largest number in 4 bits?", "opts": ["8", "14", "15", "16"], "a": 2, "exp": "1111 = 15. You can store 16 different values (0 to 15) in 4 bits."}, {"q": "How many different values can 4 bits represent?", "opts": ["4", "8", "15", "16"], "a": 3, "exp": "2 to the power of 4 = 16 combinations (0000 through 1111)."}, {"q": "What is 1000 in denary?", "opts": ["1", "4", "8", "10"], "a": 2, "exp": "1000: only the 8-column has a 1, so the answer is 8."}, {"q": "Which binary number equals 12?", "opts": ["1001", "1010", "1011", "1100"], "a": 3, "exp": "12 = 8+4 so put 1s in the 8 and 4 columns: 1100."}], "3": [{"q": "What are the first four 8-bit place values from left?", "opts": ["8, 4, 2, 1", "128, 64, 32, 16", "256, 128, 64, 32", "64, 32, 16, 8"], "a": 1, "exp": "The left four 8-bit places are 128, 64, 32, 16."}, {"q": "What is 11111111 in denary?", "opts": ["128", "200", "254", "255"], "a": 3, "exp": "128+64+32+16+8+4+2+1 = 255. Maximum value in one byte."}, {"q": "What is 01010101 in denary?", "opts": ["55", "75", "85", "95"], "a": 2, "exp": "64+16+4+1 = 85."}, {"q": "What is 10000000 in denary?", "opts": ["8", "64", "128", "255"], "a": 2, "exp": "Only the 128 column has a 1, so the answer is 128."}, {"q": "What is 25 in 8-bit binary?", "opts": ["00011001", "00011010", "00010101", "00100001"], "a": 0, "exp": "25=16+8+1, so 00011001."}, {"q": "How many different values can 8 bits represent?", "opts": ["128", "255", "256", "512"], "a": 2, "exp": "2 to the power 8 = 256 values (0 to 255)."}, {"q": "What is a byte?", "opts": ["4 bits", "8 bits", "16 bits", "1 bit"], "a": 1, "exp": "A byte is exactly 8 bits — the standard unit for storing a character."}, {"q": "What is 10000001 in denary?", "opts": ["128", "129", "130", "131"], "a": 1, "exp": "128+1 = 129."}, {"q": "Which place value do you try FIRST converting denary to 8-bit binary?", "opts": ["1", "8", "64", "128"], "a": 3, "exp": "Always start from the leftmost largest place value: 128."}, {"q": "What is the maximum value in 1 byte?", "opts": ["128", "200", "254", "255"], "a": 3, "exp": "11111111 = 255. All 8 bits set to 1 gives the maximum."}], "4": [{"q": "What is an algorithm?", "opts": ["A type of computer", "A precise step-by-step set of instructions", "A Scratch sprite", "A binary number"], "a": 1, "exp": "An algorithm is a precise ordered set of instructions for solving a problem."}, {"q": "What is sequence in programming?", "opts": ["Running code at the same time", "Instructions carried out one after another in order", "Choosing between two paths", "Repeating code"], "a": 1, "exp": "Sequence means instructions run one at a time in the written order."}, {"q": "In Scratch, what is a sprite?", "opts": ["A line of code", "A background image", "A character or object that can move and react", "A variable"], "a": 2, "exp": "A sprite is a Scratch object that can move, change costume, and run scripts."}, {"q": "Which Scratch block starts a script?", "opts": ["Move 10 steps", "When green flag clicked", "Change score by 1", "Say Hello"], "a": 1, "exp": "When green flag clicked is the event that triggers a script to begin."}, {"q": "What happens if Scratch blocks are in the wrong order?", "opts": ["Nothing changes", "The program runs faster", "The program may behave incorrectly", "Scratch stops you"], "a": 2, "exp": "Sequence matters — wrong order means wrong behaviour."}, {"q": "What is a script in Scratch?", "opts": ["A background", "A stack of code blocks attached to a sprite", "The stage", "A sound file"], "a": 1, "exp": "A script is a connected stack of code blocks that runs when triggered."}, {"q": "Which Scratch block pauses a script?", "opts": ["Stop all", "Move 10 steps", "Wait 1 seconds", "Forever"], "a": 2, "exp": "Wait 1 seconds pauses execution — useful for timed animations."}, {"q": "What does the Forever block do?", "opts": ["Stops the program", "Runs the blocks once", "Repeats the blocks inside endlessly", "Saves the project"], "a": 2, "exp": "The Forever loop repeats its contents continuously until stopped."}, {"q": "What is the stage in Scratch?", "opts": ["A sprite that can talk", "The background where sprites perform", "A type of variable", "A code block"], "a": 1, "exp": "The stage is the 480x360 backdrop where all sprites appear."}, {"q": "Why must an algorithm be precise?", "opts": ["So it looks neat", "Vague instructions cause unexpected behaviour", "Computers prefer long instructions", "Precision makes programs faster"], "a": 1, "exp": "Computers follow instructions exactly. Vague steps cause errors."}], "5": [{"q": "What is selection in programming?", "opts": ["Running instructions in order", "Repeating code", "Choosing between paths based on a condition", "Storing a value"], "a": 2, "exp": "Selection lets a program branch based on whether a condition is true or false."}, {"q": "What does an if statement do?", "opts": ["Loops code forever", "Runs code only when a condition is true", "Stores a number", "Moves a sprite"], "a": 1, "exp": "An if statement checks a condition — if true the code inside runs."}, {"q": "What extra does if/else provide over just if?", "opts": ["It runs faster", "It handles what happens when the condition is false", "It repeats code", "It stores variables"], "a": 1, "exp": "if/else handles both outcomes — one block for true one for false."}, {"q": "What is a condition in programming?", "opts": ["A type of sprite", "A question with a true or false answer", "A background image", "A sound effect"], "a": 1, "exp": "A condition is a comparison that evaluates to either true or false."}, {"q": "What is a Boolean value?", "opts": ["A number between 0 and 100", "A type of image", "A value that is TRUE or FALSE", "A sprite costume"], "a": 2, "exp": "Boolean values are true or false — used in conditions and if statements."}, {"q": "What condition checks if an answer is correct?", "opts": ["score > 0", "answer = correct_value", "lives = 3", "timer > 0"], "a": 1, "exp": "answer = correct_value compares what was typed to the right answer."}, {"q": "What runs when an if/else condition is FALSE?", "opts": ["Nothing", "The program crashes", "The else branch", "The if block again"], "a": 2, "exp": "When the condition is false the else branch executes."}, {"q": "Which Scratch block asks a question and stores the response?", "opts": ["Say and wait", "Ask and wait", "If then", "When key pressed"], "a": 1, "exp": "Ask and wait displays a question and stores the response in the answer variable."}, {"q": "Why use if/else rather than two separate if blocks?", "opts": ["It uses less memory", "Only one branch can run — not both", "It runs faster", "Scratch requires it"], "a": 1, "exp": "if/else ensures exactly one branch executes — two ifs could both run."}, {"q": "Where does Scratch store what a player types after ask and wait?", "opts": ["input", "score", "answer", "response"], "a": 2, "exp": "Scratch stores the player response in a built-in variable called answer."}], "6": [{"q": "What is a variable in programming?", "opts": ["A fixed number", "A named container that stores a changing value", "A type of sprite", "An algorithm"], "a": 1, "exp": "A variable is a named box that holds a value that can be read and changed at any time."}, {"q": "What does initialise mean?", "opts": ["Delete a variable", "Set a variable to its starting value at the beginning", "Create a sprite", "Stop a script"], "a": 1, "exp": "Initialising means setting a variable to its starting value when the program begins."}, {"q": "Why initialise variables when the green flag is clicked?", "opts": ["To make Scratch faster", "To stop values from last game carrying over", "Scratch requires it", "To save memory"], "a": 1, "exp": "Without initialisation a variable keeps its value from the previous run causing bugs."}, {"q": "Which Scratch block increases score by 1?", "opts": ["Set score to 1", "Change score by 1", "Add 1 to score", "Score plus 1"], "a": 1, "exp": "Change score by 1 increments the current value by 1."}, {"q": "What is input in programming?", "opts": ["Data the computer sends out", "Data entered by the user", "A type of variable", "A background"], "a": 1, "exp": "Input is data coming in from the user — in Scratch captured with ask and wait."}, {"q": "What is validation in programming?", "opts": ["Making the program look nice", "Checking that input is acceptable before using it", "Running tests", "Saving a file"], "a": 1, "exp": "Validation checks that what the user entered is correct before the program processes it."}, {"q": "Score shows 5 at the start of a new game. What went wrong?", "opts": ["The if block is wrong", "The score variable was not initialised to 0", "The question is too hard", "The timer stopped"], "a": 1, "exp": "The score variable was not reset to 0 when the green flag was clicked."}, {"q": "Which variables does a binary quiz game need?", "opts": ["sprite, backdrop, sound", "score, lives, question_number", "x_position, y_position", "font, colour, size"], "a": 1, "exp": "A quiz needs score lives and question_number to track the game state."}, {"q": "What does change lives by -1 do in Scratch?", "opts": ["Sets lives to -1", "Increases lives by 1", "Subtracts 1 from lives", "Deletes the lives variable"], "a": 2, "exp": "Change by -1 subtracts 1 from the current value — used when a player answers wrong."}, {"q": "Why is validating user input important?", "opts": ["Makes programs colourful", "Unvalidated input can cause unexpected errors", "Makes programs faster", "Scratch requires it"], "a": 1, "exp": "Without validation unexpected input can crash programs or give wrong results."}]}};
+
+/* ─── END OF LESSON QUIZ ENGINE ─────────────────────────────────── */
+const QZ = {
+  scenario: null, week: null, questions: [],
+  qIdx: 0, score: 0, correct: 0,
+  streak: 0, bestStreak: 0, times: [],
+  qStart: 0, timer: null, answered: false
+};
+
+function openWeekQuiz() {
+  // Called from review screen — detect current scenario & week
+  const s = STATE.currentScenario;
+  if (!s) return;
+  // Find highest week with tasks
+  const maxWeek = Math.max(...s.tasks.map(t => t.week || 1));
+  const unlocked = getUnlockedWeek(s.id);
+  const week = Math.min(maxWeek, unlocked);
+  launchQuizView(s.id, week);
+}
+
+function openQuizFromHub(scenarioId, week) {
+  launchQuizView(scenarioId, week);
+}
+
+function launchQuizView(scenarioId, week) {
+  QZ.scenario = scenarioId;
+  QZ.week = week;
+
+  const bank = (QUIZ_BANK[scenarioId] || {})[String(week)];
+  const sc = STATE.scenarios.find(s => s.id === scenarioId);
+  const wkTitle = sc ? `${sc.title} — Week ${week}` : `Week ${week} Quiz`;
+
+  document.getElementById('qv-lesson-label').textContent = wkTitle;
+
+  if (!bank || !bank.length) {
+    // No quiz for this week — show message
+    showView('view-quiz');
+    document.getElementById('qv-select').style.display = 'block';
+    document.getElementById('qv-active').style.display = 'none';
+    document.getElementById('qv-results').style.display = 'none';
+    document.getElementById('qv-week-btns').innerHTML =
+      '<div style="color:var(--text3);font-size:0.85rem">No quiz available for this week yet.</div>';
+    renderWeekButtons(scenarioId);
+    return;
+  }
+
+  showView('view-quiz');
+  renderWeekButtons(scenarioId);
+  startWeekQuiz(scenarioId, week, bank);
+}
+
+function renderWeekButtons(scenarioId) {
+  const sc = STATE.scenarios.find(s => s.id === scenarioId);
+  if (!sc) return;
+  const maxWeek = Math.max(...sc.tasks.map(t => t.week || 1));
+  const unlocked = getUnlockedWeek(scenarioId);
+  const wrap = document.getElementById('qv-week-btns');
+  if (!wrap) return;
+  let html = '';
+  for (let w = 1; w <= maxWeek; w++) {
+    const hasQ = !!(QUIZ_BANK[scenarioId] || {})[String(w)];
+    const locked = w > unlocked;
+    const active = w === QZ.week;
+    const bestKey = `qz_${scenarioId}_w${w}`;
+    const best = localStorage.getItem(bestKey);
+    const label = `Week ${w}${best ? ' ★' : ''}`;
+    html += `<button class="quiz-lesson-btn ${active ? 'active' : ''} ${best ? 'done' : ''}"
+      ${locked ? 'disabled title="Locked"' : `onclick="openQuizFromHub('${scenarioId}',${w})"`}
+      ${!hasQ ? 'title="No quiz yet" style="opacity:0.4"' : ''}>
+      ${locked ? '🔒 ' : ''}${label}
+    </button>`;
+  }
+  wrap.innerHTML = html;
+}
+
+function startWeekQuiz(scenarioId, week, bank) {
+  // Shuffle and pick 10
+  const shuffled = [...bank].sort(() => Math.random() - 0.5).slice(0, 10);
+  QZ.questions = shuffled;
+  QZ.qIdx = 0; QZ.score = 0; QZ.correct = 0;
+  QZ.streak = 0; QZ.bestStreak = 0; QZ.times = [];
+
+  document.getElementById('qv-select').style.display = 'none';
+  document.getElementById('qv-active').style.display = 'block';
+  document.getElementById('qv-results').style.display = 'none';
+  document.getElementById('qv-score-live').textContent = '';
+
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const q = QZ.questions[QZ.qIdx];
+  QZ.answered = false;
+  QZ.qStart = Date.now();
+
+  document.getElementById('qv-counter').textContent = `Question ${QZ.qIdx + 1} of ${QZ.questions.length}`;
+  document.getElementById('qv-progress').style.width = `${(QZ.qIdx / QZ.questions.length) * 100}%`;
+  document.getElementById('qv-streak-label').textContent = QZ.streak >= 2 ? `🔥 ${QZ.streak} streak` : '';
+  document.getElementById('qv-question').textContent = q.q;
+  document.getElementById('qv-feedback').style.display = 'none';
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('qv-options').innerHTML = q.opts.map((o, i) =>
+    `<button class="qz-opt" data-idx="${i}" onclick="quizAnswer(${i})">
+      <span class="qz-letter">${letters[i]}</span>
+      <span style="flex:1;text-align:left">${escHtml(o)}</span>
+    </button>`
+  ).join('');
+
+  startQuizTimer();
+}
+
+function startQuizTimer() {
+  clearInterval(QZ.timer);
+  let t = 15;
+  updateQuizRing(t);
+  QZ.timer = setInterval(() => {
+    t--;
+    updateQuizRing(t);
+    if (t <= 0) { clearInterval(QZ.timer); if (!QZ.answered) quizTimeOut(); }
+  }, 1000);
+}
+
+function updateQuizRing(t) {
+  const circ = 125.6;
+  const ring = document.getElementById('qv-ring');
+  const num  = document.getElementById('qv-timer-num');
+  if (!ring || !num) return;
+  ring.style.strokeDashoffset = circ - (t / 15) * circ;
+  ring.style.stroke = t > 8 ? 'var(--green)' : t > 4 ? 'var(--amber)' : 'var(--red)';
+  num.textContent = t;
+  num.style.color = t <= 4 ? 'var(--red)' : 'var(--text)';
+}
+
+function quizAnswer(idx) {
+  if (QZ.answered) return;
+  QZ.answered = true;
+  clearInterval(QZ.timer);
+
+  const elapsed = (Date.now() - QZ.qStart) / 1000;
+  QZ.times.push(elapsed);
+  const q = QZ.questions[QZ.qIdx];
+  const correct = idx === q.a;
+
+  document.querySelectorAll('.qz-opt').forEach(b => b.classList.add('locked'));
+  document.querySelectorAll('.qz-opt')[q.a].classList.add('correct');
+  if (!correct) document.querySelectorAll('.qz-opt')[idx].classList.add('wrong');
+
+  const fb = document.getElementById('qv-feedback');
+  fb.style.display = 'block';
+  fb.style.background = correct ? 'rgba(63,185,80,0.1)' : 'rgba(248,81,73,0.1)';
+  fb.style.color = correct ? 'var(--green)' : 'var(--red)';
+  fb.style.border = correct ? '1px solid rgba(63,185,80,0.3)' : '1px solid rgba(248,81,73,0.3)';
+  fb.textContent = (correct ? '✓ ' : '✗ ') + q.exp;
+
+  if (correct) {
+    QZ.correct++;
+    QZ.streak++;
+    QZ.bestStreak = Math.max(QZ.bestStreak, QZ.streak);
+    const speed = Math.max(0, Math.round((15 - elapsed) * 4));
+    QZ.score += 100 + speed;
+  } else {
+    QZ.streak = 0;
+  }
+
+  document.getElementById('qv-score-live').textContent = `${QZ.score} pts`;
+
+  setTimeout(() => {
+    QZ.qIdx++;
+    if (QZ.qIdx >= QZ.questions.length) showQuizResults();
+    else renderQuizQuestion();
+  }, correct ? 900 : 1800);
+}
+
+function quizTimeOut() {
+  QZ.answered = true;
+  QZ.streak = 0;
+  QZ.times.push(15);
+  const q = QZ.questions[QZ.qIdx];
+  document.querySelectorAll('.qz-opt').forEach(b => b.classList.add('locked'));
+  document.querySelectorAll('.qz-opt')[q.a].classList.add('correct');
+  const fb = document.getElementById('qv-feedback');
+  fb.style.display = 'block';
+  fb.style.background = 'rgba(248,81,73,0.1)';
+  fb.style.color = 'var(--red)';
+  fb.style.border = '1px solid rgba(248,81,73,0.3)';
+  fb.textContent = `Time up! Answer: ${q.opts[q.a]}. ${q.exp}`;
+  setTimeout(() => {
+    QZ.qIdx++;
+    if (QZ.qIdx >= QZ.questions.length) showQuizResults();
+    else renderQuizQuestion();
+  }, 2200);
+}
+
+function showQuizResults() {
+  document.getElementById('qv-active').style.display = 'none';
+  document.getElementById('qv-results').style.display = 'block';
+  document.getElementById('qv-progress').style.width = '100%';
+
+  const pct = QZ.correct / QZ.questions.length;
+  const emoji = pct === 1 ? '🏆' : pct >= 0.8 ? '⭐' : pct >= 0.5 ? '👍' : '📚';
+
+  document.getElementById('qv-result-emoji').textContent = emoji;
+  document.getElementById('qv-result-points').textContent = QZ.score;
+  document.getElementById('qv-r-correct').textContent = `${QZ.correct}/${QZ.questions.length}`;
+  const avg = QZ.times.length ? (QZ.times.reduce((a,b)=>a+b,0)/QZ.times.length) : 0;
+  document.getElementById('qv-r-speed').textContent = avg.toFixed(1) + 's';
+  document.getElementById('qv-r-streak').textContent = QZ.bestStreak;
+  document.getElementById('qv-score-live').textContent = '';
+
+  // Save to localStorage with student name
+  const playerName = STATE.user ? STATE.user.username : 'Student';
+  const bestKey = `qz_${QZ.scenario}_w${QZ.week}`;
+  const existing = JSON.parse(localStorage.getItem(bestKey) || '[]');
+  existing.push({ name: playerName, score: QZ.score, correct: QZ.correct, date: new Date().toLocaleDateString() });
+  existing.sort((a,b) => b.score - a.score);
+  localStorage.setItem(bestKey, JSON.stringify(existing.slice(0, 10)));
+
+  // Show leaderboard
+  renderQuizLeaderboard('qv-lb-results', QZ.scenario, QZ.week);
+  renderWeekButtons(QZ.scenario);
+}
+
+function renderQuizLeaderboard(elId, scenarioId, week) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const bestKey = `qz_${scenarioId}_w${week}`;
+  const scores = JSON.parse(localStorage.getItem(bestKey) || '[]');
+  if (!scores.length) { el.innerHTML = ''; return; }
+
+  const medals = ['🥇','🥈','🥉'];
+  el.innerHTML = `<div style="font-size:0.72rem;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Week ${week} best scores</div>` +
+    scores.slice(0,5).map((s,i) =>
+      `<div class="qz-lb-row ${i===0?'gold':''}">
+        <span style="width:20px;font-size:0.8rem">${medals[i]||''}</span>
+        <span style="flex:1;font-weight:${i===0?'600':'400'}">${escHtml(s.name)}</span>
+        <span style="font-size:0.75rem;color:var(--text3);margin-right:12px">${s.correct}/10</span>
+        <span style="font-family:var(--mono);font-weight:600;color:var(--accent)">${s.score}pts</span>
+      </div>`
+    ).join('');
+}
+
+function quizRetry() {
+  const bank = (QUIZ_BANK[QZ.scenario] || {})[String(QZ.week)] || [];
+  if (!bank.length) return;
+  document.getElementById('qv-results').style.display = 'none';
+  startWeekQuiz(QZ.scenario, QZ.week, bank);
+}
+
+function quizBack() {
+  clearInterval(QZ.timer);
+  document.getElementById('qv-active').style.display = 'none';
+  document.getElementById('qv-results').style.display = 'none';
+  document.getElementById('qv-select').style.display = 'block';
+  document.getElementById('qv-score-live').textContent = '';
+  renderWeekButtons(QZ.scenario);
+  // Show leaderboard for all weeks
+  const lbWrap = document.getElementById('qv-leaderboard-wrap');
+  if (lbWrap) lbWrap.style.display = 'none';
+}
+
+function exitQuiz() {
+  clearInterval(QZ.timer);
+  showView('view-hub');
 }
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
