@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KS3 CS — Scenario Learning Platform</title>
+<title>CS Learning Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -2316,7 +2316,7 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
       <div class="login-left">
         <div class="login-brand">
           <div class="logo-mark">CS</div>
-          <h1>KS3 Scenario<br>Platform</h1>
+          <h1>CS Learning<br>Hub</h1>
           <p>Corby Business Academy<br>Computer Science Department</p>
         </div>
         <div class="login-features">
@@ -2341,8 +2341,8 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
         <div class="login-form-panel active" id="panel-login">
           <div class="alert alert-error" id="login-error"></div>
           <div class="form-group">
-            <label>Username</label>
-            <input type="text" id="login-username" placeholder="your username" autocomplete="username"
+            <label>School Email</label>
+            <input type="email" id="login-username" placeholder="cba00firstname@corbybusinessacademy.org" autocomplete="email"
               onkeydown="if(event.key==='Enter') doLogin()">
           </div>
           <div class="form-group">
@@ -2362,8 +2362,9 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
         <div class="login-form-panel" id="panel-register">
           <div class="alert alert-error" id="reg-error"></div>
           <div class="form-group">
-            <label>Username</label>
-            <input type="text" id="reg-username" placeholder="choose a username (e.g. jsmith)">
+            <label>School Email</label>
+            <input type="email" id="reg-username" placeholder="cba00firstname@corbybusinessacademy.org" autocomplete="email">
+            <div style="font-size:0.75rem;color:var(--text2);margin-top:4px">Format: cba00firstname@corbybusinessacademy.org</div>
           </div>
           <div class="form-group">
             <label>Password</label>
@@ -2393,7 +2394,7 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
         </div>
 
         <div class="login-footer">
-          KS3 Computer Science &bull; Corby Business Academy &bull; v1.1
+          CS Learning Hub &bull; Corby Business Academy &bull; v2.0
         </div>
       </div>
 
@@ -2499,6 +2500,10 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
               <button class="btn btn-primary btn-sm" onclick="quizRetry()">Try again</button>
               <button class="btn btn-secondary btn-sm" onclick="quizBack()">All lessons</button>
             </div>
+
+            <!-- Per-question feedback -->
+            <div id="qv-question-review"></div>
+
           </div>
 
         </div>
@@ -2739,7 +2744,7 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
     <div class="dashboard-header">
       <div>
         <h2>📊 Teacher Dashboard</h2>
-        <p style="font-size:0.82rem;color:var(--text2);margin-top:2px">Corby Business Academy — Computer Science</p>
+        <p style="font-size:0.82rem;color:var(--text2);margin-top:2px">CS Learning Hub — Corby Business Academy</p>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">⟳ Refresh</button>
@@ -2751,6 +2756,7 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
     <!-- Dashboard Tabs -->
     <div class="dash-tabs">
       <button class="dash-tab active" onclick="switchDashTab('results')">📊 Results</button>
+      <button class="dash-tab" onclick="switchDashTab('board')">🖥 Board View</button>
       <button class="dash-tab" onclick="switchDashTab('classes')">🏫 Class Codes</button>
       <button class="dash-tab" onclick="switchDashTab('present')">📽 Present</button>
       <button class="dash-tab" onclick="switchDashTab('settings')">⚙️ Settings</button>
@@ -2777,6 +2783,35 @@ body.teacher-theme .stuck-col { background: rgba(210,153,34,0.12) !important; }
           <thead id="dashboard-thead"></thead>
           <tbody id="dashboard-tbody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- TAB: BOARD VIEW -->
+    <div class="dash-panel" id="panel-board">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+        <div>
+          <div class="card-title" style="margin-bottom:4px">🖥 Classroom Board View</div>
+          <div class="card-sub">A live completion table to display on the main classroom screen. Open in a new tab / fullscreen for best results.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <select id="board-filter-year" onchange="renderBoardView()" style="width:130px">
+            <option value="">All Years</option>
+            <option value="Y7">Year 7</option>
+            <option value="Y8">Year 8</option>
+            <option value="Y9">Year 9</option>
+          </select>
+          <select id="board-filter-class" onchange="renderBoardView()" style="width:150px">
+            <option value="">All Classes</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="openBoardFullscreen()">⛶ Fullscreen</button>
+          <button class="btn btn-secondary btn-sm" onclick="renderBoardView()">⟳ Refresh</button>
+        </div>
+      </div>
+
+      <div id="board-view-wrap" style="background:var(--surface2);border-radius:var(--radius-lg);padding:16px;overflow-x:auto">
+        <div id="board-view-content">
+          <div style="color:var(--text3);font-size:0.85rem;text-align:center;padding:20px">Click Refresh or switch to this tab to load the board.</div>
+        </div>
       </div>
     </div>
 
@@ -3249,7 +3284,7 @@ async function doLogin() {
     const student = students.find(s => s.username === username && s.passwordHash === hash);
 
     if (!student) {
-      showAlert('login-error', 'Username or password incorrect.'); return;
+      showAlert('login-error', 'Email or password incorrect.'); return;
     }
 
     STATE.user = student;
@@ -3271,6 +3306,14 @@ async function doRegister() {
 
   if (!username || !password || !yearGroup || !classCode) {
     showAlert('reg-error', 'Please fill in all fields.'); return;
+  }
+  // Validate school email
+  const emailDomain = 'corbybusinessacademy.org';
+  if (!username.toLowerCase().endsWith('@' + emailDomain)) {
+    showAlert('reg-error', 'Please use your school email: cba00firstname@corbybusinessacademy.org'); return;
+  }
+  if (!/^cba\d{2}[a-zA-Z]/.test(username.toLowerCase())) {
+    showAlert('reg-error', 'Email must start with cba + 2 digits + your name (e.g. cba00james@corbybusinessacademy.org)'); return;
   }
   if (password.length < 6) {
     showAlert('reg-error', 'Password must be at least 6 characters.'); return;
@@ -4003,6 +4046,7 @@ async function loadDashboard() {
     STATE.allStudents = await fetchStudents();
     populateFilters();
     renderDashboard(STATE.allStudents);
+    populateBoardClassFilter();
   } catch(e) {
     alert('Could not load student data.');
   }
@@ -4230,6 +4274,7 @@ function switchDashTab(tab) {
     }
   }
   if (tab === 'settings') loadSettingsInfo();
+  if (tab === 'board')    { populateBoardClassFilter(); renderBoardView(); }
 }
 
 function loadSettingsInfo() {
@@ -5308,6 +5353,60 @@ async function changeWeek(scenarioId, dir, maxWeek) {
 
 const QUIZ_BANK = {"scenario_y7_binary": {"1": [{"q": "What does binary mean?", "opts": ["A system using only 0 and 1", "A system using digits 0 to 9", "A system using letters A to F", "A system using 16 symbols"], "a": 0, "exp": "Binary is base-2 — it uses only the digits 0 and 1."}, {"q": "Why do computers use binary instead of denary?", "opts": ["Binary is easier for humans", "Electrical switches are only ON or OFF", "Computers prefer smaller numbers", "Binary was invented first"], "a": 1, "exp": "Computer circuits use electrical switches that can only be fully ON (1) or fully OFF (0)."}, {"q": "What does the digit 1 represent in binary?", "opts": ["Zero", "The switch is OFF", "The switch is ON", "The number ten"], "a": 2, "exp": "1 = ON — the electrical switch is conducting current."}, {"q": "What does the digit 0 represent in binary?", "opts": ["The switch is ON", "The number zero", "The switch is OFF", "Nothing at all"], "a": 2, "exp": "0 = OFF — the electrical switch is not conducting current."}, {"q": "What is a bit?", "opts": ["8 binary digits", "A single binary digit — 0 or 1", "A unit of speed", "A type of computer"], "a": 1, "exp": "A bit (binary digit) is the smallest unit of data — a single 0 or 1."}, {"q": "How many bits are in a byte?", "opts": ["2", "4", "8", "16"], "a": 2, "exp": "1 byte = 8 bits. This is the standard unit for storing a single character."}, {"q": "Which of these is a valid binary number?", "opts": ["10203", "FFFX", "1101", "9901"], "a": 2, "exp": "Binary only uses 0 and 1. 1101 is valid — the others contain invalid digits."}, {"q": "What is 101 shown as ON/OFF switches?", "opts": ["OFF ON OFF", "ON OFF ON", "ON ON OFF", "OFF OFF ON"], "a": 1, "exp": "1=ON, 0=OFF, 1=ON — reading left to right: ON OFF ON."}, {"q": "Which device is a computer?", "opts": ["A wooden table", "A pencil", "A smartphone", "A glass of water"], "a": 2, "exp": "A smartphone has a processor, follows programs, and processes data — it is a computer."}, {"q": "What is data?", "opts": ["A type of switch", "Raw facts and figures processed by a computer", "Only numbers", "The physical parts of a computer"], "a": 1, "exp": "Data is raw facts and figures. Computers process data to produce useful information."}], "2": [{"q": "What are the 4-bit binary place values (left to right)?", "opts": ["1, 2, 4, 8", "8, 4, 2, 1", "4, 3, 2, 1", "16, 8, 4, 2"], "a": 1, "exp": "4-bit place values are 8, 4, 2, 1 — each column doubles going left."}, {"q": "What is 0101 in denary?", "opts": ["3", "5", "6", "10"], "a": 1, "exp": "0101: 0x8 + 1x4 + 0x2 + 1x1 = 4+1 = 5."}, {"q": "What is 1010 in denary?", "opts": ["8", "10", "12", "15"], "a": 1, "exp": "1010: 1x8 + 0x4 + 1x2 + 0x1 = 8+2 = 10."}, {"q": "What is 1111 in denary?", "opts": ["7", "10", "14", "15"], "a": 3, "exp": "1111: 8+4+2+1 = 15. This is the largest 4-bit number."}, {"q": "What is 5 in 4-bit binary?", "opts": ["0100", "0101", "0110", "1000"], "a": 1, "exp": "5 = 4+1 so put 1s in the 4 and 1 columns: 0101."}, {"q": "What is 9 in 4-bit binary?", "opts": ["0110", "0111", "1001", "1010"], "a": 2, "exp": "9 = 8+1 so put 1s in the 8 and 1 columns: 1001."}, {"q": "What is the largest number in 4 bits?", "opts": ["8", "14", "15", "16"], "a": 2, "exp": "1111 = 15. You can store 16 different values (0 to 15) in 4 bits."}, {"q": "How many different values can 4 bits represent?", "opts": ["4", "8", "15", "16"], "a": 3, "exp": "2 to the power of 4 = 16 combinations (0000 through 1111)."}, {"q": "What is 1000 in denary?", "opts": ["1", "4", "8", "10"], "a": 2, "exp": "1000: only the 8-column has a 1, so the answer is 8."}, {"q": "Which binary number equals 12?", "opts": ["1001", "1010", "1011", "1100"], "a": 3, "exp": "12 = 8+4 so put 1s in the 8 and 4 columns: 1100."}], "3": [{"q": "What are the first four 8-bit place values from left?", "opts": ["8, 4, 2, 1", "128, 64, 32, 16", "256, 128, 64, 32", "64, 32, 16, 8"], "a": 1, "exp": "The left four 8-bit places are 128, 64, 32, 16."}, {"q": "What is 11111111 in denary?", "opts": ["128", "200", "254", "255"], "a": 3, "exp": "128+64+32+16+8+4+2+1 = 255. Maximum value in one byte."}, {"q": "What is 01010101 in denary?", "opts": ["55", "75", "85", "95"], "a": 2, "exp": "64+16+4+1 = 85."}, {"q": "What is 10000000 in denary?", "opts": ["8", "64", "128", "255"], "a": 2, "exp": "Only the 128 column has a 1, so the answer is 128."}, {"q": "What is 25 in 8-bit binary?", "opts": ["00011001", "00011010", "00010101", "00100001"], "a": 0, "exp": "25=16+8+1, so 00011001."}, {"q": "How many different values can 8 bits represent?", "opts": ["128", "255", "256", "512"], "a": 2, "exp": "2 to the power 8 = 256 values (0 to 255)."}, {"q": "What is a byte?", "opts": ["4 bits", "8 bits", "16 bits", "1 bit"], "a": 1, "exp": "A byte is exactly 8 bits — the standard unit for storing a character."}, {"q": "What is 10000001 in denary?", "opts": ["128", "129", "130", "131"], "a": 1, "exp": "128+1 = 129."}, {"q": "Which place value do you try FIRST converting denary to 8-bit binary?", "opts": ["1", "8", "64", "128"], "a": 3, "exp": "Always start from the leftmost largest place value: 128."}, {"q": "What is the maximum value in 1 byte?", "opts": ["128", "200", "254", "255"], "a": 3, "exp": "11111111 = 255. All 8 bits set to 1 gives the maximum."}], "4": [{"q": "What is an algorithm?", "opts": ["A type of computer", "A precise step-by-step set of instructions", "A Scratch sprite", "A binary number"], "a": 1, "exp": "An algorithm is a precise ordered set of instructions for solving a problem."}, {"q": "What is sequence in programming?", "opts": ["Running code at the same time", "Instructions carried out one after another in order", "Choosing between two paths", "Repeating code"], "a": 1, "exp": "Sequence means instructions run one at a time in the written order."}, {"q": "In Scratch, what is a sprite?", "opts": ["A line of code", "A background image", "A character or object that can move and react", "A variable"], "a": 2, "exp": "A sprite is a Scratch object that can move, change costume, and run scripts."}, {"q": "Which Scratch block starts a script?", "opts": ["Move 10 steps", "When green flag clicked", "Change score by 1", "Say Hello"], "a": 1, "exp": "When green flag clicked is the event that triggers a script to begin."}, {"q": "What happens if Scratch blocks are in the wrong order?", "opts": ["Nothing changes", "The program runs faster", "The program may behave incorrectly", "Scratch stops you"], "a": 2, "exp": "Sequence matters — wrong order means wrong behaviour."}, {"q": "What is a script in Scratch?", "opts": ["A background", "A stack of code blocks attached to a sprite", "The stage", "A sound file"], "a": 1, "exp": "A script is a connected stack of code blocks that runs when triggered."}, {"q": "Which Scratch block pauses a script?", "opts": ["Stop all", "Move 10 steps", "Wait 1 seconds", "Forever"], "a": 2, "exp": "Wait 1 seconds pauses execution — useful for timed animations."}, {"q": "What does the Forever block do?", "opts": ["Stops the program", "Runs the blocks once", "Repeats the blocks inside endlessly", "Saves the project"], "a": 2, "exp": "The Forever loop repeats its contents continuously until stopped."}, {"q": "What is the stage in Scratch?", "opts": ["A sprite that can talk", "The background where sprites perform", "A type of variable", "A code block"], "a": 1, "exp": "The stage is the 480x360 backdrop where all sprites appear."}, {"q": "Why must an algorithm be precise?", "opts": ["So it looks neat", "Vague instructions cause unexpected behaviour", "Computers prefer long instructions", "Precision makes programs faster"], "a": 1, "exp": "Computers follow instructions exactly. Vague steps cause errors."}], "5": [{"q": "What is selection in programming?", "opts": ["Running instructions in order", "Repeating code", "Choosing between paths based on a condition", "Storing a value"], "a": 2, "exp": "Selection lets a program branch based on whether a condition is true or false."}, {"q": "What does an if statement do?", "opts": ["Loops code forever", "Runs code only when a condition is true", "Stores a number", "Moves a sprite"], "a": 1, "exp": "An if statement checks a condition — if true the code inside runs."}, {"q": "What extra does if/else provide over just if?", "opts": ["It runs faster", "It handles what happens when the condition is false", "It repeats code", "It stores variables"], "a": 1, "exp": "if/else handles both outcomes — one block for true one for false."}, {"q": "What is a condition in programming?", "opts": ["A type of sprite", "A question with a true or false answer", "A background image", "A sound effect"], "a": 1, "exp": "A condition is a comparison that evaluates to either true or false."}, {"q": "What is a Boolean value?", "opts": ["A number between 0 and 100", "A type of image", "A value that is TRUE or FALSE", "A sprite costume"], "a": 2, "exp": "Boolean values are true or false — used in conditions and if statements."}, {"q": "What condition checks if an answer is correct?", "opts": ["score > 0", "answer = correct_value", "lives = 3", "timer > 0"], "a": 1, "exp": "answer = correct_value compares what was typed to the right answer."}, {"q": "What runs when an if/else condition is FALSE?", "opts": ["Nothing", "The program crashes", "The else branch", "The if block again"], "a": 2, "exp": "When the condition is false the else branch executes."}, {"q": "Which Scratch block asks a question and stores the response?", "opts": ["Say and wait", "Ask and wait", "If then", "When key pressed"], "a": 1, "exp": "Ask and wait displays a question and stores the response in the answer variable."}, {"q": "Why use if/else rather than two separate if blocks?", "opts": ["It uses less memory", "Only one branch can run — not both", "It runs faster", "Scratch requires it"], "a": 1, "exp": "if/else ensures exactly one branch executes — two ifs could both run."}, {"q": "Where does Scratch store what a player types after ask and wait?", "opts": ["input", "score", "answer", "response"], "a": 2, "exp": "Scratch stores the player response in a built-in variable called answer."}], "6": [{"q": "What is a variable in programming?", "opts": ["A fixed number", "A named container that stores a changing value", "A type of sprite", "An algorithm"], "a": 1, "exp": "A variable is a named box that holds a value that can be read and changed at any time."}, {"q": "What does initialise mean?", "opts": ["Delete a variable", "Set a variable to its starting value at the beginning", "Create a sprite", "Stop a script"], "a": 1, "exp": "Initialising means setting a variable to its starting value when the program begins."}, {"q": "Why initialise variables when the green flag is clicked?", "opts": ["To make Scratch faster", "To stop values from last game carrying over", "Scratch requires it", "To save memory"], "a": 1, "exp": "Without initialisation a variable keeps its value from the previous run causing bugs."}, {"q": "Which Scratch block increases score by 1?", "opts": ["Set score to 1", "Change score by 1", "Add 1 to score", "Score plus 1"], "a": 1, "exp": "Change score by 1 increments the current value by 1."}, {"q": "What is input in programming?", "opts": ["Data the computer sends out", "Data entered by the user", "A type of variable", "A background"], "a": 1, "exp": "Input is data coming in from the user — in Scratch captured with ask and wait."}, {"q": "What is validation in programming?", "opts": ["Making the program look nice", "Checking that input is acceptable before using it", "Running tests", "Saving a file"], "a": 1, "exp": "Validation checks that what the user entered is correct before the program processes it."}, {"q": "Score shows 5 at the start of a new game. What went wrong?", "opts": ["The if block is wrong", "The score variable was not initialised to 0", "The question is too hard", "The timer stopped"], "a": 1, "exp": "The score variable was not reset to 0 when the green flag was clicked."}, {"q": "Which variables does a binary quiz game need?", "opts": ["sprite, backdrop, sound", "score, lives, question_number", "x_position, y_position", "font, colour, size"], "a": 1, "exp": "A quiz needs score lives and question_number to track the game state."}, {"q": "What does change lives by -1 do in Scratch?", "opts": ["Sets lives to -1", "Increases lives by 1", "Subtracts 1 from lives", "Deletes the lives variable"], "a": 2, "exp": "Change by -1 subtracts 1 from the current value — used when a player answers wrong."}, {"q": "Why is validating user input important?", "opts": ["Makes programs colourful", "Unvalidated input can cause unexpected errors", "Makes programs faster", "Scratch requires it"], "a": 1, "exp": "Without validation unexpected input can crash programs or give wrong results."}]}};
 
+/* ─── WORKSHEET LESSON NAMES (from uploaded worksheets) ─────────── */
+const LESSON_NAMES = {
+  // Year 7
+  'scenario_y7_binary': {
+    1: 'L1: What is a computer? Why binary?',
+    2: 'L2: Counting in binary (4-bit)',
+    3: 'L3: Binary conversions (8-bit)',
+    4: 'L4: Introduction to Scratch',
+    5: 'L5: Selection',
+    6: 'L6: Variables',
+    7: 'L7: Input and validation',
+    8: 'L8: Designing the quiz',
+    9: 'L9: Building the quiz',
+    10: 'L10: Enhancing the quiz',
+    11: 'L11: Testing and debugging',
+    12: 'L12: Assessment',
+  },
+  // Year 8
+  'scenario_y8_binary': {
+    1: 'L1: Binary Retrieval and Baseline',
+    2: 'L2: Securing Binary Conversion (8-bit)',
+    3: 'L3: Binary Addition (4-bit)',
+    4: 'L4: Binary Addition (8-bit and Problem Solving)',
+    5: 'L5: Designing Binary Quiz Questions',
+    6: 'L6: Introduction to Python',
+    7: 'L7: Variables and Input in Python',
+    8: 'L8: Selection in Python',
+    9: 'L9: Designing the Python Quiz',
+    10: 'L10: Building the Quiz',
+    11: 'L11: Improving and Debugging',
+    12: 'L12: Assessment and Evaluation',
+  },
+  // Year 9
+  'scenario_y9_python': {
+    1: 'L1: Binary and Binary Addition Retrieval',
+    2: 'L2: Introduction to Hexadecimal',
+    3: 'L3: Binary to Hexadecimal',
+    4: 'L4: Hexadecimal to Binary',
+    5: 'L5: RGB Colours',
+    6: 'L6: Python Retrieval',
+    7: 'L7: Creating Subroutines',
+    8: 'L8: Flowchart 1: Number to Hex Digit',
+    9: 'L9: Flowchart 2: Hex Digit to Number',
+    10: 'L10: MOD and DIV Operators',
+    11: 'L11: Flowchart 3: Number to Hex Value',
+    12: 'L12: Building the Random Hexadecimal Quiz',
+  },
+};
+
+function getLessonName(scenarioId, week) {
+  const sc = LESSON_NAMES[scenarioId] || {};
+  return sc[week] || `Lesson ${week}`;
+}
+
 /* ─── END OF LESSON QUIZ ENGINE ─────────────────────────────────── */
 const QZ = {
   scenario: null, week: null, questions: [],
@@ -5388,11 +5487,16 @@ function startWeekQuiz(scenarioId, week, bank) {
   QZ.questions = shuffled;
   QZ.qIdx = 0; QZ.score = 0; QZ.correct = 0;
   QZ.streak = 0; QZ.bestStreak = 0; QZ.times = [];
+  QZ.history = []; // Track per-question results for feedback screen
 
   document.getElementById('qv-select').style.display = 'none';
   document.getElementById('qv-active').style.display = 'block';
   document.getElementById('qv-results').style.display = 'none';
   document.getElementById('qv-score-live').textContent = '';
+
+  // Update lesson label with worksheet name
+  const lessonNameEl = document.getElementById('qz-lesson-label');
+  if (lessonNameEl) lessonNameEl.textContent = getLessonName(scenarioId, week);
 
   renderQuizQuestion();
 }
@@ -5474,6 +5578,9 @@ function quizAnswer(idx) {
 
   document.getElementById('qv-score-live').textContent = `${QZ.score} pts`;
 
+  // Record for end-of-lesson feedback
+  QZ.history.push({ q: q.q, opts: q.opts, a: q.a, chosen: idx, correct, exp: q.exp });
+
   setTimeout(() => {
     QZ.qIdx++;
     if (QZ.qIdx >= QZ.questions.length) showQuizResults();
@@ -5494,6 +5601,7 @@ function quizTimeOut() {
   fb.style.color = 'var(--red)';
   fb.style.border = '1px solid rgba(248,81,73,0.3)';
   fb.textContent = `Time up! Answer: ${q.opts[q.a]}. ${q.exp}`;
+  QZ.history.push({ q: q.q, opts: q.opts, a: q.a, chosen: -1, correct: false, exp: q.exp });
   setTimeout(() => {
     QZ.qIdx++;
     if (QZ.qIdx >= QZ.questions.length) showQuizResults();
@@ -5505,6 +5613,28 @@ function showQuizResults() {
   document.getElementById('qv-active').style.display = 'none';
   document.getElementById('qv-results').style.display = 'block';
   document.getElementById('qv-progress').style.width = '100%';
+
+  // Build per-question feedback section
+  const feedbackHtml = `
+    <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px">
+      <div style="font-size:0.75rem;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">📋 Question Review</div>
+      ${QZ.history.map((h, i) => `
+        <div style="margin-bottom:12px;padding:10px 12px;border-radius:var(--radius);background:var(--surface2);border:1px solid ${h.correct ? 'rgba(63,185,80,0.3)' : 'rgba(248,81,73,0.3)'}">
+          <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:6px">
+            <span style="font-size:1rem;flex-shrink:0">${h.correct ? '✅' : '❌'}</span>
+            <span style="font-size:0.85rem;font-weight:600;color:var(--text)">${i+1}. ${escHtml(h.q)}</span>
+          </div>
+          ${!h.correct ? `<div style="font-size:0.78rem;color:var(--green);margin-bottom:4px">✓ Correct answer: <strong>${escHtml(h.opts[h.a])}</strong></div>` : ''}
+          ${h.chosen >= 0 && !h.correct ? `<div style="font-size:0.78rem;color:var(--red);margin-bottom:4px">✗ Your answer: <strong>${escHtml(h.opts[h.chosen])}</strong></div>` : ''}
+          ${h.chosen < 0 && !h.correct ? `<div style="font-size:0.78rem;color:var(--amber);margin-bottom:4px">⏱ Time ran out</div>` : ''}
+          <div style="font-size:0.77rem;color:var(--text2);font-style:italic">${escHtml(h.exp)}</div>
+        </div>
+      `).join('')}
+    </div>`;
+
+  // Add feedback below leaderboard if container exists
+  const feedbackWrap = document.getElementById('qv-question-review');
+  if (feedbackWrap) feedbackWrap.innerHTML = feedbackHtml;
 
   const pct = QZ.correct / QZ.questions.length;
   const emoji = pct === 1 ? '🏆' : pct >= 0.8 ? '⭐' : pct >= 0.5 ? '👍' : '📚';
@@ -5574,6 +5704,187 @@ function exitQuiz() {
 }
 
 /* ─── INIT ───────────────────────────────────────────────────────── */
+
+
+/* ─── BOARD VIEW ─────────────────────────────────────────────────── */
+function populateBoardClassFilter() {
+  const sel = document.getElementById('board-filter-class');
+  if (!sel) return;
+  const current = sel.value;
+  const classes = [...new Set(STATE.allStudents.map(s => s.classCode).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">All Classes</option>' +
+    classes.map(c => `<option value="${c}" ${c===current?'selected':''}>${c}</option>`).join('');
+}
+
+function renderBoardView() {
+  const wrap = document.getElementById('board-view-content');
+  if (!wrap) return;
+
+  const yearFilter  = document.getElementById('board-filter-year')?.value  || '';
+  const classFilter = document.getElementById('board-filter-class')?.value || '';
+
+  let students = STATE.allStudents || [];
+  if (yearFilter)  students = students.filter(s => s.yearGroup  === yearFilter);
+  if (classFilter) students = students.filter(s => s.classCode  === classFilter);
+
+  if (!students.length) {
+    wrap.innerHTML = '<div style="color:var(--text3);text-align:center;padding:24px">No students match the filter.</div>';
+    return;
+  }
+
+  // Gather all scenarios applicable
+  const scenarios = STATE.scenarios || [];
+
+  // Build header
+  const scenCols = scenarios.slice(0,8); // max 8 scenario columns
+  const now = new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
+
+  let tbl = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-family:var(--mono);font-size:0.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em">
+        CS Learning Hub — ${yearFilter||'All Years'} ${classFilter||''} — Updated ${now}
+      </div>
+      <div style="font-size:0.8rem;color:var(--text2)">${students.length} students</div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border)">
+          <th style="text-align:left;padding:8px 10px;color:var(--text3);font-family:var(--mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap">Student</th>
+          <th style="text-align:center;padding:8px 6px;color:var(--text3);font-family:var(--mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em">Year</th>
+          <th style="text-align:center;padding:8px 6px;color:var(--text3);font-family:var(--mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em">Class</th>
+          ${scenCols.map(s => `<th style="text-align:center;padding:8px 6px;color:var(--text3);font-size:0.68rem;max-width:90px;word-break:break-word" title="${escHtml(s.title)}">${escHtml(s.title.length>14 ? s.title.slice(0,13)+'…' : s.title)}</th>`).join('')}
+          <th style="text-align:center;padding:8px 6px;color:var(--text3);font-family:var(--mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em">Done</th>
+          <th style="text-align:center;padding:8px 6px;color:var(--text3);font-family:var(--mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em">Quiz⚡</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${students.sort((a,b)=>(a.classCode||'').localeCompare(b.classCode||'') || a.username.localeCompare(b.username)).map((stu, ri) => {
+          const sc_data = stu.scenarios || {};
+          const totalScenarios = scenCols.length;
+          const submitted = scenCols.filter(s => sc_data[s.id]?.status === 'submitted').length;
+          const inProg    = scenCols.filter(s => sc_data[s.id]?.status === 'in_progress').length;
+          const quizScores = scenCols.map(s => {
+            // Check localStorage-saved quiz scores (stored by username)
+            return '—';
+          });
+
+          const pct = totalScenarios ? Math.round((submitted / totalScenarios)*100) : 0;
+          const rowBg = ri % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)';
+
+          return `<tr style="border-bottom:1px solid var(--border2);background:${rowBg}">
+            <td style="padding:8px 10px;font-weight:500;white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis" title="${escHtml(stu.username)}">${escHtml(stu.username)}</td>
+            <td style="text-align:center;padding:8px 6px;color:var(--text2)">${escHtml(stu.yearGroup||'')}</td>
+            <td style="text-align:center;padding:8px 6px;color:var(--text2)">${escHtml(stu.classCode||'')}</td>
+            ${scenCols.map(s => {
+              const sd = sc_data[s.id] || {};
+              const status = sd.status || 'not_started';
+              const icon = status === 'submitted' ? '<span style="color:var(--green);font-size:1rem">✅</span>'
+                         : status === 'in_progress' ? '<span style="color:var(--amber);font-size:0.9rem">🔄</span>'
+                         : '<span style="color:var(--border);font-size:0.85rem">○</span>';
+              const score = sd.score != null ? `<div style="font-size:0.65rem;color:var(--text3)">${sd.score}/${sd.maxScore||'?'}</div>` : '';
+              return `<td style="text-align:center;padding:6px">${icon}${score}</td>`;
+            }).join('')}
+            <td style="text-align:center;padding:8px 6px">
+              <div style="display:inline-flex;align-items:center;gap:4px">
+                <div style="height:6px;width:52px;background:var(--border2);border-radius:3px;overflow:hidden">
+                  <div style="height:100%;width:${pct}%;background:${pct===100?'var(--green)':pct>=50?'var(--amber)':'var(--accent)'};border-radius:3px"></div>
+                </div>
+                <span style="font-size:0.72rem;color:var(--text3);font-family:var(--mono)">${submitted}/${totalScenarios}</span>
+              </div>
+            </td>
+            <td style="text-align:center;padding:8px 6px;font-family:var(--mono);font-size:0.75rem;color:var(--purple)">
+              ${submitted > 0 ? (() => {
+                const scores = scenCols.filter(s => sc_data[s.id]?.score != null)
+                  .map(s => ({ score: sc_data[s.id].score, max: sc_data[s.id].maxScore||10 }));
+                if (!scores.length) return '—';
+                const total = scores.reduce((a,b)=>a+b.score,0);
+                const max   = scores.reduce((a,b)=>a+b.max,0);
+                return `${total}/${max}`;
+              })() : '—'}
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    <div style="margin-top:12px;font-size:0.72rem;color:var(--text3);display:flex;gap:16px;flex-wrap:wrap">
+      <span>✅ Submitted &nbsp; 🔄 In Progress &nbsp; ○ Not started</span>
+      <span>Progress bar = scenario completion rate</span>
+    </div>`;
+
+  wrap.innerHTML = tbl;
+}
+
+function openBoardFullscreen() {
+  // Build a clean fullscreen board page
+  const yearFilter  = document.getElementById('board-filter-year')?.value  || '';
+  const classFilter = document.getElementById('board-filter-class')?.value || '';
+
+  let students = STATE.allStudents || [];
+  if (yearFilter)  students = students.filter(s => s.yearGroup  === yearFilter);
+  if (classFilter) students = students.filter(s => s.classCode  === classFilter);
+
+  const scenarios = (STATE.scenarios || []).slice(0, 8);
+  const now = new Date().toLocaleString('en-GB', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+
+  const rows = students.sort((a,b)=>(a.classCode||'').localeCompare(b.classCode||'') || a.username.localeCompare(b.username)).map((stu, ri) => {
+    const sc_data = stu.scenarios || {};
+    const totalS = scenarios.length;
+    const submitted = scenarios.filter(s => sc_data[s.id]?.status === 'submitted').length;
+    const inProg    = scenarios.filter(s => sc_data[s.id]?.status === 'in_progress').length;
+    const pct = totalS ? Math.round((submitted/totalS)*100) : 0;
+    return `<tr style="background:${ri%2?'rgba(255,255,255,0.03)':'transparent'}">
+      <td>${escHtml(stu.username)}</td>
+      <td style="text-align:center">${stu.yearGroup||''}</td>
+      <td style="text-align:center">${stu.classCode||''}</td>
+      ${scenarios.map(s => {
+        const st = sc_data[s.id]?.status || 'not_started';
+        return `<td style="text-align:center">${st==='submitted'?'✅':st==='in_progress'?'🔄':'○'}</td>`;
+      }).join('')}
+      <td style="text-align:center">
+        <div style="display:inline-flex;align-items:center;gap:6px">
+          <div style="width:60px;height:8px;background:#30363d;border-radius:4px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${pct===100?'#3fb950':pct>=50?'#d29922':'#58a6ff'};border-radius:4px"></div>
+          </div>
+          <span style="font-size:0.75rem;color:#8b949e">${submitted}/${totalS}</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const pageHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>CS Learning Hub — Board View</title>
+  <style>
+    body{background:#0d1117;color:#e6edf3;font-family:'Segoe UI',sans-serif;margin:0;padding:20px;overflow-x:auto}
+    h1{font-size:1.4rem;color:#58a6ff;margin:0 0 4px}
+    .sub{font-size:0.8rem;color:#8b949e;margin-bottom:18px}
+    table{width:100%;border-collapse:collapse;font-size:0.85rem}
+    th{text-align:left;padding:10px 8px;border-bottom:2px solid #30363d;color:#8b949e;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;font-family:monospace}
+    td{padding:9px 8px;border-bottom:1px solid #21262d}
+    tr:hover td{background:rgba(255,255,255,0.03)}
+    .legend{margin-top:14px;font-size:0.75rem;color:#8b949e;display:flex;gap:16px;flex-wrap:wrap}
+    .refresh{position:fixed;top:14px;right:14px;background:#1f6feb;color:white;border:none;border-radius:6px;padding:7px 14px;cursor:pointer;font-size:0.8rem}
+    .refresh:hover{background:#388bfd}
+  </style>
+  </head>
+  <body>
+  <button class="refresh" onclick="location.reload()">⟳ Refresh</button>
+  <h1>🖥 CS Learning Hub — Completion Board</h1>
+  <div class="sub">${yearFilter||'All Years'} ${classFilter||''} &nbsp;·&nbsp; ${students.length} students &nbsp;·&nbsp; ${now}</div>
+  <table>
+    <thead><tr>
+      <th>Student</th><th>Year</th><th>Class</th>
+      ${scenarios.map(s=>`<th title="${escHtml(s.title)}">${escHtml(s.title.length>12?s.title.slice(0,11)+'…':s.title)}</th>`).join('')}
+      <th>Progress</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="legend">✅ Submitted &nbsp; 🔄 In Progress &nbsp; ○ Not started &nbsp;·&nbsp; Progress bar = scenario completion</div>
+  </body></html>`;
+
+  const blob = new Blob([pageHtml], {type:'text/html'});
+  const url  = URL.createObjectURL(blob);
+  window.open(url, '_blank');
+}
 
 // Show login immediately — synchronous, no waiting
 showView('view-login');
